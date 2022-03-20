@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="4b4c2039-99b4-463e-b317-aab6af1a08ab" name="thebwvas@premium172.web-hosting.com">
+        <fileTransfer accessType="SFTP" host="162.0.209.118" port="21098" sshConfigId="e1f08d6f-c93a-48f7-b85c-0f095e051bfe" sshConfig="thebwvas@162.0.209.118:21098 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
