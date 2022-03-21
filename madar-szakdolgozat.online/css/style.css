@@ -31,7 +31,7 @@ Version:    1.1.0
     22. My Profile /.my-profile
     23. My Properties Box /.my-properties-box
     24. Submit Property /.submit-property
-    25. Blog /.blog-body
+
     26. Contact Form /.contact-form
     27. Signup/Login Wrapper /.form-content-box
     28. Pagination /.pagination
@@ -2642,7 +2642,7 @@ input[type="checkbox"]:checked + label::before {
 /** TESTIMONIAL STARTED **/
 .testimonial {
     padding: 100px 0 130px;
-    background: url(http://placehold.it/1920x496);
+    background: url(../img/cube.gif);
     z-index: 0;
     background-position: center center;
     background-repeat: no-repeat;
@@ -2764,7 +2764,7 @@ input[type="checkbox"]:checked + label::before {
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
-    background: url(http://placehold.it/1920x577);
+    background: url(../img/cube.gif);
     z-index: 0;
 }
 
@@ -2856,7 +2856,7 @@ input[type="checkbox"]:checked + label::before {
 /** TESTIMONIAL 3 STARTED **/
 .testimonial-3 {
     padding: 100px 0;
-    background: url(http://placehold.it/1920x620);
+    background: url(../img/cube.gif);
     z-index: 0;
     background-position: center center;
     background-repeat: no-repeat;
@@ -3486,7 +3486,7 @@ input[type="checkbox"]:checked + label::before {
 
 /** Our newslatters 2 **/
 .our-newslatters-2{
-    background: url(http://placehold.it/1920x120);
+    background: url(../img/cube.gif);
     z-index: 0;
     background-position: center center;
     background-repeat: no-repeat;
@@ -3742,283 +3742,7 @@ input[type="checkbox"]:checked + label::before {
     color: #fff;
 }
 
-/** BLOG 1 AREA START **/
-.blog-1 {
-    margin-bottom: 30px;
-    border-radius: 0;
-    border: none;
-    background: transparent;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
 
-.blog-1:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.blog-1 .detail {
-    padding: 25px 20px 8px;
-}
-
-.blog-1 .blog-photo {
-    position: relative;
-}
-
-.blog-1 .blog-photo img {
-    width: 100%;
-}
-
-.blog-1 .detail h3 {
-    font-size: 20px;
-    font-weight: 500;
-    margin-bottom: 7px;
-}
-
-.blog-1 .detail .post-meta {
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.blog-1 .detail .post-meta span {
-    margin-right: 20px;
-    font-size: 14px;
-    font-weight: 400;
-}
-
-.blog-1 .detail .post-meta span a {
-    color: #555;
-}
-
-.blog-1 .detail .post-meta span a i {
-    margin-right: 5px;
-}
-
-.blog-1 .detail h2 {
-    margin-bottom: 5px;
-}
-
-.blog-1 .detail h2 a {
-    font-size: 23px;
-    font-weight: 400;
-    margin-bottom: 20px;
-}
-
-.blog-1 .date-box {
-    position: absolute;
-    bottom: -27px;
-    right: 10px;
-    font-size: 12px;
-    color: #fff;
-    width: 55px;
-    padding: 7px 0;
-    text-align: center;
-    border-radius: 3px;
-}
-
-.blog-1 .date-box span {
-    text-transform: uppercase;
-    font-size: 17px;
-    display: block;
-    font-weight: 600;
-    line-height: 22px;
-    color: #fff;
-}
-
-.mr-0 {
-    margin-right: 0;
-}
-
-.blog-1 .read-more {
-    margin-bottom: 20px;
-    display: block;
-}
-
-.blog-big .detail {
-    padding: 20px 0 40px;
-}
-
-.blog-big:hover {
-    box-shadow: none;
-}
-
-.blog-big {
-    box-shadow: none;
-}
-
-/** BLOG 2  STARTED **/
-.blog-2 {
-    margin-bottom: 30px;
-    border-radius: 0;
-    border: solid 1px #efefef;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.blog-2 {
-    background: #fff;
-    margin: 0 1px;
-    margin-bottom: 30px;
-}
-
-.blog-2:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.blog-2 .photo {
-    position: relative;
-}
-
-.blog-2 .photo .date-box {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    font-size: 13px;
-    color: #fff;
-    width: 55px;
-    padding: 12px 0;
-    text-align: center;
-    right: 15px;
-    border-radius: 2px;
-}
-
-.blog-2 .photo .date-box span {
-    text-transform: uppercase;
-    font-size: 19px;
-    display: block;
-    font-weight: 400;
-    line-height: 22px;
-    color: #fff;
-}
-
-.blog-2 .detail {
-    padding: 0 20px 0 25px;
-}
-
-.blog-2 .detail h3 {
-    margin-bottom: 10px;
-    font-size: 20px;
-    font-weight: 500;
-}
-
-.blog-2 .detail p {
-    margin-bottom: 0;
-}
-
-.blog-2 .detail .post-meta {
-    margin: 10px 0px 15px 0;
-    font-size: 14px;
-}
-
-.blog-2 .detail .post-meta span {
-    margin-right: 20px;
-}
-
-.blog-2 .detail .post-meta span a {
-    color: #555;
-}
-
-.blog-2 .detail .post-meta span a i {
-    margin-right: 5px;
-}
-
-/** BLOG 3 STARTED **/
-.blog-3 {
-    padding: 0;
-    border: none;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    position: relative;
-    margin-bottom: 30px;
-}
-
-.blog-3:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.blog-3 .blog-photo {
-    position: relative;
-    overflow: hidden;
-    display: block;
-}
-
-.blog-3 .blog-photo img {
-    width: 100%;
-}
-
-.blog-3 .post-meta {
-    height: 45px;
-    background-color: #f4f4f4;
-    margin-bottom: 0;
-}
-
-.blog-3 .detail {
-    padding: 25px 20px 20px;
-}
-
-.blog-3 .post-meta ul {
-    margin: 0;
-    padding: 0 15px;
-}
-
-.blog-3 .post-meta .profile-user {
-    padding: 6px 0 6px 6px;
-}
-
-.blog-3 .post-meta ul li {
-    font-size: 14px;
-    margin: 0;
-    position: relative;
-    float: left;
-    padding: 11px 12px;
-}
-
-.blog-3 .post-meta ul li span {
-    font-weight: 500;
-}
-
-.blog-3 .post-meta .profile-user img {
-    border-radius: 100px;
-    box-shadow: 1px 2px 3px 0 rgba(0, 0, 0, .4);
-    height: 65px;
-    margin-right: 5px;
-    margin-top: -45px;
-    object-fit: cover;
-    position: relative;
-    width: 65px;
-}
-
-.blog-3 .detail p {
-    margin-bottom: 0;
-}
-
-.blog-3 .detail h4 {
-    margin: 0 0 10px;
-    font-size: 20px;
-    font-weight: 400;
-}
-
-.blog-3 .detail p {
-    font-size: 14px;
-    color: #555;
-}
-
-.blog-3 .date-box {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 13px;
-    color: #fff;
-    width: 55px;
-    padding: 7px 0;
-    text-align: center;
-    border-radius: 3px;
-}
-
-.blog-3 .date-box span {
-    text-transform: uppercase;
-    font-size: 19px;
-    display: block;
-    font-weight: 400;
-    line-height: 22px;
-    color: #fff;
-}
 
 /** FOOTER  STARTED **/
 footer {
@@ -4340,7 +4064,7 @@ footer {
 /** COUNTERS AREA START **/
 .counters {
     padding: 100px 0 70px;
-    background: url(http://placehold.it/1920x270);
+    background: url(../img/cube.gif);
     z-index: 0;
     background-position: center center;
     background-repeat: no-repeat;
@@ -4391,7 +4115,7 @@ footer {
 .counters-2 {
     padding: 100px 0 60px;
     text-align: center;
-    background: url(http://placehold.it/1920x408);
+    background: url(../img/cube.gif);
     z-index: 0;
     background-position: center center;
     background-repeat: no-repeat;
@@ -4483,27 +4207,27 @@ footer {
 }
 
 .cat-1-bg {
-    background-image: url(http://placehold.it/365x250);
+    background-image: url(../img/cube.gif);
 }
 
 .cat-2-bg {
-    background-image: url(http://placehold.it/365x250);
+    background-image: url(../img/cube.gif);
 }
 
 .cat-3-bg {
-    background-image: url(http://placehold.it/745x250);
+    background-image: url(../img/cube.gif);
 }
 
 .cat-4-bg {
-    background-image: url(http://placehold.it/460x515);
+    background-image: url(../img/cube.gif);
 }
 
 .cat-5-bg {
-    background-image: url(http://placehold.it/365x250);
+    background-image: url(../img/cube.gif);
 }
 
 .cat-6-bg {
-    background-image: url(http://placehold.it/365x250);
+    background-image: url(../img/cube.gif);
 }
 
 .category_bg_box:hover
@@ -4649,27 +4373,27 @@ footer {
 }
 
 .property-photo {
-    background-image: url(http://placehold.it/350x350);
+    background-image: url(../img/cube.gif);
 }
 
 .property-photo-2 {
-    background-image: url(http://placehold.it/350x350);
+    background-image: url(../img/cube.gif);
 }
 
 .property-photo-3 {
-    background-image: url(http://placehold.it/350x350);
+    background-image: url(../img/cube.gif);
 }
 
 .property-photo-4 {
-    background-image: url(http://placehold.it/350x350);
+    background-image: url(../img/cube.gif);
 }
 
 .property-photo-5 {
-    background-image: url(http://placehold.it/350x350);
+    background-image: url(../img/cube.gif);
 }
 
 .property-photo-6 {
-    background-image: url(http://placehold.it/350x350);
+    background-image: url(../img/cube.gif);
 }
 
 /** PROPERY BOX 5 AREA START **/
@@ -4946,7 +4670,7 @@ footer {
 }
 
 .contact-section .bg-img {
-    background: rgba(0, 0, 0, 0.04) url(http://placehold.it/475x555) top left repeat;
+    background: rgba(0, 0, 0, 0.04) url(../img/cube.gif) top left repeat;
     background-size: cover;
     top: 0;
     bottom: 0;
@@ -5462,7 +5186,7 @@ background: #1c82ca;
 
 /** COMING SOON STARTED **/
 .coming-soon-bg {
-    background: rgba(0, 0, 0, 0.04) url(http://placehold.it/1920x1080) top left repeat;
+    background: rgba(0, 0, 0, 0.04) url(../img/cube.gif) top left repeat;
     background-size: cover;
     top: 0;
     width: 100%;
@@ -6323,7 +6047,7 @@ background: #1c82ca;
 
 /** SUB BANNER AREA START **/
 .sub-banner {
-    background: rgba(0, 0, 0, 0.04) url(http://placehold.it/1920x290) top left repeat;
+    background: rgba(0, 0, 0, 0.04) url(../img/cube.gif) top left repeat;
     background-size: cover;
     top: 0;
     width: 100%;
