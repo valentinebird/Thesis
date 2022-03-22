@@ -2642,7 +2642,7 @@ input[type="checkbox"]:checked + label::before {
 /** TESTIMONIAL STARTED **/
 .testimonial {
     padding: 100px 0 130px;
-    background: url(../img/cube.gif);
+    background: url(../img/home/testimonal.jpg);
     z-index: 0;
     background-position: center center;
     background-repeat: no-repeat;
@@ -4064,7 +4064,7 @@ footer {
 /** COUNTERS AREA START **/
 .counters {
     padding: 100px 0 70px;
-    background: url(../img/cube.gif);
+    background: url(../img/home/citylong.jpg);
     z-index: 0;
     background-position: center center;
     background-repeat: no-repeat;
@@ -4207,19 +4207,19 @@ footer {
 }
 
 .cat-1-bg {
-    background-image: url(../img/cube.gif);
+    background-image: url(../img/home/london.jpg);
 }
 
 .cat-2-bg {
-    background-image: url(../img/cube.gif);
+    background-image: url(../img/home/sanf.jpg);
 }
 
 .cat-3-bg {
-    background-image: url(../img/cube.gif);
+    background-image: url(../img/home/bp.jpg);
 }
 
 .cat-4-bg {
-    background-image: url(../img/cube.gif);
+    background-image: url(../img/home/bp.jpg);
 }
 
 .cat-5-bg {
