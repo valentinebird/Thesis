@@ -2,7 +2,8 @@
 <project version="4">
   <component name="SshConfigs">
     <configs>
-      <sshConfig authType="PASSWORD" host="162.0.209.118" id="e1f08d6f-c93a-48f7-b85c-0f095e051bfe" port="21098" nameFormat="DESCRIPTIVE" username="thebwvas" useOpenSSHConfig="true" />
+      <sshConfig authType="PASSWORD" host="162.0.209.118" id="09cd10fa-31e8-46d9-9239-3a75b85ada2f" port="21098" nameFormat="DESCRIPTIVE" username="thebwvas" useOpenSSHConfig="true" />
+      <sshConfig authType="PASSWORD" host="162.0.209.118" id="00eceed8-6306-44ac-a817-7dd1774e515b" port="21098" nameFormat="DESCRIPTIVE" username="szakdolgozat@madar-szakdolgozat.online" useOpenSSHConfig="true" />
     </configs>
   </component>
 </project>

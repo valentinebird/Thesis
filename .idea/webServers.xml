@@ -2,17 +2,10 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="4b4c2039-99b4-463e-b317-aab6af1a08ab" name="thebwvas@premium172.web-hosting.com">
-        <fileTransfer accessType="SFTP" host="162.0.209.118" port="21098" sshConfigId="e1f08d6f-c93a-48f7-b85c-0f095e051bfe" sshConfig="thebwvas@162.0.209.118:21098 password">
+      <webServer id="af1d464f-13e3-418b-8e39-22bad8cc8713" name="name">
+        <fileTransfer accessType="SFTP" host="162.0.209.118" port="21098" sshConfigId="09cd10fa-31e8-46d9-9239-3a75b85ada2f" sshConfig="thebwvas@162.0.209.118:21098 password">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
-          </advancedOptions>
-        </fileTransfer>
-      </webServer>
-      <webServer id="c73428f6-616f-4cbe-8810-64158eed8804" name="szakdolgozat" url="http://ftp.thebird97.com">
-        <fileTransfer host="ftp.thebird97.com" port="21">
-          <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
         </fileTransfer>
       </webServer>
