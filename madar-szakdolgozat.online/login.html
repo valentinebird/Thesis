@@ -6,6 +6,8 @@
     <meta charset="utf-8">
 
     <!-- External CSS libraries -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="ajaxValidation.js"></script>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/animate.min.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-submenu.css">
@@ -52,19 +54,20 @@
             <div class="col-lg-6 align-self-center pad-0">
                 <div class="form-section align-self-center">
                     <h3>Bejelentezés</h3>
-                    <div class="clearfix"></div>
-                    <form action="#" method="GET">
+                    <p id="message"></p>
+                    <br>
+
                         <div class="form-group form-box">
-                            <input type="email" name="email" class="input-text" placeholder="E-mail cím">
+                            <input type="username" name="username" class="input-text" id="username"  placeholder="Felhasználó név" required>
                         </div>
                         <div class="form-group form-box clearfix">
-                            <input type="password" name="Password" class="input-text" placeholder="Jelszó">
+                            <input type="password" name="password" class="input-text" id="password" placeholder="Jelszó" required>
                         </div>
                         <div class="form-group clearfix">
-                            <button type="submit" class="btn-md btn-theme float-left">Bejelentkezés</button>
+                            <button type="submit" class="btn-md btn-theme float-left" id="checkValidation">Bejelentkezés</button>
                             <a href="forgot-password.html" class="forgot-password">Elfelejtett jelszó</a>
                         </div>
-                    </form>
+
                     <p>Nincs még felhaználói fiókod? <a href="signup.html">Itt tudsz regisztrálni</a></p>
                 </div>
             </div>
