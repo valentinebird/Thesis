@@ -1,3 +1,8 @@
+<?php
+
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -39,13 +44,28 @@
 <header class="top-header top-header-bg none-992" id="top-header-2">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 col-md-8 col-sm-7">
+            <div class="col-lg-6 col-md-4 col-sm-5">
                 <div class="list-inline">
+                    <?php
+                    if ($_SESSION['loggedin']) { ?>
+                        <a href="index.php" class="sign-in"><i class="fa fa-sign-out"></i>Kijelentkezés</a>
+                        <a href="index.php" class="sign-in"><i class="fa fa-trophy"></i>Üdvözlünk <?print $_SESSION['name'] ?></a>
+                        <?php
+                    }else{
+                        ?>
+                        <a href="index.php" class="sign-in"><i class="fa fa-trophy"></i>Jelentkezz be az oldal használatához!</a>
+                        <?php
+                    }
+                    ?>
 
                 </div>
+
             </div>
             <div class="col-lg-6 col-md-4 col-sm-5">
                 <ul class="top-social-media pull-right">
+                    <li>
+                        <a href="login-as-agent.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés ingatlan ügynökként!</a>
+                    </li>
                     <li>
                         <a href="login.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés</a>
                     </li>
