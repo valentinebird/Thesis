@@ -12,9 +12,20 @@ $(document).ready(function(){
             url:'authenticate.php',
             type:'post',
             data:{username:username,password:password},
+
             success:function(response){
-                $("#message").html(response);
+                if(response==='1'){
+                    location.replace("index.html")
+                }else{
+                    $("#message").html(typeof(response));
+                }
+
+
             }
+
+
+
+
         });
     });
 });

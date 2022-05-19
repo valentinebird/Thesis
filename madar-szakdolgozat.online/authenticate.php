@@ -47,8 +47,8 @@ if ($stmt = $con->prepare('SELECT username, password FROM USER WHERE username = 
 			$_SESSION['loggedin'] = TRUE;
 			$_SESSION['name'] = $_POST['username'];
 			$_SESSION['id'] = $id;
-            header('Location: https://madar-szakdolgozat.online/');
-            exit();
+            echo $_SESSION['loggedin'];
+            exit;
 		} else {
 			echo 'Hibés jelszó!';
             exit();
