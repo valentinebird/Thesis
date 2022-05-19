@@ -73,7 +73,7 @@
 <header class="main-header">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand logos" href="index.html">
+            <a class="navbar-brand logos" href="index.php">
                 <img src="img/logos/logo.png" alt="logo">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,7 +86,7 @@
                             Index
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="index.html">Index 1</a></li>
+                            <li><a class="dropdown-item" href="index.php">Index 1</a></li>
                             <li><a class="dropdown-item" href="index-2.html">Index 2</a></li>
                             <li><a class="dropdown-item" href="index-3.html">Index 3</a></li>
                             <li><a class="dropdown-item" href="index-4.html">Index 4</a></li>
@@ -192,7 +192,7 @@
                                     <div class="col-sm-6 col-lg-3">
                                         <div class="megamenu-section">
                                             <h6 class="megamenu-title">Pages</h6>
-                                            <a class="dropdown-item" href="my-profile.html">My profile</a>
+                                            <a class="dropdown-item" href="my-profile.php">My profile</a>
                                             <a class="dropdown-item" href="my-properties.html">My Properties</a>
                                             <a class="dropdown-item" href="favorited-properties.html">Favorited Properties</a>
                                             <a class="dropdown-item" href="submit-property.html">Submit Property</a>
@@ -250,7 +250,7 @@
         <div class="page-name">
             <h1>Agent Detail</h1>
             <ul>
-                <li><a href="index.html">Index</a></li>
+                <li><a href="index.php">Index</a></li>
                 <li><span>/</span>Agent Detail</li>
             </ul>
         </div>
@@ -582,7 +582,7 @@
 <!-- Full Page Search -->
 <div id="full-page-search">
     <button type="button" class="close">×</button>
-    <form action="index.html#">
+    <form action="index.php#">
         <input type="search" value="" placeholder="type keyword(s) here" />
         <button type="submit" class="btn btn-sm button-theme">Search</button>
     </form>

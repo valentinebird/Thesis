@@ -1949,7 +1949,6 @@ var getYTPVideoID = function( url ) {
     /**
      *
      * @deprecated
-     * todo: Above methods will be removed with version 3.5.0
      *
      **/
     jQuery.fn.mb_YTPlayer = jQuery.mbYTPlayer.buildPlayer;

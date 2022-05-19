@@ -408,7 +408,7 @@ $(function () {
                     "<ul class='map-properties-list'> " +
                     "<li><i class='fa fa-phone'></i>  +0477 8556 552</li> " +
                     "<li><i class='fa fa-envelope'></i>  info@themevessel.com</li> " +
-                    "<li><a href='index.html'><i class='fa fa-globe'></i>  http://www.example.com</li></a> " +
+                    "<li><a href='index.php'><i class='fa fa-globe'></i>  http://www.example.com</li></a> " +
                     "</ul>" +
                     "</div>" +
                     "</div>");

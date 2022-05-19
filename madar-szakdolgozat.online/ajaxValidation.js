@@ -15,7 +15,7 @@ $(document).ready(function(){
 
             success:function(response){
                 if(response==='1'){
-                    location.replace("index.html")
+                    location.replace("index.php")
                 }else{
                     $("#message").html(typeof(response));
                 }

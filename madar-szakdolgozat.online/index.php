@@ -87,7 +87,7 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="agents.html" id="navbarDropdownMenuLink2"   >
+                        <a class="nav-link" href="agents.php" id="navbarDropdownMenuLink2"   >
                             Ügynökeink
                         </a>
                     </li>
@@ -605,21 +605,7 @@
             </div>
 
             <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6">
-                <div class="footer-item">
-                    <h4>Gyorlikek </h4>
-                    <ul class="links">
-                        <li>
-                            <a>Rólunk</a>
-                        </li>
-                        <li>
-                            <a>Szolgáltatások</a>
-                        </li>
 
-                        <li>
-                            <a> Adatkezelés</a>
-                        </li>
-                    </ul>
-                </div>
             </div>
 
         </div>

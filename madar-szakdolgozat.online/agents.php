@@ -73,7 +73,7 @@
 <header class="main-header">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand logos" href="index.html">
+            <a class="navbar-brand logos" href="index.php">
                 <img src="img/logos/logo.png" alt="logo">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,7 +82,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav header-ml">
                     <li class="nav-item  active">
-                        <a class="nav-link" href="index.html" id="navbarDropdownMenuLink">
+                        <a class="nav-link" href="index.php" id="navbarDropdownMenuLink">
                             Főoldal
                         </a>
 
@@ -97,7 +97,7 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="agents.html" id="navbarDropdownMenuLink2"   >
+                        <a class="nav-link" href="agents.php" id="navbarDropdownMenuLink2"   >
                             Ügynökeink
                         </a>
                     </li>
@@ -125,7 +125,7 @@
         <div class="page-name">
             <h1>Agent Grid</h1>
             <ul>
-                <li><a href="index.html">Index</a></li>
+                <li><a href="index.php">Index</a></li>
                 <li><span>/</span>Agent Grid</li>
             </ul>
         </div>
@@ -170,7 +170,7 @@
                     </div>
                     <div class="team-details">
                         <h6>Office Manager</h6>
-                        <h5><a href="agent-detail.html">Maria Blank</a></h5>
+                        <h5><a href="agent-detail.php">Maria Blank</a></h5>
                         <div class="contact">
                             <p>
                                 <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
@@ -192,7 +192,7 @@
                     </div>
                     <div class="team-details">
                         <h6>Creative Director</h6>
-                        <h5><a href="agent-detail.html">John Pitarshon</a></h5>
+                        <h5><a href="agent-detail.php">John Pitarshon</a></h5>
                         <div class="contact">
                             <p>
                                 <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
@@ -214,7 +214,7 @@
                     </div>
                     <div class="team-details">
                         <h6>Support Manager</h6>
-                        <h5><a href="agent-detail.html">Karen Paran</a></h5>
+                        <h5><a href="agent-detail.php">Karen Paran</a></h5>
                         <div class="contact">
                             <p>
                                 <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
@@ -236,7 +236,7 @@
                     </div>
                     <div class="team-details">
                         <h6>Support Manager</h6>
-                        <h5><a href="agent-detail.html">Karen Paran</a></h5>
+                        <h5><a href="agent-detail.php">Karen Paran</a></h5>
                         <div class="contact">
                             <p>
                                 <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
@@ -258,7 +258,7 @@
                     </div>
                     <div class="team-details">
                         <h6>Office Manager</h6>
-                        <h5><a href="agent-detail.html">Maria Blank</a></h5>
+                        <h5><a href="agent-detail.php">Maria Blank</a></h5>
                         <div class="contact">
                             <p>
                                 <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
@@ -280,7 +280,7 @@
                     </div>
                     <div class="team-details">
                         <h6>Creative Director</h6>
-                        <h5><a href="agent-detail.html">John Pitarshon</a></h5>
+                        <h5><a href="agent-detail.php">John Pitarshon</a></h5>
                         <div class="contact">
                             <p>
                                 <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
@@ -302,7 +302,7 @@
                     </div>
                     <div class="team-details">
                         <h6>Creative Director</h6>
-                        <h5><a href="agent-detail.html">John Pitarshon</a></h5>
+                        <h5><a href="agent-detail.php">John Pitarshon</a></h5>
                         <div class="contact">
                             <p>
                                 <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
@@ -324,7 +324,7 @@
                     </div>
                     <div class="team-details">
                         <h6>Support Manager</h6>
-                        <h5><a href="agent-detail.html">Karen Paran</a></h5>
+                        <h5><a href="agent-detail.php">Karen Paran</a></h5>
                         <div class="contact">
                             <p>
                                 <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
@@ -346,7 +346,7 @@
                     </div>
                     <div class="team-details">
                         <h6>Office Manager</h6>
-                        <h5><a href="agent-detail.html">Maria Blank</a></h5>
+                        <h5><a href="agent-detail.php">Maria Blank</a></h5>
                         <div class="contact">
                             <p>
                                 <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
