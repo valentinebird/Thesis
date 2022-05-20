@@ -9,7 +9,7 @@ $(document).ready(function(){
         let password = $("#password").val() == undefined ? '' : $("#password").val().trim();
 
         $.ajax({
-            url:'authenticate.php',
+            url:'authenticate-agent.php',
             type:'post',
             data:{username:username,password:password},
 

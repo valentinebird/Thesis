@@ -1,6 +1,7 @@
 <?php
 session_start();
 // Change this to your connection info.
+
 require "dbconfig.php";
 
 
@@ -21,7 +22,7 @@ if (!isset($_POST['username'], $_POST['password'])) {
 
 }
 // Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-if ($stmt = $con->prepare('SELECT username, password FROM USER WHERE username = ?')) {
+if ($stmt = $con->prepare('SELECT username, password FROM AGENT WHERE username = ?')) {
 	// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 	$stmt->bind_param('s', $_POST['username']);
 	$stmt->execute();
