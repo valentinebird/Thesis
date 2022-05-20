@@ -54,7 +54,7 @@ session_start();
                         <?php
                             if($_SESSION['is_agent']){
                                 ?>
-                                <a href="submit-property.php" class="sign-in"><i class="fa var-upload"></i>Új ingatlan feltöltése</a>
+                                <a href="submit-property.php" class="sign-in"><i class="fa fa-upload"></i>Új ingatlan feltöltése</a>
                                 <?php
                                  }
                                 ?>
