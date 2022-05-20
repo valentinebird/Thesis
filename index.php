@@ -50,10 +50,19 @@ session_start();
                     if ($_SESSION['loggedin']) { ?>
                         <a href="logout.php" class="sign-in"><i class="fa fa-sign-out"></i>Kijelentkezés</a>
                         <a href="index.php" class="sign-in"><i class="fa fa-trophy"></i>Üdvözlünk <?print $_SESSION['name'] ?></a>
+
                         <?php
+                            if($_SESSION['is_agent']){
+                                ?>
+                                <a href="submit-property.php" class="sign-in"><i class="fa var-upload"></i>Új ingatlan feltöltése</a>
+                                <?php
+                                 }
+                                ?>
+                    <?php
+
                     }else{
                         ?>
-                        <a href="index.php" class="sign-in"><i class="fa fa-trophy"></i>Jelentkezz be az oldal használatához!</a>
+                        <i class="fa fa-trophy"></i>Jelentkezz be az oldal használatához!
                         <?php
                     }
                     ?>

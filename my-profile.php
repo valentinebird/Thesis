@@ -195,7 +195,7 @@
                                             <a class="dropdown-item" href="my-profile.html">My profile</a>
                                             <a class="dropdown-item" href="my-properties.html">My Properties</a>
                                             <a class="dropdown-item" href="favorited-properties.html">Favorited Properties</a>
-                                            <a class="dropdown-item" href="submit-property.html">Submit Property</a>
+                                            <a class="dropdown-item" href="submit-property.php">Submit Property</a>
                                             <a class="dropdown-item" href="login.html">Login</a>
                                             <a class="dropdown-item" href="signup.html">Register</a>
                                             <a class="dropdown-item" href="forgot-password.html">Forgot Password</a>
@@ -236,7 +236,7 @@
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a href="submit-property.html" class="nav-link link-btn">Submit Property</a>
+                        <a href="submit-property.php" class="nav-link link-btn">Submit Property</a>
                     </li>
                 </ul>
             </div>
@@ -293,7 +293,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="submit-property.html">
+                                <a href="submit-property.php">
                                     <i class="flaticon-cross"></i>Submit New Property
                                 </a>
                             </li>
