@@ -48,7 +48,7 @@ session_start();
                 <div class="list-inline">
                     <?php
                     if ($_SESSION['loggedin']) { ?>
-                        <a href="index.php" class="sign-in"><i class="fa fa-sign-out"></i>Kijelentkezés</a>
+                        <a href="logout.php" class="sign-in"><i class="fa fa-sign-out"></i>Kijelentkezés</a>
                         <a href="index.php" class="sign-in"><i class="fa fa-trophy"></i>Üdvözlünk <?print $_SESSION['name'] ?></a>
                         <?php
                     }else{

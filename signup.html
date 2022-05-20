@@ -41,6 +41,8 @@
     <script src="js/html5shiv.min.js"></script>
     <script src="js/respond.min.js"></script>
     <![endif]-->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="ajaxValidationRegiserUser.js"></script>
 </head>
 <body>
 <div class="page_loader"></div>
@@ -54,7 +56,7 @@
                     <h3>Felhasználó fiók készítése</h3>
 
                     <div class="clearfix"></div>
-                    <form action="#" method="GET">
+
                         <div class="form-group form-box">
                             <input type="" name="username" class="input-text" placeholder="Felhasználó név">
                         </div>
@@ -68,9 +70,9 @@
                             <input type="password_re" name="Password" class="input-text" placeholder="Jelszó újra">
                         </div>
                         <div class="form-group clearfix">
-                            <button type="submit" class="btn-md btn-theme float-left">Regisztráció</button>
+                            <button type="submit" class="btn-md btn-theme float-left" id="register">Regisztráció</button>
                         </div>
-                    </form>
+
                     <p>Már van felhasználói fiókod? <a href="login.html">Bejelentkezés</a></p>
                 </div>
             </div>

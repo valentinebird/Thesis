@@ -44,6 +44,7 @@ if ($stmt = $con->prepare('SELECT username, password FROM AGENT WHERE username =
 			$_SESSION['loggedin'] = TRUE;
 			$_SESSION['name'] = $_POST['username'];
 			$_SESSION['id'] = $id;
+			$_SESSION['is_agnet'] = true;
             echo $_SESSION['loggedin'];
             exit;
 		} else {
