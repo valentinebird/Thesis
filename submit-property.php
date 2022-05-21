@@ -1,7 +1,58 @@
+<?php
+require "dbconfig.php";
+$msg = "";
+
+// If upload button is clicked ...
+if (isset($_POST['upload'])) {
+
+    $filename = $_FILES["uploadfile"]["name"];
+    $tempname = $_FILES["uploadfile"]["tmp_name"];
+    $folder = "image/" . $filename;
+
+    $db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+
+    // Get all the submitted data from the form
+    //$sql = "INSERT INTO PROPERTY (filename) VALUES ('$filename')";
+    //$sql = "INSERT INTO PROPERTY  VALUES (,)";
+    $sql = "INSERT INTO PROPERTY (filename) VALUES ('TEST',1,100,'London','Oxford Street 3',100,2,3,4,'Rent','Új','Gáz',0,0,1,'Szép ház Londonban','$filename',1,0);";
+
+    // Execute query
+    mysqli_query($db, $sql);
+
+    // Now let's move the uploaded image into the folder: image
+    if (move_uploaded_file($tempname, $folder)) {
+        $msg = "Image uploaded successfully";
+    } else {
+        $msg = "Failed to upload image";
+    }
+
+    $result = mysqli_query($db, "SELECT * FROM PROPERTY");
+    while ($data = mysqli_fetch_array($result)) {
+
+        ?>
+        <img src="<?php echo $data['photo_filename']; ?>">
+
+        <?php
+    }
+}
+?>
+<?php
+/*$sql = "SELECT * FROM PROPERTY;";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+// output data of each row
+while($row = $result->fetch_assoc()) {
+echo "id: " . $row["id"]. " - Name: " . $row["property_name"]. " " . $row["email"] . " " . $row["reg_date"]. "<br>";
+}
+} else {
+echo "0 results";
+}*/
+?>
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <title>Housy - Real Estate HTML5 Template</title>
+    <title>Ingatlan nyilvántartó portál, webes környezetben</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
 
@@ -15,25 +66,27 @@
     <link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="fonts/flaticon/font/flaticon.css">
     <link rel="stylesheet" type="text/css" href="fonts/linearicons/style.css">
-    <link rel="stylesheet" type="text/css"  href="css/jquery.mCustomScrollbar.css">
-    <link rel="stylesheet" type="text/css"  href="css/dropzone.css">
-    <link rel="stylesheet" type="text/css"  href="css/slick.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" type="text/css" href="css/dropzone.css">
+    <link rel="stylesheet" type="text/css" href="css/slick.css">
 
     <!-- Custom stylesheet -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" id="style_sheet" href="css/skins/default.css">
 
     <!-- Favicon icon -->
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" >
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 
     <!-- Google fonts -->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CRoboto:300,400,500,700&display=swap">
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CRoboto:300,400,500,700&display=swap">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link rel="stylesheet" type="text/css" href="css/ie10-viewport-bug-workaround.css">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!--[if lt IE 9]>
+    <script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="js/ie-emulation-modes-warning.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -76,7 +129,8 @@
             <a class="navbar-brand logos" href="index.php">
                 <img src="img/logos/logo.png" alt="logo">
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -88,7 +142,8 @@
 
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink3" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
                             Ingatlanok
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -97,7 +152,7 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="agents.php" id="navbarDropdownMenuLink2"   >
+                        <a class="nav-link" href="agents.php" id="navbarDropdownMenuLink2">
                             Ügynökeink
                         </a>
                     </li>
@@ -125,19 +180,20 @@
             </div>
             <div class="col-md-12">
                 <div class="submit-address">
-                    <form method="GET">
+                    <form method="POST" action="">
                         <h3 class="heading-2">Alap információk</h3>
                         <div class="search-contents-sidebar mb-30">
                             <div class="row">
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
-                                        <label>Az ingatlan neve</label>
-                                        <input type="text" class="input-text" name="your name" placeholder="Ingatlanhirdetés neve">
+                                        <label>Ingatlan hirdetés neve:</label>
+                                        <input type="text" class="input-text" name="property_name"
+                                               placeholder="Ingatlan hirdetés neve">
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
-                                        <label>Status</label>
+                                        <label>Eladó vagy kiadó?</label>
                                         <select class="selectpicker search-fields" name="for-sale">
                                             <option>Eladó</option>
                                             <option>Kiadó</option>
@@ -146,130 +202,102 @@
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
-                                        <label>Type</label>
-                                        <select class="selectpicker search-fields" name="apartment">
+                                        <label>Irányár:</label>
+                                        <input type="number" class="input-text" name="price" placeholder="Irányár">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="form-group">
+                                        <label>Város:</label>
+                                        <input type="text" class="input-text" name="city" placeholder="Város">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="form-group">
+                                        <label>Cím:</label>
+                                        <input type="text" class="input-text" name="adress" placeholder="Utca Házszám">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="form-group">
+                                        <label>Méret m&#178;:</label>
+                                        <input type="text" class="input-text" name="size" placeholder="Méret m&#178;">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="form-group">
+                                        <label>Szintek száma</label>
+                                        <select class="selectpicker search-fields" name="1">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="form-group">
+                                        <label>Szobák száma</label>
+                                        <select class="selectpicker search-fields" name="1">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="form-group">
+                                        <label>Fürdőszobák száma</label>
+                                        <select class="selectpicker search-fields" name="1">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="form-group">
+                                        <label>Az ingatlan típusa</label>
+                                        <select class="selectpicker search-fields" name="type">
                                             <option>Apartment</option>
-                                            <option>House</option>
-                                            <option>Commercial</option>
-                                            <option>Garage</option>
-                                            <option>Lot</option>
+                                            <option>Családi ház</option>
+                                            <option>Panelház</option>
+                                            <option>Garázs</option>
+                                            <option>Tanya</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
-                                        <label>Area/Location</label>
-                                        <input type="text" class="input-text" name="your name" placeholder="SqFt">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="form-group">
-                                        <label>Rooms</label>
-                                        <select class="selectpicker search-fields" name="1">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                        <label>Az ingatlan állapota</label>
+                                        <select class="selectpicker search-fields" name="property_condition">
+                                            <option>Új</option>
+                                            <option>Újszerű</option>
+                                            <option>Felújított</option>
+                                            <option>Használt</option>
+                                            <option>Romos</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
-                                        <label>Bathroom</label>
-                                        <select class="selectpicker search-fields" name="1">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                        <label>Az ingatlan fűtése</label>
+                                        <select class="selectpicker search-fields" name="heating_type">
+                                            <option>Gáz</option>
+                                            <option>Elektromos</option>
+                                            <option>Fa</option>
+                                            <option>Egyéb</option>
+
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <h3 class="heading-2">Property Gallery</h3>
-                        <div id="myDropZone" class="dropzone dropzone-design mb-50">
-                            <div class="dz-default dz-message"><span>Drop files here to upload</span></div>
-                        </div>
-                        <h3 class="heading-2">Location</h3>
-                        <div class="row mb-30">
-                            <div class="col-lg-4 col-md-4">
-                                <div class="form-group">
-                                    <label>Address</label>
-                                    <input type="text" class="input-text" name="address"  placeholder="Address">
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-4">
-                                <div class="form-group">
-                                    <label>City</label>
-                                    <select class="selectpicker search-fields" name="choose-citys">
-                                        <option>Choose Citys</option>
-                                        <option>New York</option>
-                                        <option>Los Angeles</option>
-                                        <option>Chicago</option>
-                                        <option>Brooklyn</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-4">
-                                <div class="form-group">
-                                    <label>State</label>
-                                    <select class="selectpicker search-fields" name="choose-state">
-                                        <option>Choose State</option>
-                                        <option>Alabama</option>
-                                        <option>Alaska</option>
-                                        <option>California</option>
-                                        <option>Colorado</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <h3 class="heading-2">Detailed Information</h3>
-                        <div class="row mb-50">
-                            <div class="col-md-12">
-                                <div class="form-group mb-0">
-                                    <label>Detailed Information</label>
-                                    <textarea class="input-text" name="message" placeholder="Detailed Information"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-30">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Building Age <span>(optional)</span></label>
-                                    <select class="selectpicker search-fields" name="years">
-                                        <option>0-1 Years</option>
-                                        <option>0-5 Years</option>
-                                        <option>0-10 Years</option>
-                                        <option>0-20 Years</option>
-                                        <option>0-40 Years</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Bedrooms (optional)</label>
-                                    <select class="selectpicker search-fields" name="1">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Bathrooms (optional)</label>
-                                    <select class="selectpicker search-fields" name="1">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
+
+
                             </div>
                         </div>
                         <h3 class="heading-2">Features (optional)</h3>
@@ -333,28 +361,50 @@
                                 </div>
                             </div>
                         </div>
-                        <h3 class="heading-2">Contact Details</h3>
+
+
+                        <h3 class="heading-2">Detailed Information</h3>
+                        <div class="row mb-50">
+                            <div class="col-md-12">
+                                <div class="form-group mb-0">
+                                    <label>Leírás</label>
+                                    <textarea class="input-text" name="property_description"
+                                              placeholder="Leírás"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 class="heading-2">Property Gallery</h3>
+                        <div id="myDropZone" class="dropzone dropzone-design mb-50">
+                            <input type="file" name="uploadfile"  class="dz-default dz-message"><span>Drop files here to upload</span></input>
+                        </div>
+
+                        <h3 class="heading-2">A te adataid:</h3>
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Name</label>
-                                    <input type="text" class="input-text" name="name" placeholder="Name">
+                                    <label>Az ingatlanközvetítő ügynök neve</label>
+                                    <input type="text" class="input-text" name="name" placeholder="Név">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Email</label>
-                                    <input type="email" class="input-text" name="email" placeholder="Email">
+                                    <input type="email" class="input-text" name="email" placeholder="E-mail">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Phone (optional)</label>
-                                    <input type="text" class="input-text" name="phone"  placeholder="Phone">
+                                    <input type="text" class="input-text" name="phone" placeholder="Telefonszám">
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <a href="#" class="btn btn-md button-theme mb-30">Preview</a>
+                                <!--<a href="" class="btn btn-md button-theme mb-30">A hirdetés feladása</a>-->
+                                <button type="submit" name="upload" id="upload" class="btn btn-md button-theme mb-30">A
+                                    hirdetés feladása
+                                </button>
+
                             </div>
                         </div>
                     </form>
@@ -396,20 +446,12 @@
     <div class="container">
         <div class="row">
             <div class="col-xl-12">
-                <p class="copy">© 2022  Ingatlan nyilvántartó portál, webes környezetben.</p>
+                <p class="copy">© 2022 Ingatlan nyilvántartó portál, webes környezetben.</p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Full Page Search -->
-<div id="full-page-search">
-    <button type="button" class="close">×</button>
-    <form action="index.php#">
-        <input type="search" value="" placeholder="type keyword(s) here" />
-        <button type="submit" class="btn btn-sm button-theme">Search</button>
-    </form>
-</div>
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>
@@ -436,5 +478,5 @@
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="js/ie10-viewport-bug-workaround.js"></script>
 
-</body>
 </html>
+</body>
