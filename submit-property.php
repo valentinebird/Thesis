@@ -1,39 +1,40 @@
 <?php
+
+session_start();
+?>
+<?php
 require "dbconfig.php";
 $msg = "";
 
 // If upload button is clicked ...
 if (isset($_POST['upload'])) {
+    //Check the values is okay!!!
+    echo "FULL error";
+    print_r($_POST);
+    echo "<br>";
 
-    $filename = $_FILES["uploadfile"]["name"];
-    $tempname = $_FILES["uploadfile"]["tmp_name"];
-    $folder = "image/" . $filename;
+    $errors = [];
+    $result = [];
+
+    $colors = ["black", "grey", "multi", "white"];
+
+
+
+
+
+
 
     $db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 
     // Get all the submitted data from the form
-    //$sql = "INSERT INTO PROPERTY (filename) VALUES ('$filename')";
-    //$sql = "INSERT INTO PROPERTY  VALUES (,)";
-    $sql = "INSERT INTO PROPERTY (filename) VALUES ('TEST',1,100,'London','Oxford Street 3',100,2,3,4,'Rent','Új','Gáz',0,0,1,'Szép ház Londonban','$filename',1,0);";
+
+    $sql = "INSERT INTO PROPERTY () VALUES ('TEST',1,100,'London','Oxford Street 3',100,2,3,4,'Rent','Új','Gáz',0,0,1,'Szép ház Londonban','$filename',1,0);";
 
     // Execute query
     mysqli_query($db, $sql);
 
-    // Now let's move the uploaded image into the folder: image
-    if (move_uploaded_file($tempname, $folder)) {
-        $msg = "Image uploaded successfully";
-    } else {
-        $msg = "Failed to upload image";
-    }
 
-    $result = mysqli_query($db, "SELECT * FROM PROPERTY");
-    while ($data = mysqli_fetch_array($result)) {
 
-        ?>
-        <img src="<?php echo $data['photo_filename']; ?>">
-
-        <?php
-    }
 }
 ?>
 <?php
@@ -99,16 +100,41 @@ echo "0 results";
 <div class="page_loader"></div>
 
 <!-- Top header start -->
+<!-- Top header start -->
 <header class="top-header top-header-bg none-992" id="top-header-2">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 col-md-8 col-sm-7">
+            <div class="col-lg-6 col-md-4 col-sm-5">
                 <div class="list-inline">
+                    <?php
+                    if ($_SESSION['loggedin']) { ?>
+                        <a href="logout.php" class="sign-in"><i class="fa fa-sign-out"></i>Kijelentkezés</a>
+                        <a href="index.php" class="sign-in"><i class="fa fa-trophy"></i>Üdvözlünk <?print $_SESSION['name'] ?></a>
+
+                        <?php
+                        if($_SESSION['is_agent']){
+                            ?>
+                            <a href="submit-property.php" class="sign-in"><i class="fa fa-upload"></i>Új ingatlan feltöltése</a>
+                            <?php
+                        }
+                        ?>
+                        <?php
+
+                    }else{
+                        ?>
+                        <i class="fa fa-trophy"></i>Jelentkezz be az oldal használatához!
+                        <?php
+                    }
+                    ?>
 
                 </div>
+
             </div>
             <div class="col-lg-6 col-md-4 col-sm-5">
                 <ul class="top-social-media pull-right">
+                    <li>
+                        <a href="login-as-agent.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés ingatlan ügynökként!</a>
+                    </li>
                     <li>
                         <a href="login.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés</a>
                     </li>
@@ -180,107 +206,108 @@ echo "0 results";
             </div>
             <div class="col-md-12">
                 <div class="submit-address">
-                    <form method="POST" action="">
+                    <form method="POST" action="submit-property.php">
                         <h3 class="heading-2">Alap információk</h3>
                         <div class="search-contents-sidebar mb-30">
                             <div class="row">
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Ingatlan hirdetés neve:</label>
-                                        <input type="text" class="input-text" name="property_name"
+                                        <input type="text" class="input-text" name="property_name" id="property_name"
                                                placeholder="Ingatlan hirdetés neve">
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Eladó vagy kiadó?</label>
-                                        <select class="selectpicker search-fields" name="for-sale">
-                                            <option>Eladó</option>
-                                            <option>Kiadó</option>
+                                        <select class="selectpicker search-fields" name="is_for-sale" id="is_for-sale">
+                                            <option value="sale">Eladó</option>
+                                            <option value="rent">Kiadó</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Irányár:</label>
-                                        <input type="number" class="input-text" name="price" placeholder="Irányár">
+                                        <input type="number" class="input-text" name="price" id="price" placeholder="Irányár">
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Város:</label>
-                                        <input type="text" class="input-text" name="city" placeholder="Város">
+                                        <input type="text" class="input-text" name="city"  id="city" placeholder="Város">
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Cím:</label>
-                                        <input type="text" class="input-text" name="adress" placeholder="Utca Házszám">
+                                        <input type="text" class="input-text" name="address" id="address" placeholder="Utca Házszám">
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Méret m&#178;:</label>
-                                        <input type="text" class="input-text" name="size" placeholder="Méret m&#178;">
+                                        <input type="text" class="input-text" name="size" id="size" placeholder="Méret m&#178;">
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Szintek száma</label>
-                                        <select class="selectpicker search-fields" name="1">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                        <select class="selectpicker search-fields" name="level_number" id="level_number">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Szobák száma</label>
-                                        <select class="selectpicker search-fields" name="1">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                        <select class="selectpicker search-fields" name="rooms" id="rooms">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Fürdőszobák száma</label>
-                                        <select class="selectpicker search-fields" name="1">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                        <select class="selectpicker search-fields" name="bath_rooms"  id="bath_rooms">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Az ingatlan típusa</label>
-                                        <select class="selectpicker search-fields" name="type">
-                                            <option>Apartment</option>
-                                            <option>Családi ház</option>
-                                            <option>Panelház</option>
-                                            <option>Garázs</option>
-                                            <option>Tanya</option>
+                                        <select class="selectpicker search-fields" name="type" id="type"">
+                                            <option value="Apartment">Apartment</option>
+                                            <option value="Családi ház">Családi ház</option>
+                                            <option value="Lakás">Családi ház</option>
+                                            <option value="Panel lakás">Panel lakás</option>
+                                            <option value="Garázs">Garázs</option>
+                                            <option value="Tanya">Tanya</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Az ingatlan állapota</label>
-                                        <select class="selectpicker search-fields" name="property_condition">
-                                            <option>Új</option>
-                                            <option>Újszerű</option>
-                                            <option>Felújított</option>
-                                            <option>Használt</option>
-                                            <option>Romos</option>
+                                        <select class="selectpicker search-fields" name="property_condition"  id="property_condition">
+                                            <option value="Új" >Új</option>
+                                            <option value="Újszerű">Újszerű</option>
+                                            <option value="Felújított">Felújított</option>
+                                            <option value="Használt">Használt</option>
+                                            <option value="Romos">Romos</option>
                                         </select>
                                     </div>
                                 </div>
@@ -288,10 +315,10 @@ echo "0 results";
                                     <div class="form-group">
                                         <label>Az ingatlan fűtése</label>
                                         <select class="selectpicker search-fields" name="heating_type">
-                                            <option>Gáz</option>
-                                            <option>Elektromos</option>
-                                            <option>Fa</option>
-                                            <option>Egyéb</option>
+                                            <option value="Gáz">Gáz</option>
+                                            <option value="Elektromos">Elektromos</option>
+                                            <option value="Fa">Fa</option>
+                                            <option  value="Egyéb">Egyéb</option>
 
                                         </select>
                                     </div>
@@ -306,58 +333,27 @@ echo "0 results";
                                 <div class="row">
                                     <div class="col-lg-4 col-md-4 col-sm-4">
                                         <div class="checkbox checkbox-theme checkbox-circle">
-                                            <input id="checkbox1" type="checkbox">
-                                            <label for="checkbox1">
-                                                Free Parking
+                                            <input id="has_garage" type="checkbox">
+                                            <label for="has_garage">
+                                                Garázs
                                             </label>
                                         </div>
                                         <div class="checkbox checkbox-theme checkbox-circle">
-                                            <input id="checkbox2" type="checkbox">
-                                            <label for="checkbox2">
-                                                Air Condition
+                                            <input id="pool" type="checkbox">
+                                            <label for="pool">
+                                                Medence
                                             </label>
                                         </div>
                                         <div class="checkbox checkbox-theme checkbox-circle">
-                                            <input id="checkbox3" type="checkbox">
-                                            <label for="checkbox3">
-                                                Places to seat
+                                            <input id="has_wifi" type="checkbox">
+                                            <label for="has_wifi">
+                                                Wi-Fi
                                             </label>
                                         </div>
+
                                     </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-4">
-                                        <div class="checkbox checkbox-theme checkbox-circle">
-                                            <input id="checkbox4" type="checkbox">
-                                            <label for="checkbox4">
-                                                Swimming Pool
-                                            </label>
-                                        </div>
-                                        <div class="checkbox checkbox-theme checkbox-circle">
-                                            <input id="checkbox5" type="checkbox">
-                                            <label for="checkbox5">
-                                                Laundry Room
-                                            </label>
-                                        </div>
-                                        <div class="checkbox checkbox-theme checkbox-circle">
-                                            <input id="checkbox6" type="checkbox">
-                                            <label for="checkbox6">
-                                                Window Covering
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-4">
-                                        <div class="checkbox checkbox-theme checkbox-circle">
-                                            <input id="checkbox7" type="checkbox">
-                                            <label for="checkbox7">
-                                                Central Heating
-                                            </label>
-                                        </div>
-                                        <div class="checkbox checkbox-theme checkbox-circle">
-                                            <input id="checkbox8" type="checkbox">
-                                            <label for="checkbox8">
-                                                Alarm
-                                            </label>
-                                        </div>
-                                    </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -368,7 +364,7 @@ echo "0 results";
                             <div class="col-md-12">
                                 <div class="form-group mb-0">
                                     <label>Leírás</label>
-                                    <textarea class="input-text" name="property_description"
+                                    <textarea class="input-text" name="property_description" id="property_description"
                                               placeholder="Leírás"></textarea>
                                 </div>
                             </div>
@@ -376,7 +372,7 @@ echo "0 results";
 
                         <h3 class="heading-2">Property Gallery</h3>
                         <div id="myDropZone" class="dropzone dropzone-design mb-50">
-                            <input type="file" name="uploadfile"  class="dz-default dz-message"><span>Drop files here to upload</span></input>
+                            <input type="file" name="uploadfile"  class="dz-default dz-message"><span>Itt tudsz képeket feltölteni</span></input>
                         </div>
 
                         <h3 class="heading-2">A te adataid:</h3>
@@ -384,21 +380,16 @@ echo "0 results";
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Az ingatlanközvetítő ügynök neve</label>
-                                    <input type="text" class="input-text" name="name" placeholder="Név">
+                                    <div><?php echo $_SESSION['name'] ?> </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Email</label>
+                                    <label>Az e-mail címed</label>
                                     <input type="email" class="input-text" name="email" placeholder="E-mail">
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Phone (optional)</label>
-                                    <input type="text" class="input-text" name="phone" placeholder="Telefonszám">
-                                </div>
-                            </div>
+
                             <div class="col-md-12">
                                 <!--<a href="" class="btn btn-md button-theme mb-30">A hirdetés feladása</a>-->
                                 <button type="submit" name="upload" id="upload" class="btn btn-md button-theme mb-30">A
