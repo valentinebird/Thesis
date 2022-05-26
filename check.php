@@ -11,7 +11,8 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT id,username, email, reg_date FROM USER;";
+//$sql = "SELECT id,username, email, reg_date FROM USER;";
+$sql = "SELECT * FROM USER;";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {

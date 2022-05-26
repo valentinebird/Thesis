@@ -111,8 +111,8 @@ session_start();
                             Ingatlanok
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="sale.html">Eladó</a></li>
-                        <li><a class="dropdown-item" href="rent.html">Kiadó</a></li>
+                        <li><a class="dropdown-item" href="sale.php">Eladó</a></li>
+                        <li><a class="dropdown-item" href="rent.php">Kiadó</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -217,7 +217,7 @@ session_start();
                         <div class="category-overlay">
                             <div class="category-content">
                                 <h3>
-                                    <a href="properties-details.html">Park Avenue</a>
+                                    <a href="properties-details.php">Park Avenue</a>
                                 </h3>
                                 <ul>
                                     <li>
@@ -250,7 +250,7 @@ session_start();
                         <div class="category-overlay">
                             <div class="category-content">
                                 <h3>
-                                    <a href="properties-details.html">Modern Family Home</a>
+                                    <a href="properties-details.php">Modern Family Home</a>
                                 </h3>
                                 <ul>
                                     <li>
@@ -283,7 +283,7 @@ session_start();
                         <div class="category-overlay">
                             <div class="category-content">
                                 <h3>
-                                    <a href="properties-details.html">Relaxing Apartment</a>
+                                    <a href="properties-details.php">Relaxing Apartment</a>
                                 </h3>
                                 <ul>
                                     <li>

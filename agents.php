@@ -120,8 +120,8 @@ session_start();
                             Ingatlanok
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="sale.html">Eladó</a></li>
-                            <li><a class="dropdown-item" href="rent.html">Kiadó</a></li>
+                            <li><a class="dropdown-item" href="sale.php">Eladó</a></li>
+                            <li><a class="dropdown-item" href="rent.php">Kiadó</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

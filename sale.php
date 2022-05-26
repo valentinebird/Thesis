@@ -1,3 +1,25 @@
+<?php
+
+session_start();
+require "dbconfig.php";
+
+//$db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$conn->set_charset("utf8");
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+//$sql = "SELECT id,username, email, reg_date FROM USER;";
+$sql = "SELECT * FROM PROPERTY WHERE is_for_sale = 1;";
+$result = $conn->query($sql);
+
+
+//$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -15,25 +37,27 @@
     <link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="fonts/flaticon/font/flaticon.css">
     <link rel="stylesheet" type="text/css" href="fonts/linearicons/style.css">
-    <link rel="stylesheet" type="text/css"  href="css/jquery.mCustomScrollbar.css">
-    <link rel="stylesheet" type="text/css"  href="css/dropzone.css">
-    <link rel="stylesheet" type="text/css"  href="css/slick.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" type="text/css" href="css/dropzone.css">
+    <link rel="stylesheet" type="text/css" href="css/slick.css">
 
     <!-- Custom stylesheet -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" id="style_sheet" href="css/skins/default.css">
 
     <!-- Favicon icon -->
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" >
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 
     <!-- Google fonts -->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CRoboto:300,400,500,700&display=swap">
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CRoboto:300,400,500,700&display=swap">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link rel="stylesheet" type="text/css" href="css/ie10-viewport-bug-workaround.css">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!--[if lt IE 9]>
+    <script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="js/ie-emulation-modes-warning.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -49,13 +73,40 @@
 <header class="top-header top-header-bg none-992" id="top-header-2">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 col-md-8 col-sm-7">
+            <div class="col-lg-6 col-md-4 col-sm-5">
                 <div class="list-inline">
+                    <?php
+                    if ($_SESSION['loggedin']) { ?>
+                        <a href="logout.php" class="sign-in"><i class="fa fa-sign-out"></i>Kijelentkezés</a>
+                        <a href="index.php" class="sign-in"><i
+                                    class="fa fa-trophy"></i>Üdvözlünk <? print $_SESSION['name'] ?></a>
+
+                        <?php
+                        if ($_SESSION['is_agent']) {
+                            ?>
+                            <a href="submit-property.php" class="sign-in"><i class="fa fa-upload"></i>Új ingatlan
+                                feltöltése</a>
+                            <?php
+                        }
+                        ?>
+                        <?php
+
+                    } else {
+                        ?>
+                        <i class="fa fa-trophy"></i>Jelentkezz be az oldal használatához!
+                        <?php
+                    }
+                    ?>
 
                 </div>
+
             </div>
             <div class="col-lg-6 col-md-4 col-sm-5">
                 <ul class="top-social-media pull-right">
+                    <li>
+                        <a href="login-as-agent.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés
+                            ingatlan ügynökként!</a>
+                    </li>
                     <li>
                         <a href="login.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés</a>
                     </li>
@@ -76,7 +127,8 @@
             <a class="navbar-brand logos" href="index.php">
                 <img src="img/logos/logo.png" alt="logo">
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -88,16 +140,17 @@
 
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink3" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
                             Ingatlanok
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="sale.html">Eladó</a></li>
-                            <li><a class="dropdown-item" href="rent.html">Kiadó</a></li>
+                            <li><a class="dropdown-item" href="sale.php">Eladó</a></li>
+                            <li><a class="dropdown-item" href="rent.php">Kiadó</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="agents.php" id="navbarDropdownMenuLink2"   >
+                        <a class="nav-link" href="agents.php" id="navbarDropdownMenuLink2">
                             Ügynökeink
                         </a>
                     </li>
@@ -106,8 +159,8 @@
                             Kapcsolat
                         </a>
                     </li>
-                        </ul>
-                    </li>
+                </ul>
+                </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
@@ -123,11 +176,7 @@
 <div class="sub-banner">
     <div class="container">
         <div class="page-name">
-            <h1>Properties Listing</h1>
-            <ul>
-                <li><a href="index.php">Index</a></li>
-                <li><span>/</span>Properties Listing</li>
-            </ul>
+            <h1>Eladó ingatlanjaink listája</h1>
         </div>
     </div>
 </div>
@@ -144,7 +193,7 @@
                             <span class="heading-icon">
                                 <i class="fa fa-th-list"></i>
                             </span>
-                            <span class="title-name">Properties List</span>
+                            <span class="title-name">Rendezési sorrend</span>
                         </h4>
                     </div>
                     <div class="float-right cod-pad">
@@ -155,252 +204,73 @@
                                 <option>Properties (High To Low)</option>
                                 <option>Properties (Low To High)</option>
                             </select>
-                            <a href="properties-list-rightside.html" class="change-view-btn active-view-btn"><i class="fa fa-th-list"></i></a>
-                            <a href="sale.html" class="change-view-btn"><i class="fa fa-th-large"></i></a>
+
                         </div>
                     </div>
                 </div>
+
                 <!-- Property box 2 start -->
-                <div class="property-box-2">
-                    <div class="row">
-                        <div class="col-lg-5 col-md-5 col-pad">
-                            <a href="properties-details.html" class="property-img">
-                                <img src="img/cube.gif" alt="properties" class="img-fluid">
-                                <div class="listing-badges">
-                                    <span class="featured">Featured</span>
-                                    <span class="listing-time">For Sale</span>
-                                </div>
-                                <div class="price-box">$24,000<small>/mo</small></div>
-                            </a>
-                        </div>
-                        <div class="col-lg-7 col-md-7 col-pad">
-                            <div class="detail">
-                                <h3 class="title">
-                                    <a href="properties-details.html">Relaxing Apartment</a>
-                                </h3>
-                                <p class="location">
-                                    <a href="properties-details.html">
-                                        <i class="flaticon-location"></i>20-21 Kathal St. Tampa City, FL
+                <?php
+                if ($result->num_rows > 0) {
+
+                    while($row = $result->fetch_assoc()) {  ?>
+                        <div class="property-box-2">
+                            <div class="row">
+                                <div class="col-lg-5 col-md-5 col-pad">
+                                    <a href="properties-details.php?id=<?php echo $row['id']; ?>" class="property-img">
+                                        <img src="img/cube.gif" alt="properties" class="img-fluid">
+                                        <div class="listing-badges">
+                                            <span class="featured">Kiemelt</span>
+                                            <span class="listing-time">Eladó</span>
+                                        </div>
+                                        <div class="price-box"><?php echo $row["price"];?><small>/ Ft</small></div>
                                     </a>
-                                </p>
-                                <ul class="facilities-list clearfix">
-                                    <li>
-                                        <i class="flaticon-furniture"></i>
-                                        <span>3 Beds</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-holidays"></i>
-                                        <span>1 Baths</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-square"></i>
-                                        <span>4800 sq ft</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-vehicle"></i>
-                                        <span>1 Garage</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-monitor"></i>
-                                        <span>1 TV</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-window"></i>
-                                        <span>3 Balcony</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="footer clearfix">
-                                <div class="pull-left days">
-                                    <a><i class="fa fa-user"></i> Jhon Doe</a>
                                 </div>
-                                <div class="pull-right">
-                                    <a><i class="flaticon-time"></i> 5 Days ago</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="property-box-2">
-                    <div class="row">
-                        <div class="col-lg-5 col-md-5 col-pad">
-                            <a href="properties-details.html" class="property-img">
-                                <img src="img/cube.gif" alt="properties" class="img-fluid">
-                                <div class="listing-badges">
-                                    <span class="featured">Featured</span>
-                                    <span class="listing-time">For Sale</span>
-                                </div>
-                                <div class="price-box">$24,000<small>/mo</small></div>
-                            </a>
-                        </div>
-                        <div class="col-lg-7 col-md-7 col-pad">
-                            <div class="detail">
-                                <h3 class="title">
-                                    <a href="properties-details.html">Park avenue</a>
-                                </h3>
-                                <p class="location">
-                                    <a href="properties-details.html">
-                                        <i class="flaticon-location"></i>20-21 Kathal St. Tampa City, FL
-                                    </a>
-                                </p>
-                                <ul class="facilities-list clearfix">
-                                    <li>
-                                        <i class="flaticon-furniture"></i>
-                                        <span>3 Beds</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-holidays"></i>
-                                        <span>1 Baths</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-square"></i>
-                                        <span>4800 sq ft</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-vehicle"></i>
-                                        <span>1 Garage</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-monitor"></i>
-                                        <span>1 TV</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-window"></i>
-                                        <span>3 Balcony</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="footer clearfix">
-                                <div class="pull-left days">
-                                    <a><i class="fa fa-user"></i> Jhon Doe</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a><i class="flaticon-time"></i> 5 Days ago</a>
+                                <div class="col-lg-7 col-md-7 col-pad">
+                                    <div class="detail">
+                                        <h3 class="title">
+                                            <a href="properties-details.php?id=<?php echo $row['id']; ?>"><?php echo $row["property_name"];?></a>
+                                        </h3>
+                                        <p class="location">
+                                                <i class="flaticon-location"></i>    <?php echo $row["city"]; ?>
+                                        </p>
+                                        <ul class="facilities-list clearfix">
+                                            <li>
+                                                <i class="flaticon-furniture"></i>
+                                                <span> <?php echo $row["rooms"]; ?></span>
+                                            </li>
+                                            <li>
+                                                <i class="flaticon-holidays"></i>
+                                                <span><?php echo $row["bath_rooms"]; ?></span>
+                                            </li>
+                                            <li>
+                                                <i class="flaticon-square"></i>
+                                                <span><?php echo $row["size"]; ?>m&#178;</span>
+                                            </li>
+                                            <li>
+                                                <i class="flaticon-technology-3"></i>
+                                                <span><?php echo $row["type"]; ?></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="footer clearfix">
+                                        <div class="pull-left days">
+                                            <a><i class="fa fa-user"></i> <?php echo $row["agent_id"]; ?></a>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a><i class="flaticon-time"></i> <?php echo $row["upload_date"]; ?></a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="property-box-2">
-                    <div class="row">
-                        <div class="col-lg-5 col-md-5 col-pad">
-                            <a href="properties-details.html" class="property-img">
-                                <img src="img/cube.gif" alt="properties" class="img-fluid">
-                                <div class="listing-badges">
-                                    <span class="featured">Featured</span>
-                                    <span class="listing-time">For Sale</span>
-                                </div>
-                                <div class="price-box">$24,000<small>/mo</small></div>
-                            </a>
-                        </div>
-                        <div class="col-lg-7 col-md-7 col-pad">
-                            <div class="detail">
-                                <h3 class="title">
-                                    <a href="properties-details.html">Modern Family Home</a>
-                                </h3>
-                                <p class="location">
-                                    <a href="properties-details.html">
-                                        <i class="flaticon-location"></i>20-21 Kathal St. Tampa City, FL
-                                    </a>
-                                </p>
-                                <ul class="facilities-list clearfix">
-                                    <li>
-                                        <i class="flaticon-furniture"></i>
-                                        <span>3 Beds</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-holidays"></i>
-                                        <span>1 Baths</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-square"></i>
-                                        <span>4800 sq ft</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-vehicle"></i>
-                                        <span>1 Garage</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-monitor"></i>
-                                        <span>1 TV</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-window"></i>
-                                        <span>3 Balcony</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="footer clearfix">
-                                <div class="pull-left days">
-                                    <a><i class="fa fa-user"></i> Jhon Doe</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a><i class="flaticon-time"></i> 5 Days ago</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="property-box-2">
-                    <div class="row">
-                        <div class="col-lg-5 col-md-5 col-pad">
-                            <a href="properties-details.html" class="property-img">
-                                <img src="img/cube.gif" alt="properties" class="img-fluid">
-                                <div class="listing-badges">
-                                    <span class="featured">Featured</span>
-                                    <span class="listing-time">For Sale</span>
-                                </div>
-                                <div class="price-box">$24,000<small>/mo</small></div>
-                            </a>
-                        </div>
-                        <div class="col-lg-7 col-md-7 col-pad">
-                            <div class="detail">
-                                <h3 class="title">
-                                    <a href="properties-details.html">Relaxing Apartment</a>
-                                </h3>
-                                <p class="location">
-                                    <a href="properties-details.html">
-                                        <i class="flaticon-location"></i>20-21 Kathal St. Tampa City, FL
-                                    </a>
-                                </p>
-                                <ul class="facilities-list clearfix">
-                                    <li>
-                                        <i class="flaticon-furniture"></i>
-                                        <span>3 Beds</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-holidays"></i>
-                                        <span>1 Baths</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-square"></i>
-                                        <span>4800 sq ft</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-vehicle"></i>
-                                        <span>1 Garage</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-monitor"></i>
-                                        <span>1 TV</span>
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-window"></i>
-                                        <span>3 Balcony</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="footer clearfix">
-                                <div class="pull-left days">
-                                    <a><i class="fa fa-user"></i> Jhon Doe</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a><i class="flaticon-time"></i> 5 Days ago</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php   }
+                } else {?>
+                <h1>No results in DB </h1>
+                <?php   }  ?>
+
+
+                <!--
                 <div class="property-box-2">
                     <div class="row">
                         <div class="col-lg-5 col-md-5 col-pad">
@@ -701,7 +571,187 @@
                         </div>
                     </div>
                 </div>
-                <!-- Page navigation start -->
+                <div class="property-box-2">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-pad">
+                            <a href="properties-details.html" class="property-img">
+                                <img src="img/cube.gif" alt="properties" class="img-fluid">
+                                <div class="listing-badges">
+                                    <span class="featured">Featured</span>
+                                    <span class="listing-time">For Sale</span>
+                                </div>
+                                <div class="price-box">$24,000<small>/mo</small></div>
+                            </a>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-pad">
+                            <div class="detail">
+                                <h3 class="title">
+                                    <a href="properties-details.html">Relaxing Apartment</a>
+                                </h3>
+                                <p class="location">
+                                    <a href="properties-details.html">
+                                        <i class="flaticon-location"></i>20-21 Kathal St. Tampa City, FL
+                                    </a>
+                                </p>
+                                <ul class="facilities-list clearfix">
+                                    <li>
+                                        <i class="flaticon-furniture"></i>
+                                        <span>3 Beds</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-holidays"></i>
+                                        <span>1 Baths</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-square"></i>
+                                        <span>4800 sq ft</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-vehicle"></i>
+                                        <span>1 Garage</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-monitor"></i>
+                                        <span>1 TV</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-window"></i>
+                                        <span>3 Balcony</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="footer clearfix">
+                                <div class="pull-left days">
+                                    <a><i class="fa fa-user"></i> Jhon Doe</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a><i class="flaticon-time"></i> 5 Days ago</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="property-box-2">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-pad">
+                            <a href="properties-details.html" class="property-img">
+                                <img src="img/cube.gif" alt="properties" class="img-fluid">
+                                <div class="listing-badges">
+                                    <span class="featured">Featured</span>
+                                    <span class="listing-time">For Sale</span>
+                                </div>
+                                <div class="price-box">$24,000<small>/mo</small></div>
+                            </a>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-pad">
+                            <div class="detail">
+                                <h3 class="title">
+                                    <a href="properties-details.html">Park avenue</a>
+                                </h3>
+                                <p class="location">
+                                    <a href="properties-details.html">
+                                        <i class="flaticon-location"></i>20-21 Kathal St. Tampa City, FL
+                                    </a>
+                                </p>
+                                <ul class="facilities-list clearfix">
+                                    <li>
+                                        <i class="flaticon-furniture"></i>
+                                        <span>3 Beds</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-holidays"></i>
+                                        <span>1 Baths</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-square"></i>
+                                        <span>4800 sq ft</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-vehicle"></i>
+                                        <span>1 Garage</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-monitor"></i>
+                                        <span>1 TV</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-window"></i>
+                                        <span>3 Balcony</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="footer clearfix">
+                                <div class="pull-left days">
+                                    <a><i class="fa fa-user"></i> Jhon Doe</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a><i class="flaticon-time"></i> 5 Days ago</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="property-box-2">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-pad">
+                            <a href="properties-details.html" class="property-img">
+                                <img src="img/cube.gif" alt="properties" class="img-fluid">
+                                <div class="listing-badges">
+                                    <span class="featured">Featured</span>
+                                    <span class="listing-time">For Sale</span>
+                                </div>
+                                <div class="price-box">$24,000<small>/mo</small></div>
+                            </a>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-pad">
+                            <div class="detail">
+                                <h3 class="title">
+                                    <a href="properties-details.html">Modern Family Home</a>
+                                </h3>
+                                <p class="location">
+                                    <a href="properties-details.html">
+                                        <i class="flaticon-location"></i>20-21 Kathal St. Tampa City, FL
+                                    </a>
+                                </p>
+                                <ul class="facilities-list clearfix">
+                                    <li>
+                                        <i class="flaticon-furniture"></i>
+                                        <span>3 Beds</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-holidays"></i>
+                                        <span>1 Baths</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-square"></i>
+                                        <span>4800 sq ft</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-vehicle"></i>
+                                        <span>1 Garage</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-monitor"></i>
+                                        <span>1 TV</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-window"></i>
+                                        <span>3 Balcony</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="footer clearfix">
+                                <div class="pull-left days">
+                                    <a><i class="fa fa-user"></i> Jhon Doe</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a><i class="flaticon-time"></i> 5 Days ago</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                -->
                 <div class="pagination-box hidden-mb-45 text-center">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
@@ -809,12 +859,14 @@
                             </div>
                             <div class="range-slider">
                                 <label>Area</label>
-                                <div data-min="0" data-max="10000" data-min-name="min_area" data-max-name="max_area" data-unit="Sq ft" class="range-slider-ui ui-slider" aria-disabled="false"></div>
+                                <div data-min="0" data-max="10000" data-min-name="min_area" data-max-name="max_area"
+                                     data-unit="Sq ft" class="range-slider-ui ui-slider" aria-disabled="false"></div>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="range-slider">
                                 <label>Price</label>
-                                <div data-min="0" data-max="150000"  data-min-name="min_price" data-max-name="max_price" data-unit="USD" class="range-slider-ui ui-slider" aria-disabled="false"></div>
+                                <div data-min="0" data-max="150000" data-min-name="min_price" data-max-name="max_price"
+                                     data-unit="USD" class="range-slider-ui ui-slider" aria-disabled="false"></div>
                                 <div class="clearfix"></div>
                             </div>
                             <a class="show-more-options" data-toggle="collapse" data-target="#options-content">
@@ -889,7 +941,7 @@
                             <li><a href="#">Apartment <span>(21)</span> </a></li>
                             <li><a href="#">Condo <span>(23)</span></a></li>
                             <li><a href="#">Multi Family <span>(19)</span></a></li>
-                            <li><a href="#">Villa <span>(19)</span></a> </li>
+                            <li><a href="#">Villa <span>(19)</span></a></li>
                             <li><a href="#">Other <span>(22) </span></a></li>
                         </ul>
                     </div>
@@ -947,12 +999,11 @@
     <div class="container">
         <div class="row">
             <div class="col-xl-12">
-                <p class="copy">© 2022  Ingatlan nyilvántartó portál, webes környezetben.</p>
+                <p class="copy">© 2022 Ingatlan nyilvántartó portál, webes környezetben.</p>
             </div>
         </div>
     </div>
 </div>
-
 
 
 <script src="js/jquery-2.2.0.min.js"></script>

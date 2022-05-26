@@ -367,7 +367,7 @@ function drawInfoWindow(property) {
         "                                </div>" +
         "</div>" +
         "<div class='map-content'>" +
-        "<h4><a href='properties-details.html'>" + title + "</a></h4>" +
+        "<h4><a href='properties-details.php'>" + title + "</a></h4>" +
         "<p class='address'> <i class='fa fa-map-marker'></i>" + address + "</p>" +
         "<p class='description'>" + description + "</p>" +
         "<div class='map-properties-fetures'> " +
@@ -462,7 +462,7 @@ function insertPropertyToArray(property, layout) {
         element = '<div class="col-lg-6 col-md-6 col-sm-12 property-hover" id="'+property.id+'">\n' +
             '                        <div class="property-box">\n' +
             '                            <div class="property-thumbnail">\n' +
-            '                                <a href="properties-details.html" class="property-img">\n' +
+            '                                <a href="properties-details.php" class="property-img">\n' +
             '                                    <div class="listing-badges">\n' +
             '                                        '+is_featured+'\n' +
             '                                        <span class="listing-time">For '+listing_for+'</span>\n' +
@@ -473,10 +473,10 @@ function insertPropertyToArray(property, layout) {
             '                            </div>\n' +
             '                            <div class="detail">\n' +
             '                                <h1 class="title">\n' +
-            '                                    <a href="properties-details.html">'+title+'</a>\n' +
+            '                                    <a href="properties-details.php">'+title+'</a>\n' +
             '                                </h1>\n' +
             '                                <div class="location">\n' +
-            '                                    <a href="properties-details.html">\n' +
+            '                                    <a href="properties-details.php">\n' +
             '                                        <i class="fa fa-map-marker"></i>'+address+'\n' +
             '                                    </a>\n' +
             '                                </div>\n' +
@@ -516,7 +516,7 @@ function insertPropertyToArray(property, layout) {
         element = '<div class="property-box-2 map-property-box property-hover" id="'+property.id+'">\n' +
             '                    <div class="row">\n' +
             '                        <div class="col-lg-5 col-md-5 col-pad">\n' +
-            '                            <a href="properties-details.html" class="property-img">\n' +
+            '                            <a href="properties-details.php" class="property-img">\n' +
             '                                <img src="'+image+'" alt="properties" class="img-fluid">\n' +
             '                                <div class="listing-badges">\n' +
             '                                    '+is_featured+'\n' +
@@ -528,10 +528,10 @@ function insertPropertyToArray(property, layout) {
             '                        <div class="col-lg-7 col-md-7 col-pad">\n' +
             '                            <div class="detail">\n' +
             '                                <h3 class="title">\n' +
-            '                                    <a href="properties-details.html">'+title+'</a>\n' +
+            '                                    <a href="properties-details.php">'+title+'</a>\n' +
             '                                </h3>\n' +
             '                                <p class="location">\n' +
-            '                                    <a href="properties-details.html">\n' +
+            '                                    <a href="properties-details.php">\n' +
             '                                        <i class="flaticon-location"></i>'+address+'\n' +
             '                                    </a>\n' +
             '                                </p>\n' +

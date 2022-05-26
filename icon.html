@@ -108,8 +108,8 @@
                             </li>
                             <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Grid Layout</a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="sale.html">Right Sidebar</a></li>
-                                    <li><a class="dropdown-item" href="rent.html">Left Sidebar</a></li>
+                                    <li><a class="dropdown-item" href="sale.php">Right Sidebar</a></li>
+                                    <li><a class="dropdown-item" href="rent.php">Left Sidebar</a></li>
                                     <li><a class="dropdown-item" href="properties-grid-fullwidth.html">Fullwidth</a></li>
                                 </ul>
                             </li>
@@ -124,7 +124,7 @@
                             </li>
                             <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Property Detail</a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="properties-details.html">Property Detail 1</a></li>
+                                    <li><a class="dropdown-item" href="properties-details.php">Property Detail 1</a></li>
                                     <li><a class="dropdown-item" href="properties-details-2.html">Property Detail 2</a></li>
                                     <li><a class="dropdown-item" href="properties-details-3.html">Property Detail 3</a></li>
                                 </ul>
@@ -156,7 +156,7 @@
                                             <a class="dropdown-item" href="services.html">Services 1</a>
                                             <a class="dropdown-item" href="services-2.html">Services 2</a>
                                             <a class="dropdown-item" href="properties-list-rightside.html">Properties List</a>
-                                            <a class="dropdown-item" href="sale.html">Properties Grid</a>
+                                            <a class="dropdown-item" href="sale.php">Properties Grid</a>
                                             <a class="dropdown-item" href="properties-map-full.html">Properties Map</a>
                                             <a class="dropdown-item" href="properties-comparison.html">Properties Comparison</a>
                                             <a class="dropdown-item" href="search-brand.html">Properties Brands</a>

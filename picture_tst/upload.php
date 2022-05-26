@@ -1,7 +1,7 @@
 <?php
 require "../dbconfig.php";
 $msg = "";
-echo $DATABASE_HOST;
+
 // If upload button is clicked ...
 if (isset($_POST['upload'])) {
 
