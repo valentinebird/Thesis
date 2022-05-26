@@ -3,20 +3,16 @@ session_start();
 
 function checkifPOST_EXIST($key)
 {
-    if (isset( $_POST[$key]) && strlen(trim($_POST[$key]) > 0)) {
-        return true;
-    } else {
-        return false;
+    return !empty($_POST[$key]);
 
-    }
 }
-
 
 
 require "dbconfig.php";
 
 $errors = [];
 $result = [];
+$numbers = [1, 2, 3, 4, 5];
 
 function hibasE($kulcs)
 {
@@ -27,16 +23,21 @@ function hibasE($kulcs)
 function hibaKiir($key)
 {
     global $errors;
-     if ($errors){
-         echo $errors[$key];
-     }
+    if ($errors) {
+        echo $errors[$key];
+    }
 }
 
 function allapottarto($kulcs)
 {
     global $errors;
     global $result;
-    return count($errors) > 0 || hibasE($kulcs) ? '' : $result[$kulcs];
+    //return count($errors) > 0 || hibasE($kulcs) ? $result[$kulcs] : $result[$kulcs];
+    if(count($errors)>0){
+        return $result[$kulcs];
+    }else{
+        return "";
+    }
 }
 
 
@@ -50,22 +51,30 @@ if (isset($_POST['upload'])) {
     //actiual
 
 
-    $colors = ["black", "grey", "multi", "white"];
+
 
     if (checkifPOST_EXIST("property_name")) {
         $result["property_name"] = $_POST["property_name"];
+        $property_name = $_POST["property_name"];
     } else {
         $errors["property_name"] = "Az ingatlan neve nincs kitöltve";
 
     }
     if (checkifPOST_EXIST("is_for_sale")) {
-        $result["is_for_sale"] = $_POST["is_for_sale"];
+        $result["is_for_sale"] = $_POST["is_for_sale"] === 'sale' ? 1 : 0;
+        $is_for_sale = $_POST["is_for_sale"] === 'sale' ? 1 : 0;
     } else {
-        $errors["is_for_sale"] = "Az ingatlan neve nincs kitöltve";
+        $errors["is_for_sale"] = "Az Kiadó vagy eladó?";
 
     }
     if (checkifPOST_EXIST("price")) {
-        $result["price"] = $_POST["price"];
+        if (intval($_POST["price"]) && intval($_POST["price"]) > 0) {
+            $result["price"] = $_POST["price"];
+            $price = $_POST["price"];
+        } else {
+            $errors["price"] = "Az ár csak pozitív egész szám lehet";
+        }
+
     } else {
         $errors["price"] = "Az ár  nincs kitöltve";
 
@@ -73,6 +82,7 @@ if (isset($_POST['upload'])) {
 
     if (checkifPOST_EXIST("city")) {
         $result["city"] = $_POST["city"];
+        $city = $_POST["city"];
     } else {
         $errors["city"] = "Város nincs kitöltve";
 
@@ -80,47 +90,53 @@ if (isset($_POST['upload'])) {
 
     if (checkifPOST_EXIST("address")) {
         $result["address"] = $_POST["address"];
+        $address = $_POST["address"];
     } else {
         $errors["address"] = "Cím nincs kitöltve";
 
     }
 
     if (checkifPOST_EXIST("size")) {
-        $result["size"] = $_POST["size"];
+        if (intval($_POST["size"]) && intval($_POST["size"]) > 0) {
+            $result["size"] = $_POST["size"];
+            $size = $_POST["size"];
+        } else {
+            $errors["price"] = "Az méret csak pozitív egész szám lehet";
+        }
     } else {
         $errors["size"] = "Méret nincs kitöltve";
 
     }
 
-    if (checkifPOST_EXIST("level_number")) {
+    if (checkifPOST_EXIST("level_number") && in_array($_POST["level_number"], $numbers)) {
         $result["level_number"] = $_POST["level_number"];
+        $level_number = $_POST["level_number"];
     } else {
-        $errors["level_number"] = "Szintek száma nincs kitöltve";
+        $errors["level_number"] = "Szintek száma nem megfelelő!";
 
     }
-    if (checkifPOST_EXIST("rooms")) {
+
+
+    if (checkifPOST_EXIST("rooms") && in_array($_POST["rooms"], $numbers)) {
         $result["rooms"] = $_POST["rooms"];
+        $rooms = $_POST["rooms"];
     } else {
-        $errors["rooms"] = "Szintek száma nincs kitöltve";
+        $errors["rooms"] = "Szobák száma nem megfelelő";
 
     }
 
-    if (checkifPOST_EXIST("rooms")) {
-        $result["rooms"] = $_POST["rooms"];
-    } else {
-        $errors["rooms"] = "Szobák száma nincs kitöltve";
 
-    }
-
-    if (checkifPOST_EXIST("bath_rooms")) {
+    if (checkifPOST_EXIST("bath_rooms") && in_array($_POST["bath_rooms"], $numbers)) {
         $result["bath_rooms"] = $_POST["bath_rooms"];
+        $bath_rooms = $_POST["bath_rooms"];
     } else {
-        $errors["bath_rooms"] = "Fürdő szobák száma nincs kitöltve";
+        $errors["bath_rooms"] = "Fürdő szobák nem megfelelő";
 
     }
 
     if (checkifPOST_EXIST("type")) {
         $result["type"] = $_POST["type"];
+        $type = $_POST["type"];
     } else {
         $errors["type"] = "Típus nincs kitöltve";
 
@@ -129,83 +145,109 @@ if (isset($_POST['upload'])) {
 
     if (checkifPOST_EXIST("property_condition")) {
         $result["property_condition"] = $_POST["property_condition"];
+        $property_condition = $_POST["property_condition"];
     } else {
         $errors["property_condition"] = "Állapot nincs kitöltve";
 
     }
     if (checkifPOST_EXIST("heating_type")) {
         $result["heating_type"] = $_POST["heating_type"];
+        $heating_type = $_POST["heating_type"];
     } else {
         $errors["heating_type"] = "Fűtés nincs kitöltve";
 
     }
 
-    if (checkifPOST_EXIST("has_garage")) {
-        $result["has_garage"] = $_POST["has_garage"];
+    if ($_POST["has_garage"] == "has_garage") {
+        $result["has_garage"] = 1;
+        $has_garage = 1;
     } else {
-        $errors["has_garage"] = "Garázs nincs kitöltve";
+        $result["has_garage"] = 0;
+        $has_garage = 0;
 
     }
-    if (checkifPOST_EXIST("pool")) {
-        $result["has_garage"] = $_POST["has_garage"];
+    if ($_POST["pool"] == "pool") {
+        $result["pool"] = 1;
+        $pool = 1;
     } else {
-        $errors["has_garage"] = "Garázs nincs kitöltve";
+        $result["pool"] = 0;
+        $pool = 0;
+
+    }
+    if ($_POST["has_wifi"] == "has_wifi") {
+        $result["has_wifi"] = 1;
+        $has_wifi = 1;
+    } else {
+        $result["has_wifi"] = 0;
+        $has_wifi = 0;
 
     }
 
     if (checkifPOST_EXIST("property_description")) {
         $result["property_description"] = $_POST["property_description"];
+        $property_description = $_POST["property_description"];
     } else {
         $errors["property_description"] = "Leírás nincs kitöltve";
     }
 
-    if(!$errors){
-        echo "\n\n\nSIKERES!";
-        echo $result["property_name"];
-        echo $result["is_for_sale"];
-        echo $result["price"];
-        echo $result["address"];
-        echo $result["level_number"];
-        echo $result["rooms"];
-        echo $result["bath_rooms"];
-        echo $result["property_condition"];
-        echo $result["heating_type"];
-        echo $result["has_garage"];
-        echo $result["has_wifi"];
-        echo $result["property_description"];
-        //echo $result["photo_filename"];
-        //echo $result["agent_id"];
+    if (!$errors) {
+        /* echo "\n\n\nSIKERES!";
+         echo $result["property_name"];
+         echo $result["is_for_sale"];
+         echo $result["price"];
+         echo $result["address"];
+         echo $result["level_number"];
+         echo $result["rooms"];
+         echo $result["bath_rooms"];
+         echo $result["property_condition"];
+         echo $result["heating_type"];
+         echo $result["has_garage"];
+         echo $result["has_wifi"];
+         echo $result["property_description"];*/
+        $db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+        $sql = "insert into PROPERTY (property_name, is_for_sale, price, city, address, size, level_number, rooms, bath_rooms, type, property_condition, heating_type, has_garage, pool, has_wifi, property_description, photo_filename, agent_id, is_sold)
+VALUES(
+    '$property_name',
+    $is_for_sale,
+    $price,
+    '$city',
+    '$address',
+    $size,
+    $level_number,
+    $rooms,
+    $bath_rooms,
+    '$type',
+    '$property_condition',
+    '$heating_type',
+    $has_garage,
+    $pool,
+    $has_wifi,
+    '$property_description',
+    NULL,
+    1,
+    0);";
 
-    }else{
-        echo "HIBA";
+        mysqli_query($db, "SET NAMES utf8;");
+        $result = mysqli_query($db, $sql);
+        $info_message = "Sikeres feltöltés" . mysqli_error($db);
+
+
+    } else {
+        $info_message = "Kérlek ellenőrizd hogy minden mező helyesen ki van töltve." ;
     }
-
-
-
-
-       // has_garage,
-       // pool,
-       // has_wifi,
-       // property_description,
-        //photo_filename,
-        //agent_id,
-        //is_sold
-
 
 
 }
 
 
-   //$db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+//$db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 
-    // Get all the submitted data from the form
+// Get all the submitted data from the form
 
-    // $sql = "INSERT INTO PROPERTY () VALUES ('TEST',1,100,'London','Oxford Street 3',100,2,3,4,'Rent','Új','Gáz',0,0,1,'Szép ház Londonban','$filename',1,0);";
+// $sql = "INSERT INTO PROPERTY () VALUES ('TEST',1,100,'London','Oxford Street 3',100,2,3,4,'Rent','Új','Gáz',0,0,1,'Szép ház Londonban','$filename',1,0);";
 
-    // Execute query
-    //mysqli_query($db, $sql);
-
-
+// Execute query
+//mysqli_query($db, $sql);
 
 
 ?>
@@ -314,13 +356,8 @@ if (isset($_POST['upload'])) {
 <header class="main-header">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand logos" href="index.php">
-                <img src="img/logos/logo.png" alt="logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav header-ml">
                     <li class="nav-item  active">
@@ -335,8 +372,8 @@ if (isset($_POST['upload'])) {
                             Ingatlanok
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="sale.html">Eladó</a></li>
-                            <li><a class="dropdown-item" href="rent.html">Kiadó</a></li>
+                            <li><a class="dropdown-item">Eladó</a></li>
+                            <li><a class="dropdown-item">Kiadó</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -363,7 +400,7 @@ if (isset($_POST['upload'])) {
             <div class="col-md-12">
                 <div class="notification-box">
                     <h3>Ez az oldal ingatlanügynökök számára van fenntartva.</h3>
-                    <p>Kérlek tölts ki miniden mezőt.</p>
+                    <p id="info_message"><?php echo $info_message ?></p>
                 </div>
             </div>
             <div class="col-md-12">
@@ -377,14 +414,14 @@ if (isset($_POST['upload'])) {
                                         <label>Ingatlan hirdetés neve:</label>
                                         <input type="text" class="input-text" name="property_name" id="property_name"
                                                value="<?= allapottarto('property_name') ?>"
-                                               placeholder="Ingatlan hirdetés neve">
+                                        >
                                         <span style="color: red"><?php echo hibaKiir('property_name') ?></span>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Eladó vagy kiadó?</label>
-                                        <select class="selectpicker search-fields" name="is_for-sale" id="is_for-sale">
+                                        <select class="selectpicker search-fields" name="is_for_sale" id="is_for_sale">
                                             <option value="sale">Eladó</option>
                                             <option value="rent">Kiadó</option>
                                         </select>
@@ -395,7 +432,7 @@ if (isset($_POST['upload'])) {
                                         <label>Irányár:</label>
                                         <input type="number" class="input-text" name="price" id="price"
                                                value="<?= allapottarto('price') ?>"
-                                               placeholder="Irányár">
+                                        >
                                         <span style="color: red"><?php echo hibaKiir('price') ?></span>
                                     </div>
                                 </div>
@@ -404,7 +441,7 @@ if (isset($_POST['upload'])) {
                                         <label>Város:</label>
                                         <input type="text" class="input-text" name="city" id="city"
                                                value="<?= allapottarto('city') ?>"
-                                               placeholder="Város">
+                                        >
                                         <span style="color: red"><?php echo hibaKiir('city') ?></span>
                                     </div>
                                 </div>
@@ -413,17 +450,16 @@ if (isset($_POST['upload'])) {
                                         <label>Cím:</label>
                                         <input type="text" class="input-text" name="address" id="address"
                                                value="<?= allapottarto('address') ?>"
-                                               placeholder="Utca Házszám">
+                                        >
                                         <span style="color: red"><?php echo hibaKiir('address') ?></span>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Méret m&#178;:</label>
-                                        <input type="text" class="input-text" name="size" id="size"
+                                        <input type="number" class="input-text" name="size" id="size"
                                                value="<?= allapottarto('size') ?>"
-
-                                               placeholder="Méret m&#178;">
+                                        >
                                         <span style="color: red"><?php echo hibaKiir('size') ?></span>
                                     </div>
                                 </div>
@@ -432,11 +468,9 @@ if (isset($_POST['upload'])) {
                                         <label>Szintek száma</label>
                                         <select class="selectpicker search-fields" name="level_number"
                                                 id="level_number">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
+                                            <?php for ($i = 0; $i < count($numbers); $i++): ?>
+                                                <option value="<?= $numbers[$i] ?>"> <?= $numbers[$i] ?> </option>
+                                            <?php endfor ?>
                                         </select>
                                     </div>
                                 </div>
@@ -444,11 +478,9 @@ if (isset($_POST['upload'])) {
                                     <div class="form-group">
                                         <label>Szobák száma</label>
                                         <select class="selectpicker search-fields" name="rooms" id="rooms">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
+                                            <?php for ($i = 0; $i < count($numbers); $i++): ?>
+                                                <option value="<?= $numbers[$i] ?>"> <?= $numbers[$i] ?> </option>
+                                            <?php endfor ?>
                                         </select>
                                     </div>
                                 </div>
@@ -456,11 +488,9 @@ if (isset($_POST['upload'])) {
                                     <div class="form-group">
                                         <label>Fürdőszobák száma</label>
                                         <select class="selectpicker search-fields" name="bath_rooms" id="bath_rooms">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
+                                            <?php for ($i = 0; $i < count($numbers); $i++): ?>
+                                                <option value="<?= $numbers[$i] ?>"> <?= $numbers[$i] ?> </option>
+                                            <?php endfor ?>
                                         </select>
                                     </div>
                                 </div>
@@ -470,10 +500,12 @@ if (isset($_POST['upload'])) {
                                         <select class="selectpicker search-fields" name="type" id="type"">
                                         <option value="Apartment">Apartment</option>
                                         <option value="Családi ház">Családi ház</option>
-                                        <option value="Lakás">Családi ház</option>
+                                        <option value="Lakás">Lakás</option>
                                         <option value="Panel lakás">Panel lakás</option>
                                         <option value="Garázs">Garázs</option>
                                         <option value="Tanya">Tanya</option>
+                                        <option value="Nyaraló">Nyaraló</option>
+                                        <option value="Iroda">Iroda</option>
                                         </select>
                                     </div>
                                 </div>
@@ -493,11 +525,13 @@ if (isset($_POST['upload'])) {
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Az ingatlan fűtése</label>
-                                        <select class="selectpicker search-fields" name="heating_type">
+                                        <select class="selectpicker search-fields" name="heating_type"
+                                                id="heating_type">
                                             <option value="Gáz">Gáz</option>
                                             <option value="Elektromos">Elektromos</option>
                                             <option value="Fa">Fa</option>
                                             <option value="Egyéb">Egyéb</option>
+                                            <option value="Nincs">Nincs</option>
 
                                         </select>
                                     </div>
@@ -511,20 +545,20 @@ if (isset($_POST['upload'])) {
                             <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col-lg-4 col-md-4 col-sm-4">
-                                        <div class="checkbox checkbox-theme checkbox-circle">
-                                            <input id="has_garage" type="checkbox">
+                                        <div class="checkbox checkbox-theme">
+                                            <input name="has_garage" id="has_garage" type="checkbox" value="has_garage">
                                             <label for="has_garage">
                                                 Garázs
                                             </label>
                                         </div>
                                         <div class="checkbox checkbox-theme checkbox-circle">
-                                            <input id="pool" type="checkbox">
+                                            <input name="pool" id="pool" type="checkbox" value="pool">
                                             <label for="pool">
                                                 Medence
                                             </label>
                                         </div>
                                         <div class="checkbox checkbox-theme checkbox-circle">
-                                            <input id="has_wifi" type="checkbox">
+                                            <input name="has_wifi" id="has_wifi" type="checkbox" value="has_wifi">
                                             <label for="has_wifi">
                                                 Wi-Fi
                                             </label>
@@ -545,7 +579,7 @@ if (isset($_POST['upload'])) {
                                     <label>Leírás</label>
                                     <textarea class="input-text" name="property_description" id="property_description"
                                               value="<?= allapottarto('property_description') ?>"
-                                              placeholder="Leírás"></textarea>
+                                    ></textarea>
                                     <span style="color: red"><?php echo hibaKiir('property_description') ?></span>
                                 </div>
                             </div>
@@ -647,8 +681,35 @@ if (isset($_POST['upload'])) {
 <script src="js/maps.js"></script>
 <script src="js/app.js"></script>
 
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="js/ie10-viewport-bug-workaround.js"></script>
+<script type="javascript">
+  /*  let elem = document.getElementById("price");
 
+    elem.addEventListener("keydown",function(event){
+        var key = event.which;
+        if((key<48 || key>57) && key != 8) event.preventDefault();
+    });
+
+    elem.addEventListener("keyup",function(event){
+        var value = this.value.replace(/,/g,"");
+        this.dataset.currentValue=parseInt(value);
+        var caret = value.length-1;
+        while((caret-3)>-1)
+        {
+            caret -= 3;
+            value = value.split('');
+            value.splice(caret+1,0,",");
+            value = value.join('');
+        }
+        this.value = value;
+    });
+
+
+        console.log(document.getElementById("price").dataset.currentValue);
+*/
+    </script>
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+
+<script src="js/ie10-viewport-bug-workaround.js"></script>
 </html>
 </body>
