@@ -305,7 +305,7 @@ $rowagent = $result_ofporperty->fetch_assoc();
                                         <div class="col-md-4 col-sm-6">
                                             <ul>
                                                 <li>
-                                                    <strong>Méret:</strong><?php echo $row["size"];?>
+                                                    <strong>Méret:</strong><?php echo $row["size"];?>m&#178;
                                                 </li>
 
 
