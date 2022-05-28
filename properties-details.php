@@ -14,11 +14,16 @@ if ($conn->connect_error) {
 
 
 $id  = $_GET['id'];
-
+//Query for this property
 $sql = "SELECT * FROM PROPERTY WHERE id = $id;";
 $result = $conn->query($sql);
-
 $row = $result->fetch_assoc();
+
+//Query for agent
+$agentID_of_thisproperty = $row["agent_id"];
+$sqlforAgent = "SELECT * FROM AGENT WHERE id = $agentID_of_thisproperty;";
+$result_ofporperty = $conn->query($sqlforAgent);
+$rowagent = $result_ofporperty->fetch_assoc();
 
 ?>
 
@@ -313,7 +318,7 @@ $row = $result->fetch_assoc();
                                         <div class="col-md-4 col-sm-6">
                                             <ul>
                                                 <li>
-                                                    <strong>Eladva</strong>No
+                                                    <strong>Eladva</strong><?php if ($row["is_sold"] ==0){echo "Még nincs eladva";}else{echo "Eladva";}?>
                                                 </li>
                                                 <li>
                                                     <strong>Város:</strong><?php echo $row["city"];?>
@@ -381,7 +386,7 @@ $row = $result->fetch_assoc();
                                         <div id="contactMap" class="contact-map"></div>
                                     </div>
                                 </div>
-                            </div>4
+                            </div>
 
                         </div>
                     </div>
@@ -401,19 +406,19 @@ $row = $result->fetch_assoc();
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <div class="form-group email">
                                         <div>Az ingatlan közvetítő ügynök neve:</div>
-                                        <div><?php echo $row["agent_id"]; ?></div>
+                                        <div><?php echo $rowagent["real_name"]; ?></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <div class="form-group subject">
                                         <div>Az ingatlan közvetítő ügynök E-mail címe:</div>
-                                        <div><?php echo $row["agent_id"]; ?></div>
+                                        <div><a href = "mailto: <?php echo $rowagent['email']; ?>"><?php echo $rowagent["email"]; ?></a></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <div class="form-group number">
-                                        <div>Az ingatlan közvetítő ügynök Telefonszáma:</div>
-                                        <div><?php echo $row["agent_id"]; ?></div>
+                                        <div>Az ingatlan közvetítő ügynök telefonszáma:</div>
+                                        <div><?php echo $rowagent["phone"]; ?></div>
                                     </div>
                                 </div>
 
@@ -439,13 +444,13 @@ $row = $result->fetch_assoc();
                             </div>
                             <div class="range-slider">
                                 <label>THM mértéke (%)</label>
-                                <div data-min="0" data-max="100" placeholder="12" data-min-name="min_area" data-max-name="max_area"
+                                <div data-min="0" data-max="100"  data-max-name="max_area"
                                      data-unit="%" class="range-slider-ui ui-slider" aria-disabled="false"></div>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="range-slider">
                                 <label>Törlesztés ideje (hónap)</label>
-                                <div data-min="0" data-max="120" placeholder="7" data-min-name="min_area" data-max-name="max_area"
+                                <div data-min="0" data-max="50"  data-max-name="max_area"
                                      data-unit="Hónap" class="range-slider-ui ui-slider" aria-disabled="false"></div>
                                 <div class="clearfix"></div>
                             </div>
