@@ -123,9 +123,6 @@ $result = $conn->query($sql);
 <header class="main-header">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand logos" href="index.php">
-                <img src="img/logos/logo.png" alt="logo">
-            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -860,7 +857,7 @@ $result = $conn->query($sql);
                                 <div class="clearfix"></div>
                             </div>
                             <div class="range-slider">
-                                <label>Price</label>
+                                <label>Ár</label>
                                 <div data-min="0" data-max="500000" data-min-name="min_price" data-max-name="max_price"
                                      data-unit="Forint" class="range-slider-ui ui-slider" aria-disabled="false"></div>
                                 <div class="clearfix"></div>

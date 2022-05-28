@@ -78,20 +78,18 @@ $result = $conn->query($sql);
                     <?php
                     if ($_SESSION['loggedin']) { ?>
                         <a href="logout.php" class="sign-in"><i class="fa fa-sign-out"></i>Kijelentkezés</a>
-                        <a href="index.php" class="sign-in"><i
-                                    class="fa fa-trophy"></i>Üdvözlünk <? print $_SESSION['name'] ?></a>
+                        <a href="profile.php" class="sign-in"><i class="fa fa-trophy"></i>Profilom: <?print $_SESSION['name'] ?></a>
 
                         <?php
-                        if ($_SESSION['is_agent']) {
+                        if($_SESSION['is_agent']){
                             ?>
-                            <a href="submit-property.php" class="sign-in"><i class="fa fa-upload"></i>Új ingatlan
-                                feltöltése</a>
+                            <a href="submit-property.php" class="sign-in"><i class="fa fa-upload"></i>Új ingatlan feltöltése</a>
                             <?php
                         }
                         ?>
                         <?php
 
-                    } else {
+                    }else{
                         ?>
                         <i class="fa fa-trophy"></i>Jelentkezz be az oldal használatához!
                         <?php
@@ -103,16 +101,17 @@ $result = $conn->query($sql);
             </div>
             <div class="col-lg-6 col-md-4 col-sm-5">
                 <ul class="top-social-media pull-right">
-                    <li>
-                        <a href="login-as-agent.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés
-                            ingatlan ügynökként!</a>
-                    </li>
-                    <li>
-                        <a href="login.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés</a>
-                    </li>
-                    <li>
-                        <a href="signup.html" class="sign-in"><i class="fa fa-user"></i> Regisztráció</a>
-                    </li>
+                    <?php  if (!$_SESSION['loggedin']) { ?>
+                        <li>
+                            <a href="login-as-agent.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés ingatlan ügynökként!</a>
+                        </li>
+                        <li>
+                            <a href="login.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés</a>
+                        </li>
+                        <li>
+                            <a href="signup.html" class="sign-in"><i class="fa fa-user"></i> Regisztráció</a>
+                        </li>
+                    <?php } ?>
                 </ul>
             </div>
         </div>
@@ -124,9 +123,6 @@ $result = $conn->query($sql);
 <header class="main-header">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand logos" href="index.php">
-                <img src="img/logos/logo.png" alt="logo">
-            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -221,7 +217,7 @@ $result = $conn->query($sql);
                                         <img src="img/cube.gif" alt="properties" class="img-fluid">
                                         <div class="listing-badges">
                                             <span class="featured">Kiemelt</span>
-                                            <span class="listing-time">Eladó</span>
+                                            <span class="listing-time">Kiadó</span>
                                         </div>
                                         <div class="price-box"><?php echo $row["price"]; ?><small>/ Ft</small></div>
                                     </a>
@@ -861,7 +857,7 @@ $result = $conn->query($sql);
                                 <div class="clearfix"></div>
                             </div>
                             <div class="range-slider">
-                                <label>Price</label>
+                                <label>Ár</label>
                                 <div data-min="0" data-max="500000" data-min-name="min_price" data-max-name="max_price"
                                      data-unit="Forint" class="range-slider-ui ui-slider" aria-disabled="false"></div>
                                 <div class="clearfix"></div>
@@ -942,10 +938,10 @@ $result = $conn->query($sql);
                     <h4>Kapcsolat</h4>
                     <ul class="contact-info">
                         <li>
-                            360 Harvest St, North Subract, London. United States Of Amrica.
+                            2092 Budakeszi Erkel Ferenc utca 57.
                         </li>
                         <li>
-                            <a href="mailto:sales@hotelempire.com">info@madar-szakdolgozat.online</a>
+                            <a href="mailto:info@madar-szakdolgozat.online.">info@madar-szakdolgozat.online</a>
                         </li>
 
                     </ul>
@@ -953,21 +949,7 @@ $result = $conn->query($sql);
             </div>
 
             <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6">
-                <div class="footer-item">
-                    <h4>Gyorlikek </h4>
-                    <ul class="links">
-                        <li>
-                            <a>Rólunk</a>
-                        </li>
-                        <li>
-                            <a>Szolgáltatások</a>
-                        </li>
 
-                        <li>
-                            <a> Adatkezelés</a>
-                        </li>
-                    </ul>
-                </div>
             </div>
 
         </div>
@@ -984,7 +966,6 @@ $result = $conn->query($sql);
         </div>
     </div>
 </div>
-
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>
