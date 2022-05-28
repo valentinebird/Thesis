@@ -130,7 +130,7 @@ session_start();
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="contact.html" id="navbarDropdownMenuLink5">
+                        <a class="nav-link" href="contact.php" id="navbarDropdownMenuLink5">
                             Kapcsolat
                         </a>
                     </li>

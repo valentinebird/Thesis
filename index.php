@@ -1,6 +1,17 @@
 <?php
 
 session_start();
+session_start();
+require "dbconfig.php";
+
+$conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$conn->set_charset("utf8");
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -20,19 +31,20 @@ session_start();
     <link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="fonts/flaticon/font/flaticon.css">
     <link rel="stylesheet" type="text/css" href="fonts/linearicons/style.css">
-    <link rel="stylesheet" type="text/css"  href="css/jquery.mCustomScrollbar.css">
-    <link rel="stylesheet" type="text/css"  href="css/dropzone.css">
-    <link rel="stylesheet" type="text/css"  href="css/slick.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" type="text/css" href="css/dropzone.css">
+    <link rel="stylesheet" type="text/css" href="css/slick.css">
 
     <!-- Custom stylesheet -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" id="style_sheet" href="css/skins/default.css">
 
     <!-- Favicon icon -->
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" >
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 
     <!-- Google fonts -->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CRoboto:300,400,500,700&display=swap">
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CRoboto:300,400,500,700&display=swap">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link rel="stylesheet" type="text/css" href="css/ie10-viewport-bug-workaround.css">
@@ -49,18 +61,20 @@ session_start();
                     <?php
                     if ($_SESSION['loggedin']) { ?>
                         <a href="logout.php" class="sign-in"><i class="fa fa-sign-out"></i>Kijelentkezés</a>
-                        <a href="profile.php" class="sign-in"><i class="fa fa-trophy"></i>Profilom: <?print $_SESSION['name'] ?></a>
+                        <a href="profile.php" class="sign-in"><i
+                                    class="fa fa-trophy"></i>Profilom: <? print $_SESSION['name'] ?></a>
 
                         <?php
-                            if($_SESSION['is_agent']){
-                                ?>
-                                <a href="submit-property.php" class="sign-in"><i class="fa fa-upload"></i>Új ingatlan feltöltése</a>
-                                <?php
-                                 }
-                                ?>
-                    <?php
+                        if ($_SESSION['is_agent']) {
+                            ?>
+                            <a href="submit-property.php" class="sign-in"><i class="fa fa-upload"></i>Új ingatlan
+                                feltöltése</a>
+                            <?php
+                        }
+                        ?>
+                        <?php
 
-                    }else{
+                    } else {
                         ?>
                         <i class="fa fa-trophy"></i>Jelentkezz be az oldal használatához!
                         <?php
@@ -72,17 +86,18 @@ session_start();
             </div>
             <div class="col-lg-6 col-md-4 col-sm-5">
                 <ul class="top-social-media pull-right">
-                  <?php  if (!$_SESSION['loggedin']) { ?>
-                    <li>
-                        <a href="login-as-agent.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés ingatlan ügynökként!</a>
-                    </li>
-                    <li>
-                        <a href="login.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés</a>
-                    </li>
-                    <li>
-                        <a href="signup.html" class="sign-in"><i class="fa fa-user"></i> Regisztráció</a>
-                    </li>
-                   <?php } ?>
+                    <?php if (!$_SESSION['loggedin']) { ?>
+                        <li>
+                            <a href="login-as-agent.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés
+                                ingatlan ügynökként!</a>
+                        </li>
+                        <li>
+                            <a href="login.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés</a>
+                        </li>
+                        <li>
+                            <a href="signup.html" class="sign-in"><i class="fa fa-user"></i> Regisztráció</a>
+                        </li>
+                    <?php } ?>
                 </ul>
             </div>
         </div>
@@ -96,34 +111,37 @@ session_start();
             <a class="navbar-brand logos" href="index.html">
 
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item  active">
-                        <a class="nav-link" href="index.html" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link" href="index.html" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
                             Főoldal
                         </a>
 
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink3" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
                             Ingatlanok
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="sale.php">Eladó</a></li>
-                        <li><a class="dropdown-item" href="rent.php">Kiadó</a></li>
+                            <li><a class="dropdown-item" href="sale.php">Eladó</a></li>
+                            <li><a class="dropdown-item" href="rent.php">Kiadó</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="agents.php" id="navbarDropdownMenuLink2"   >
+                        <a class="nav-link" href="agents.php" id="navbarDropdownMenuLink2">
                             Ügynökeink
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="contact.html" id="navbarDropdownMenuLink5">
+                        <a class="nav-link" href="contact.php" id="navbarDropdownMenuLink5">
                             Kapcsolat
                         </a>
                     </li>
@@ -136,7 +154,9 @@ session_start();
 <!-- Banner start -->
 <div class="banner banner_video_bg" id="banner">
     <div class="pattern-overlay">
-        <a id="bgndVideo" class="player" data-property="{videoURL:'https://www.youtube.com/watch?v=5e0LxrLSzok',containment:'.banner_video_bg', quality:'large', autoPlay:true, mute:true, opacity:1}"></a>    </div>
+        <a id="bgndVideo" class="player"
+           data-property="{videoURL:'https://www.youtube.com/watch?v=5e0LxrLSzok',containment:'.banner_video_bg', quality:'large', autoPlay:true, mute:true, opacity:1}"></a>
+    </div>
     <div id="bannerCarousole" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item banner-max-height item-bg active">
@@ -203,7 +223,12 @@ session_start();
         </div>
     </div>
 </div>
+<?php
+$sql = "SELECT * FROM PROPERTY ORDER BY upload_date DESC LIMIT 3;";
+$result = $conn->query($sql);
 
+
+?>
 <!-- Featured properties start -->
 <div class="featured-properties content-area">
     <div class="container">
@@ -213,106 +238,39 @@ session_start();
             <p></p>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="property-box-4 category">
-                    <div class="category_bg_box property-photo">
-                        <div class="category-overlay">
-                            <div class="category-content">
-                                <h3>
-                                    <a href="properties-details.php">Park Avenue</a>
-                                </h3>
-                                <ul>
-                                    <li>
-                                        <i class="flaticon-square"></i> 4800 sq ft
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-furniture"></i>3 Beds
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-holidays"></i>2 Bath
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-vehicle"></i>1 Garage
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-window"></i>3 Balcony
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-monitor"></i>Tv
-                                    </li>
-                                </ul>
+            <?php
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) { ?>
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="property-box-4 category">
+                            <div class="category_bg_box property-photo">
+                                <div class="category-overlay">
+                                    <div class="category-content">
+                                        <h3>
+                                            <a href="properties-details.php?id=<?php echo $row['id']; ?>"><?php echo $row["property_name"]; ?></a>
+                                        </h3>
+                                        <ul>
+                                            <li>
+                                                <i class="flaticon-square"></i> <?php echo $row["size"]; ?> m&#178;
+                                            </li>
+                                            <li>
+                                                <i class="flaticon-furniture"></i><?php echo $row["rooms"]; ?>Szoba
+                                            </li>
+                                            <li>
+                                                <i class="flaticon-holidays"></i><?php echo $row["bath_rooms"]; ?>
+                                                Fürdőszoba
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="property-box-4 category">
-                    <div class="category_bg_box property-photo-2">
-                        <div class="category-overlay">
-                            <div class="category-content">
-                                <h3>
-                                    <a href="properties-details.php">Modern Family Home</a>
-                                </h3>
-                                <ul>
-                                    <li>
-                                        <i class="flaticon-square"></i> 4800 sq ft
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-furniture"></i>3 Beds
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-holidays"></i>2 Bath
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-vehicle"></i>1 Garage
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-window"></i>3 Balcony
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-monitor"></i>Tv
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="property-box-4 category">
-                    <div class="category_bg_box property-photo-3">
-                        <div class="category-overlay">
-                            <div class="category-content">
-                                <h3>
-                                    <a href="properties-details.php">Relaxing Apartment</a>
-                                </h3>
-                                <ul>
-                                    <li>
-                                        <i class="flaticon-square"></i> 4800 sq ft
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-furniture"></i>3 Beds
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-holidays"></i>2 Bath
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-vehicle"></i>1 Garage
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-window"></i>3 Balcony
-                                    </li>
-                                    <li>
-                                        <i class="flaticon-monitor"></i>Tv
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
+                <?php }
+            } else {
+                echo "<h1>Nincs új hirdetés</h1>";
+            } ?>
         </div>
     </div>
 </div>
@@ -333,9 +291,10 @@ session_start();
                     </div>
                     <div class="service-detail">
                         <h3>
-                           Profi ingatlanügynökök
+                            Profi ingatlanügynökök
                         </h3>
-                        <p>Ügynökeink többéves tapasztalattal rendelkeznek, és napközben folyamatosan rendelkezésre állnak.</p>
+                        <p>Ügynökeink többéves tapasztalattal rendelkeznek, és napközben folyamatosan rendelkezésre
+                            állnak.</p>
                         <h4>01</h4>
                     </div>
                 </div>
@@ -349,7 +308,8 @@ session_start();
                         <h3>
                             Ingatlankeresés fiatal pároknak
                         </h3>
-                        <p>Ingatlanirodánk széles körben nyújt segítséget fiatal pároknak, akár egy közös házba vagy albéletbe való összeköltözéskor.</p>
+                        <p>Ingatlanirodánk széles körben nyújt segítséget fiatal pároknak, akár egy közös házba vagy
+                            albéletbe való összeköltözéskor.</p>
                         <h4>02</h4>
                     </div>
                 </div>
@@ -361,9 +321,10 @@ session_start();
                     </div>
                     <div class="service-detail">
                         <h3>
-                           Pénzkímélő ingatlanok egyetemistáknak
+                            Pénzkímélő ingatlanok egyetemistáknak
                         </h3>
-                        <p>Amennyiben egyetemistaként albérletet keresel, akár egyedül akár társaiddal, számíthatsz a segítségünkre.</p>
+                        <p>Amennyiben egyetemistaként albérletet keresel, akár egyedül akár társaiddal, számíthatsz a
+                            segítségünkre.</p>
                         <h4>03</h4>
                     </div>
                 </div>
@@ -374,6 +335,28 @@ session_start();
 
 
 <!-- Categories strat -->
+<?php
+
+function COUNT_city($what_to_count)
+{
+
+
+    global $conn;
+    // $sql_for_cnt = "SELECT count(*) FROM PROPERTY WHERE city =' ". $what_to_count. " '";
+    //$sql_for_cnt = "SELECT count(*) FROM PROPERTY WHERE city = '". $what_to_count. "'";
+    $sql_for_cnt = "SELECT COUNT(*) AS total FROM PROPERTY WHERE city = '" . $what_to_count . "';";
+    $result_cnt = $conn->query($sql_for_cnt);
+    if ($result_cnt->num_rows > 0) {
+        while ($row_for_search = $result_cnt->fetch_assoc()) {
+            return $row_for_search["total"];
+        }
+    } else {
+        return 0;
+    }
+
+}
+
+?>
 <div class="categories content-area-8 bg-grea-3">
     <div class="container">
         <!-- Main title -->
@@ -387,10 +370,11 @@ session_start();
                     <div class="category_bg_box category_long_bg cat-4-bg">
                         <div class="category-overlay">
                             <div class="category-content">
-                                <h3 class="category-title">
-                                    <a href="#">Budapest</a>
+                                <h3 class="category-subtitle">
+                                    Budapest
                                 </h3>
-                                <a href="#" class="category-subtitle">X Darab ingatlan</a>
+                                <div class="category-subtitle"><?php echo COUNT_city("Budapest"); ?> Darab ingatlan
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -403,10 +387,12 @@ session_start();
                             <div class="category_bg_box cat-3-bg">
                                 <div class="category-overlay">
                                     <div class="category-content">
-                                        <h3 class="category-title">
-                                            <a href="#">Budapest</a>
+                                        <h3 class="category-subtitle">
+                                            Budapest
                                         </h3>
-                                        <a href="#" class="category-subtitle">X darab ingatlan</a>
+                                        <div class="category-subtitle"><?php echo COUNT_city("Budapest"); ?> Darab
+                                            ingatlan
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -417,10 +403,12 @@ session_start();
                             <div class="category_bg_box cat-1-bg">
                                 <div class="category-overlay">
                                     <div class="category-content">
-                                        <h3 class="category-title">
-                                            <a href="#">London</a>
+                                        <h3 class="category-subtitle">
+                                            London
                                         </h3>
-                                        <a href="#" class="category-subtitle">X Darab ingatlan</a>
+                                        <div class="category-subtitle"><?php echo COUNT_city("London"); ?> Darab
+                                            ingatlan
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -431,10 +419,12 @@ session_start();
                             <div class="category_bg_box cat-2-bg">
                                 <div class="category-overlay">
                                     <div class="category-content">
-                                        <h3 class="category-title">
-                                            <a href="#">San Francisco</a>
+                                        <h3 class="category-subtitle">
+                                            San Francisco
                                         </h3>
-                                        <a href="#" class="category-subtitle">X Darab ingatlan</a>
+                                        <div class="category-subtitle"><?php echo COUNT_city("San Francisco"); ?> Darab
+                                            ingatlan
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -447,6 +437,31 @@ session_start();
 </div>
 
 <!-- Counters strat -->
+<?php
+
+function COUNT_STH($query)
+{
+
+        //"SELECT COUNT(*) AS total FROM PROPERTY WHERE city = '" . $what_to_count . "';";
+
+    global $conn;
+    // $sql_for_cnt = "SELECT count(*) FROM PROPERTY WHERE city =' ". $what_to_count. " '";
+    //$sql_for_cnt = "SELECT count(*) FROM PROPERTY WHERE city = '". $what_to_count. "'";
+    $sql_for_cnt = $query;
+    $result_cnt = $conn->query($sql_for_cnt);
+    if ($result_cnt->num_rows > 0) {
+        while ($row_for_search = $result_cnt->fetch_assoc()) {
+            return $row_for_search["total"];
+        }
+    } else {
+        return 0;
+    }
+
+}
+
+
+
+?>
 <div class="counters">
     <div class="container">
         <div class="row">
@@ -456,7 +471,7 @@ session_start();
                         <i class="flaticon-tag"></i>
                     </div>
                     <div class="media-body">
-                        <h1 class="counter">999</h1>
+                        <h1 class="counter"><?php echo COUNT_STH("SELECT COUNT(*) AS total FROM PROPERTY WHERE is_for_sale = 1;"); ?></h1>
                         <p>Eladó ingatlanjaink száma</p>
                     </div>
                 </div>
@@ -467,7 +482,7 @@ session_start();
                         <i class="flaticon-business"></i>
                     </div>
                     <div class="media-body">
-                        <h1 class="counter">999</h1>
+                        <h1 class="counter"><?php echo COUNT_STH("SELECT COUNT(*) AS total FROM PROPERTY WHERE is_for_sale = 0;"); ?></h1>
                         <p>Kiadó ingatlanjaink száma</p>
                     </div>
                 </div>
@@ -478,7 +493,7 @@ session_start();
                         <i class="flaticon-people"></i>
                     </div>
                     <div class="media-body">
-                        <h1 class="counter">999</h1>
+                        <h1 class="counter"><?php echo COUNT_STH("SELECT COUNT(*) AS total FROM AGENT;"); ?></h1>
                         <p>Ügynökeink száma</p>
                     </div>
                 </div>
@@ -489,7 +504,7 @@ session_start();
                         <i class="flaticon-people-1"></i>
                     </div>
                     <div class="media-body">
-                        <h1 class="counter">999</h1>
+                        <h1 class="counter"><?php echo COUNT_STH("SELECT COUNT(*) AS total FROM USER;"); ?> </h1>
                         <p>Elégedett felhasználó</p>
                     </div>
                 </div>
@@ -515,7 +530,7 @@ session_start();
 
                                     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-xs-12">
                                         <p class="lead">
-                                            A Housy ingatlan iroda segített nekem otthot találni.
+                                            A Madar-szakdolgozat.online ingatlan iroda segített nekem otthot találni.
                                         </p>
                                         <ul class="rating">
                                             <li>
@@ -572,7 +587,7 @@ session_start();
 
                                     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-xs-12">
                                         <p class="lead">
-                                           Ennyire könnyen még soha nem találtam ingatlant.
+                                            Ennyire könnyen még soha nem találtam ingatlant.
                                         </p>
                                         <ul class="rating">
                                             <li>
@@ -597,12 +612,14 @@ session_start();
                             </div>
                         </div>
 
-                        <a class="carousel-control-prev" href="#carouselExampleIndicators7" role="button" data-slide="prev">
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators7" role="button"
+                           data-slide="prev">
                             <span class="slider-mover-left" aria-hidden="true">
                                 <i class="fa fa-angle-left"></i>
                             </span>
                         </a>
-                        <a class="carousel-control-next" href="#carouselExampleIndicators7" role="button" data-slide="next">
+                        <a class="carousel-control-next" href="#carouselExampleIndicators7" role="button"
+                           data-slide="next">
                             <span class="slider-mover-right" aria-hidden="true">
                                 <i class="fa fa-angle-right"></i>
                             </span>
@@ -615,7 +632,6 @@ session_start();
 </div>
 
 
-
 <!-- Footer start -->
 <footer class="footer">
     <div class="container footer-inner">
@@ -625,10 +641,10 @@ session_start();
                     <h4>Kapcsolat</h4>
                     <ul class="contact-info">
                         <li>
-                            360 Harvest St, North Subract, London. United States Of Amrica.
+                            2092 Budakeszi Erkel Ferenc utca 57.
                         </li>
                         <li>
-                            <a href="mailto:sales@hotelempire.com">info@madar-szakdolgozat.online</a>
+                            <a href="mailto:info@madar-szakdolgozat.online.">info@madar-szakdolgozat.online</a>
                         </li>
 
                     </ul>
@@ -648,12 +664,11 @@ session_start();
     <div class="container">
         <div class="row">
             <div class="col-xl-12">
-                <p class="copy">© 2022  Ingatlan nyilvántartó portál, webes környezetben.</p>
+                <p class="copy">© 2022 Ingatlan nyilvántartó portál, webes környezetben.</p>
             </div>
         </div>
     </div>
 </div>
-
 
 
 <script src="js/jquery-2.2.0.min.js"></script>

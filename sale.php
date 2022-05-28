@@ -78,20 +78,18 @@ $result = $conn->query($sql);
                     <?php
                     if ($_SESSION['loggedin']) { ?>
                         <a href="logout.php" class="sign-in"><i class="fa fa-sign-out"></i>Kijelentkezés</a>
-                        <a href="index.php" class="sign-in"><i
-                                    class="fa fa-trophy"></i>Üdvözlünk <? print $_SESSION['name'] ?></a>
+                        <a href="profile.php" class="sign-in"><i class="fa fa-trophy"></i>Profilom: <?print $_SESSION['name'] ?></a>
 
                         <?php
-                        if ($_SESSION['is_agent']) {
+                        if($_SESSION['is_agent']){
                             ?>
-                            <a href="submit-property.php" class="sign-in"><i class="fa fa-upload"></i>Új ingatlan
-                                feltöltése</a>
+                            <a href="submit-property.php" class="sign-in"><i class="fa fa-upload"></i>Új ingatlan feltöltése</a>
                             <?php
                         }
                         ?>
                         <?php
 
-                    } else {
+                    }else{
                         ?>
                         <i class="fa fa-trophy"></i>Jelentkezz be az oldal használatához!
                         <?php
@@ -103,16 +101,17 @@ $result = $conn->query($sql);
             </div>
             <div class="col-lg-6 col-md-4 col-sm-5">
                 <ul class="top-social-media pull-right">
-                    <li>
-                        <a href="login-as-agent.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés
-                            ingatlan ügynökként!</a>
-                    </li>
-                    <li>
-                        <a href="login.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés</a>
-                    </li>
-                    <li>
-                        <a href="signup.html" class="sign-in"><i class="fa fa-user"></i> Regisztráció</a>
-                    </li>
+                    <?php  if (!$_SESSION['loggedin']) { ?>
+                        <li>
+                            <a href="login-as-agent.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés ingatlan ügynökként!</a>
+                        </li>
+                        <li>
+                            <a href="login.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés</a>
+                        </li>
+                        <li>
+                            <a href="signup.html" class="sign-in"><i class="fa fa-user"></i> Regisztráció</a>
+                        </li>
+                    <?php } ?>
                 </ul>
             </div>
         </div>
@@ -155,7 +154,7 @@ $result = $conn->query($sql);
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="contact.html" id="navbarDropdownMenuLink5">
+                        <a class="nav-link" href="contact.php" id="navbarDropdownMenuLink5">
                             Kapcsolat
                         </a>
                     </li>
@@ -942,10 +941,10 @@ $result = $conn->query($sql);
                     <h4>Kapcsolat</h4>
                     <ul class="contact-info">
                         <li>
-                            360 Harvest St, North Subract, London. United States Of Amrica.
+                            2092 Budakeszi Erkel Ferenc utca 57.
                         </li>
                         <li>
-                            <a href="mailto:sales@hotelempire.com">info@madar-szakdolgozat.online</a>
+                            <a href="mailto:info@madar-szakdolgozat.online.">info@madar-szakdolgozat.online</a>
                         </li>
 
                     </ul>
@@ -953,21 +952,7 @@ $result = $conn->query($sql);
             </div>
 
             <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6">
-                <div class="footer-item">
-                    <h4>Gyorlikek </h4>
-                    <ul class="links">
-                        <li>
-                            <a>Rólunk</a>
-                        </li>
-                        <li>
-                            <a>Szolgáltatások</a>
-                        </li>
 
-                        <li>
-                            <a> Adatkezelés</a>
-                        </li>
-                    </ul>
-                </div>
             </div>
 
         </div>
@@ -984,7 +969,6 @@ $result = $conn->query($sql);
         </div>
     </div>
 </div>
-
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>

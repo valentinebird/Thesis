@@ -179,7 +179,7 @@
                                     <div class="col-sm-6 col-lg-3">
                                         <div class="megamenu-section">
                                             <h6 class="megamenu-title">Pages</h6>
-                                            <a class="dropdown-item" href="contact.html">Contact 1</a>
+                                            <a class="dropdown-item" href="contact.php">Contact 1</a>
                                             <a class="dropdown-item" href="contact-2.html">Contact 2</a>
                                             <a class="dropdown-item" href="contact-3.html">Contact 3</a>
                                             <a class="dropdown-item" href="faq.html">Faq 1</a>
@@ -248,267 +248,194 @@
 <div class="sub-banner">
     <div class="container">
         <div class="page-name">
-            <h1>About Us</h1>
+            <h1>Favorited Properties</h1>
             <ul>
                 <li><a href="index.php">Index</a></li>
-                <li><span>/</span>About Us</li>
+                <li><span>/</span>Favorited Properties</li>
             </ul>
         </div>
     </div>
 </div>
 
-<!-- About city estate start -->
-<div class="about-real-estate content-area-5">
+<!-- Favorited properties start -->
+<div class="favorited-properties content-area">
     <div class="container">
         <div class="row">
-            <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-xs-12">
-                <div class="inside-properties">
-                    <iframe src="https://www.youtube.com/embed/5e0LxrLSzok" allowfullscreen=""></iframe>
+            <div class="col-lg-4 col-md-12 col-sm-12">
+                <!-- Avatar start -->
+                <div class="edit-profile-photo">
+                    <img src="http://placehold.it/350x350" alt="profile-photo" class="img-fluid">
+                    <div class="change-photo-btn">
+                        <div class="photoUpload">
+                            <span><i class="fa fa-upload"></i> Upload Photo</span>
+                            <input type="file" class="upload">
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-xs-12 align-self-center">
-                <div class="about-text">
-                    <h3>Welcome to Housy</h3>
-                    <p>One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see</p>
-                    <p class="mb-30">transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections.</p>
-                    <a href="#" class="btn-white">Read More</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                <!-- Avatar end -->
 
-<!-- Services 3 start -->
-<div class="services-3 content-area-5 bg-grea-3">
-    <div class="container">
-        <!-- Main title -->
-        <div class="main-title">
-            <h1>Why Choose Us</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-        </div>
-        <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="service-info-2">
-                    <div class="icon">
-                        <i class="flaticon-people-1"></i>
-                    </div>
-                    <div class="service-detail">
-                        <h3>
-                            Trusted By Thousands
-                        </h3>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the</p>
-                        <a class="rm-btn" href="services.html">Read more...</a>
-                        <h4>01</h4>
-                    </div>
+                <!-- My account box start -->
+                <div class="my-account-box">
+                    <ul>
+                        <li>
+                            <a href="profile.php">
+                                <i class="flaticon-people"></i>My Profile
+                            </a>
+                        </li>
+                        <li>
+                            <a href="favorited-properties.html" class="active">
+                                <i class="flaticon-favorite"></i>Favorited Properties
+                            </a>
+                        </li>
+                        <li>
+                            <a href="my-properties.html">
+                                <i class="flaticon-internet"></i>My Properties
+                            </a>
+                        </li>
+                        <li>
+                            <a href="submit-property.php">
+                                <i class="flaticon-cross"></i>Submit New Property
+                            </a>
+                        </li>
+                        <li>
+                            <a href="change-password.html">
+                                <i class="flaticon-lock"></i>Change Password
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.php">
+                                <i class="flaticon-exit"></i>Log Out
+                            </a>
+                        </li>
+                    </ul>
                 </div>
+                <!-- My account box end -->
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="service-info-2">
-                    <div class="icon">
-                        <i class="flaticon-apartment"></i>
-                    </div>
-                    <div class="service-detail">
-                        <h3>
-                            Wide Renge Of Properties
-                        </h3>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the</p>
-                        <a class="rm-btn" href="services.html">Read more...</a>
-                        <h4>02</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="service-info-2">
-                    <div class="icon">
-                        <i class="flaticon-coins"></i>
-                    </div>
-                    <div class="service-detail">
-                        <h3>
-                            Financing Made Easy
-                        </h3>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the</p>
-                        <a class="rm-btn" href="services.html">Read more...</a>
-                        <h4>03</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="text-center read-more-2">
-            <a href="services.html" class="btn-white">Read More</a>
-        </div>
-    </div>
-</div>
-
-<!-- Testimonial 2 start -->
-<div class="testimonial-2 t2 ">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="testimonial-inner">
-                    <div class="main-title-2">
-                        <h1>Our Testimonial</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-                    </div>
-                    <div id="carouselExampleIndicators4" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                            <li data-target="#carouselExampleIndicators4" data-slide-to="0" class="active"></li>
-                            <li data-target="#carouselExampleIndicators4" data-slide-to="1"></li>
-                            <li data-target="#carouselExampleIndicators4" data-slide-to="2"></li>
-                        </ol>
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <p class="lead">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla. Nulla posuere sapien vitae.
-                                </p>
-                                <div class="media mb-4">
-                                    <a class="pr-3" href="#">
-                                        <img src="http://placehold.it/50x50" alt="use" class="img-fluid">
-                                    </a>
-                                    <div class="media-body align-self-center">
-                                        <h5>
-                                            <a href="#">Anne Brady</a>
-                                        </h5>
-                                        <h6>Creative Director</h6>
-                                    </div>
+            <div class="col-lg-8 col-md-12 col-sm-12">
+                <!-- Heading -->
+                <h3 class="heading-2">Favorited Properties</h3>
+                <div class="my-properties">
+                    <table class="table brd-none">
+                        <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th></th>
+                            <th class="hedin-div">Date</th>
+                            <th><span class="hedin-div">Views</span></th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="image">
+                                <a href="properties-details.php"><img alt="properties-small" src="http://placehold.it/100x66" class="img-fluid"></a>
+                            </td>
+                            <td>
+                                <div class="inner">
+                                    <h5><a href="properties-details.php">Modern Family Home</a></h5>
+                                    <figure class="hedin-div"><i class="fa fa-map-marker"></i> 123 Kathal St. Tampa City</figure>
+                                    <div class="price-month">$ 27,000</div>
                                 </div>
-                            </div>
-                            <div class="carousel-item">
-                                <p class="lead">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla. Nulla posuere sapien vitae.
-                                </p>
-                                <div class="media mb-4">
-                                    <a class="pr-3" href="#">
-                                        <img src="http://placehold.it/50x50" alt="use" class="img-fluid">
-                                    </a>
-                                    <div class="media-body align-self-center">
-                                        <h5>
-                                            <a href="#">Eliane Perei</a>
-                                        </h5>
-                                        <h6>Web Developer</h6>
-                                    </div>
+                            </td>
+                            <td class="hedin-div">7.02.2018</td>
+                            <td> <span class="hedin-div">421</span></td>
+                            <td class="actions">
+                                <a href="#" class="edit"><i class="fa fa-pencil"></i>Edit</a>
+                                <a href="#"><i class="delete fa fa-trash-o"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="image">
+                                <a href="properties-details.php"><img alt="properties-small" src="http://placehold.it/100x66" class="img-fluid"></a>
+                            </td>
+                            <td>
+                                <div class="inner">
+                                    <h5><a href="properties-details.php">Beautiful Single Home</a></h5>
+                                    <figure class="hedin-div"><i class="fa fa-map-marker"></i> 123 Kathal St. Tampa City</figure>
+                                    <div class="price-month">$ 19,000</div>
                                 </div>
-                            </div>
-                            <div class="carousel-item">
-                                <p class="lead">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla. Nulla posuere sapien vitae.
-                                </p>
-                                <div class="media mb-4">
-                                    <a class="pr-3" href="#">
-                                        <img src="http://placehold.it/50x50" alt="use" class="img-fluid">
-                                    </a>
-                                    <div class="media-body align-self-center">
-                                        <h5>
-                                            <a href="#">Maria Blank</a>
-                                        </h5>
-                                        <h6>Office Manager</h6>
-                                    </div>
+                            </td>
+                            <td class="hedin-div">4.07.2018</td>
+                            <td> <span class="hedin-div">365</span></td>
+                            <td class="actions">
+                                <a href="#" class="edit"><i class="fa fa-pencil"></i>Edit</a>
+                                <a href="#"><i class="delete fa fa-trash-o"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="image">
+                                <a href="properties-details.php"><img alt="properties-small" src="http://placehold.it/100x66" class="img-fluid"></a>
+                            </td>
+                            <td>
+                                <div class="inner">
+                                    <h5><a href="properties-details.php">Masons Villas</a></h5>
+                                    <figure class="hedin-div"><i class="fa fa-map-marker"></i> 123 Kathal St. Tampa City</figure>
+                                    <div class="price-month">$ 19,000</div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Our team 1 start -->
-<div class="our-team-1 content-area">
-    <div class="container">
-        <!-- Main title -->
-        <div class="main-title">
-            <h1>Our Agent</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-        </div>
-        <div class="slick-slider-area">
-            <div class="row slick-carousel" data-slick='{"slidesToShow": 3, "responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 2}}, {"breakpoint": 768,"settings":{"slidesToShow": 1}}]}'>
-                <div class="slick-slide-item">
-                    <div class="team-2">
-                        <div class="team-photo">
-                            <img src="http://placehold.it/350x290" alt="agent-2" class="img-fluid">
-                        </div>
-                        <div class="team-details">
-                            <h6>Office Manager</h6>
-                            <h5><a href="agent-detail.php">Maria Blank</a></h5>
-                            <div class="contact">
-                                <p>
-                                    <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
-                                </p>
-                                <p>
-                                    <a href="tel:+554XX-634-7071"> <i class="fa fa-phone"></i>+55 4XX-634-7071</a>
-                                </p>
-                                <p>
-                                    <a href="#"><i class="fa fa-skype"></i>sales.carshop</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="slick-slide-item">
-                    <div class="team-2">
-                        <div class="team-photo">
-                            <img src="http://placehold.it/350x290" alt="agent-2" class="img-fluid">
-                        </div>
-                        <div class="team-details">
-                            <h6>Creative Director</h6>
-                            <h5><a href="agent-detail.php">John Pitarshon</a></h5>
-                            <div class="contact">
-                                <p>
-                                    <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
-                                </p>
-                                <p>
-                                    <a href="tel:+554XX-634-7071"> <i class="fa fa-phone"></i>+55 4XX-634-7071</a>
-                                </p>
-                                <p>
-                                    <a href="#"><i class="fa fa-skype"></i>sales.carshop</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="slick-slide-item">
-                    <div class="team-2">
-                        <div class="team-photo">
-                            <img src="http://placehold.it/350x290" alt="agent-2" class="img-fluid">
-                        </div>
-                        <div class="team-details">
-                            <h6>Support Manager</h6>
-                            <h5><a href="agent-detail.php">Karen Paran</a></h5>
-                            <div class="contact">
-                                <p>
-                                    <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
-                                </p>
-                                <p>
-                                    <a href="tel:+554XX-634-7071"> <i class="fa fa-phone"></i>+55 4XX-634-7071</a>
-                                </p>
-                                <p>
-                                    <a href="#"><i class="fa fa-skype"></i>sales.carshop</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="slick-slide-item">
-                    <div class="team-2">
-                        <div class="team-photo">
-                            <img src="http://placehold.it/350x290" alt="agent-2" class="img-fluid">
-                        </div>
-                        <div class="team-details">
-                            <h6>Support Manager</h6>
-                            <h5><a href="agent-detail.php">Karen Paran</a></h5>
-                            <div class="contact">
-                                <p>
-                                    <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
-                                </p>
-                                <p>
-                                    <a href="tel:+554XX-634-7071"> <i class="fa fa-phone"></i>+55 4XX-634-7071</a>
-                                </p>
-                                <p>
-                                    <a href="#"><i class="fa fa-skype"></i>sales.carshop</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                            </td>
+                            <td class="hedin-div">9.03.2018</td>
+                            <td> <span class="hedin-div">165</span></td>
+                            <td class="actions">
+                                <a href="#" class="edit"><i class="fa fa-pencil"></i>Edit</a>
+                                <a href="#"><i class="delete fa fa-trash-o"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="image">
+                                <a href="properties-details.php"><img alt="properties-small" src="http://placehold.it/100x66" class="img-fluid"></a>
+                            </td>
+                            <td>
+                                <div class="inner">
+                                    <h5><a href="properties-details.php">Modern Family Home</a></h5>
+                                    <figure class="hedin-div"><i class="fa fa-map-marker"></i> 123 Kathal St. Tampa City</figure>
+                                    <div class="price-month">$ 27,000</div>
+                                </div>
+                            </td>
+                            <td class="hedin-div">7.02.2018</td>
+                            <td> <span class="hedin-div">421</span></td>
+                            <td class="actions">
+                                <a href="#" class="edit"><i class="fa fa-pencil"></i>Edit</a>
+                                <a href="#"><i class="delete fa fa-trash-o"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="image">
+                                <a href="properties-details.php"><img alt="properties-small" src="http://placehold.it/100x66" class="img-fluid"></a>
+                            </td>
+                            <td>
+                                <div class="inner">
+                                    <h5><a href="properties-details.php">Beautiful Single Home</a></h5>
+                                    <figure class="hedin-div"><i class="fa fa-map-marker"></i> 123 Kathal St. Tampa City</figure>
+                                    <div class="price-month">$ 19,000</div>
+                                </div>
+                            </td>
+                            <td class="hedin-div">4.07.2018</td>
+                            <td> <span class="hedin-div">365</span></td>
+                            <td class="actions">
+                                <a href="#" class="edit"><i class="fa fa-pencil"></i>Edit</a>
+                                <a href="#"><i class="delete fa fa-trash-o"></i></a>
+                            </td>
+                        </tr>
+                        <tr class="brd-none">
+                            <td class="image">
+                                <a href="properties-details.php"><img alt="properties-small" src="http://placehold.it/100x66" class="img-fluid"></a>
+                            </td>
+                            <td>
+                                <div class="inner">
+                                    <h5><a href="properties-details.php">Masons Villas</a></h5>
+                                    <figure class="hedin-div"><i class="fa fa-map-marker"></i> 123 Kathal St. Tampa City</figure>
+                                    <div class="price-month">$ 19,000</div>
+                                </div>
+                            </td>
+                            <td class="hedin-div">9.03.2018</td>
+                            <td> <span class="hedin-div">165</span></td>
+                            <td class="actions">
+                                <a href="#" class="edit"><i class="fa fa-pencil"></i>Edit</a>
+                                <a href="#"><i class="delete fa fa-trash-o"></i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

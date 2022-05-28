@@ -155,7 +155,7 @@ $result = $conn->query($sql);
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="contact.html" id="navbarDropdownMenuLink5">
+                        <a class="nav-link" href="contact.php" id="navbarDropdownMenuLink5">
                             Kapcsolat
                         </a>
                     </li>
@@ -176,7 +176,7 @@ $result = $conn->query($sql);
 <div class="sub-banner">
     <div class="container">
         <div class="page-name">
-            <h1>Eladó ingatlanjaink listája</h1>
+            <h1>Kiadó ingatlanjaink listája</h1>
         </div>
     </div>
 </div>
@@ -199,10 +199,10 @@ $result = $conn->query($sql);
                     <div class="float-right cod-pad">
                         <div class="sorting-options">
                             <select class="sorting">
-                                <option>New To Old</option>
-                                <option>Old To New</option>
-                                <option>Properties (High To Low)</option>
-                                <option>Properties (Low To High)</option>
+                                <option>Legújabb elöl</option>
+                                <option>Legrégebbi elöl</option>
+                                <option>Ár (Legdrágább elöl)</option>
+                                <option>Ár (Legolcsóbb elöl)</option>
                             </select>
 
                         </div>
@@ -213,7 +213,7 @@ $result = $conn->query($sql);
                 <?php
                 if ($result->num_rows > 0) {
 
-                    while($row = $result->fetch_assoc()) {  ?>
+                    while ($row = $result->fetch_assoc()) { ?>
                         <div class="property-box-2">
                             <div class="row">
                                 <div class="col-lg-5 col-md-5 col-pad">
@@ -223,16 +223,16 @@ $result = $conn->query($sql);
                                             <span class="featured">Kiemelt</span>
                                             <span class="listing-time">Eladó</span>
                                         </div>
-                                        <div class="price-box"><?php echo $row["price"];?><small>/ Ft</small></div>
+                                        <div class="price-box"><?php echo $row["price"]; ?><small>/ Ft</small></div>
                                     </a>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-pad">
                                     <div class="detail">
                                         <h3 class="title">
-                                            <a href="properties-details.php?id=<?php echo $row['id']; ?>"><?php echo $row["property_name"];?></a>
+                                            <a href="properties-details.php?id=<?php echo $row['id']; ?>"><?php echo $row["property_name"]; ?></a>
                                         </h3>
                                         <p class="location">
-                                            <i class="flaticon-location"></i>    <?php echo $row["city"]; ?>
+                                            <i class="flaticon-location"></i> <?php echo $row["city"]; ?>
                                         </p>
                                         <ul class="facilities-list clearfix">
                                             <li>
@@ -264,10 +264,10 @@ $result = $conn->query($sql);
                                 </div>
                             </div>
                         </div>
-                    <?php   }
-                } else {?>
+                    <?php }
+                } else { ?>
                     <h1>No results in DB </h1>
-                <?php   }  ?>
+                <?php } ?>
 
 
                 <!--
@@ -751,7 +751,7 @@ $result = $conn->query($sql);
                         </div>
                     </div>
                 </div>
-                -->
+
                 <div class="pagination-box hidden-mb-45 text-center">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
@@ -767,53 +767,66 @@ $result = $conn->query($sql);
                         </ul>
                     </nav>
                 </div>
+                  -->
             </div>
+
             <div class="col-lg-4 col-md-12">
                 <div class="sidebar-right">
                     <!-- Advanced search start -->
+                    <?php
+                    function select_DISTINCT_into_asoc_array($what_to_select)
+                    {
+                        $assoc_array = [];
+                        global $conn;
+                        $saq = "type";
+                        $sql_for_search = "SELECT DISTINCT  $what_to_select FROM PROPERTY WHERE is_for_sale = 1 ORDER BY $what_to_select ASC;";
+                        $result_for_search = $conn->query($sql_for_search);
+
+
+                        if ($result_for_search->num_rows > 0) {
+                            while ($row_for_search = $result_for_search->fetch_assoc()) {
+
+                                //$assoc_array +=  $row_for_search[$what_to_select];
+                                //$assoc_array[] +=  $row_for_search[$what_to_select];
+                                echo "<option>" . $row_for_search[$what_to_select];
+                                "</option>";
+                            }
+                        }
+                        return $assoc_array;
+                    }
+
+                    ?>
+
+
                     <div class="sidebar widget advanced-search">
-                        <h3 class="sidebar-title">Advanced Search</h3>
+                        <h3 class="sidebar-title">Részletes keresés</h3>
                         <div class="s-border"></div>
                         <div class="m-border"></div>
                         <form method="GET">
                             <div class="form-group">
                                 <select class="selectpicker search-fields" name="property-sdtatus">
-                                    <option>Property Status</option>
-                                    <option>For Sale</option>
-                                    <option>For Rent</option>
+                                    <option>Kiadó és eladó</option>
+                                    <option value="sale">Eladó</option>
+                                    <option value="rent">Kiadó</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <select class="selectpicker search-fields" name="property-type">
-                                    <option>Property Type</option>
-                                    <option>Apartments</option>
-                                    <option>Houses</option>
-                                    <option>Commercial</option>
-                                    <option>Garages</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select class="selectpicker search-fields" name="commercial">
-                                    <option>Commercial</option>
-                                    <option>Residential</option>
-                                    <option>Land</option>
-                                    <option>Hotels</option>
+                                    <option>Típus</option>
+                                    <?php select_DISTINCT_into_asoc_array("type"); ?>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <select class="selectpicker search-fields" name="location">
-                                    <option>location</option>
-                                    <option>New York</option>
-                                    <option>Bangladesh</option>
-                                    <option>India</option>
-                                    <option>Canada</option>
+                                    <option>Hely</option>
+                                    <?php select_DISTINCT_into_asoc_array("city"); ?>
                                 </select>
                             </div>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <select class="selectpicker search-fields" name="bedrooms">
-                                            <option>Bedrooms</option>
+                                            <option>Szobák száma</option>
                                             <option>1</option>
                                             <option>2</option>
                                             <option>3</option>
@@ -824,7 +837,7 @@ $result = $conn->query($sql);
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <select class="selectpicker search-fields" name="bathroom">
-                                            <option>Bathroom</option>
+                                            <option>Fürdő szobák száma</option>
                                             <option>1</option>
                                             <option>2</option>
                                             <option>3</option>
@@ -833,47 +846,31 @@ $result = $conn->query($sql);
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <select class="selectpicker search-fields" name="balcony">
-                                            <option>Balcony</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <select class="selectpicker search-fields" name="garage">
-                                            <option>Garage</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                        </select>
-                                    </div>
-                                </div>
+
+                            <div class="form-group">
+                                <select class="selectpicker search-fields" name="balcony">
+                                    <option>Állapot</option>
+                                    <?php select_DISTINCT_into_asoc_array("property_condition"); ?>
+                                </select>
+
                             </div>
                             <div class="range-slider">
-                                <label>Area</label>
-                                <div data-min="0" data-max="10000" data-min-name="min_area" data-max-name="max_area"
-                                     data-unit="Sq ft" class="range-slider-ui ui-slider" aria-disabled="false"></div>
+                                <label>Méret</label>
+                                <div data-min="0" data-max="1000" data-min-name="min_area" data-max-name="max_area"
+                                     data-unit="m&#178;" class="range-slider-ui ui-slider" aria-disabled="false"></div>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="range-slider">
                                 <label>Price</label>
-                                <div data-min="0" data-max="150000" data-min-name="min_price" data-max-name="max_price"
-                                     data-unit="USD" class="range-slider-ui ui-slider" aria-disabled="false"></div>
+                                <div data-min="0" data-max="500000" data-min-name="min_price" data-max-name="max_price"
+                                     data-unit="Forint" class="range-slider-ui ui-slider" aria-disabled="false"></div>
                                 <div class="clearfix"></div>
                             </div>
                             <a class="show-more-options" data-toggle="collapse" data-target="#options-content">
-                                <i class="fa fa-plus-circle"></i> Show More Options
+                                <i class="fa fa-plus-circle"></i> Egyéb opciók
                             </a>
                             <div id="options-content" class="collapse">
-                                <label class="margin-t-10">Features</label>
+                                <label class="margin-t-10">Tulajdonságok</label>
                                 <div class="s-border"></div>
                                 <div class="m-border"></div>
                                 <div class="checkbox checkbox-theme checkbox-circle">
@@ -926,27 +923,10 @@ $result = $conn->query($sql);
                                 </div>
                             </div>
                             <div class="form-group mb-0">
-                                <button class="search-button">Search</button>
+                                <button class="search-button">Keresés</button>
                             </div>
                         </form>
                     </div>
-
-                    <!-- Posts by category start -->
-                    <div class="posts-by-category widget">
-                        <h3 class="sidebar-title">Category</h3>
-                        <div class="s-border"></div>
-                        <div class="m-border"></div>
-                        <ul class="list-unstyled list-cat">
-                            <li><a href="#">Single Family <span>(45)</span></a></li>
-                            <li><a href="#">Apartment <span>(21)</span> </a></li>
-                            <li><a href="#">Condo <span>(23)</span></a></li>
-                            <li><a href="#">Multi Family <span>(19)</span></a></li>
-                            <li><a href="#">Villa <span>(19)</span></a></li>
-                            <li><a href="#">Other <span>(22) </span></a></li>
-                        </ul>
-                    </div>
-
-
                 </div>
             </div>
         </div>
