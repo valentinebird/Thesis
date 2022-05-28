@@ -192,7 +192,7 @@
                                     <div class="col-sm-6 col-lg-3">
                                         <div class="megamenu-section">
                                             <h6 class="megamenu-title">Pages</h6>
-                                            <a class="dropdown-item" href="my-profile.php">My profile</a>
+                                            <a class="dropdown-item" href="profile.php">My profile</a>
                                             <a class="dropdown-item" href="my-properties.html">My Properties</a>
                                             <a class="dropdown-item" href="favorited-properties.html">Favorited Properties</a>
                                             <a class="dropdown-item" href="submit-property.php">Submit Property</a>

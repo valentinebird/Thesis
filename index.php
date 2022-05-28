@@ -49,7 +49,7 @@ session_start();
                     <?php
                     if ($_SESSION['loggedin']) { ?>
                         <a href="logout.php" class="sign-in"><i class="fa fa-sign-out"></i>Kijelentkezés</a>
-                        <a href="index.php" class="sign-in"><i class="fa fa-trophy"></i>Üdvözlünk <?print $_SESSION['name'] ?></a>
+                        <a href="profile.php" class="sign-in"><i class="fa fa-trophy"></i>Profilom: <?print $_SESSION['name'] ?></a>
 
                         <?php
                             if($_SESSION['is_agent']){
@@ -72,6 +72,7 @@ session_start();
             </div>
             <div class="col-lg-6 col-md-4 col-sm-5">
                 <ul class="top-social-media pull-right">
+                  <?php  if (!$_SESSION['loggedin']) { ?>
                     <li>
                         <a href="login-as-agent.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés ingatlan ügynökként!</a>
                     </li>
@@ -81,6 +82,7 @@ session_start();
                     <li>
                         <a href="signup.html" class="sign-in"><i class="fa fa-user"></i> Regisztráció</a>
                     </li>
+                   <?php } ?>
                 </ul>
             </div>
         </div>

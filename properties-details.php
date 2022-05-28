@@ -12,10 +12,10 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-//$sql = "SELECT id,username, email, reg_date FROM USER;";
+
 $id  = $_GET['id'];
 
-$sql = "SELECT * FROM PROPERTY WHERE id = 1;";
+$sql = "SELECT * FROM PROPERTY WHERE id = $id;";
 $result = $conn->query($sql);
 
 $row = $result->fetch_assoc();
@@ -162,8 +162,7 @@ $row = $result->fetch_assoc();
                         </a>
                     </li>
                 </ul>
-                </li>
-                </ul>
+
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
 
@@ -196,11 +195,10 @@ $row = $result->fetch_assoc();
                                 <div class="col-md-12">
                                     <div class="pull-left">
                                         <h3><?php echo  $row["property_name"]; ?></h3>
-                                        <p><i class="fa fa-map-marker"></i><?php echo  $row["address"]; ?> <?php echo  $row["city"]; ?></p>
+                                        <p><i class="fa fa-map-marker"></i> <?php echo  $row["address"]; ?> <?php echo  $row["city"]; ?></p>
                                     </div>
                                     <div class="pull-right">
-                                        <h3><span class="text-right"><?php echo  $row["price"]; ?></span></h3>
-                                        <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></p>
+                                        <h3><span class="text-right"> <?php echo  $row["price"]; ?> Forint</span></h3>
                                     </div>
                                 </div>
                             </div>
@@ -254,108 +252,7 @@ $row = $result->fetch_assoc();
                         -->
                         <!-- main slider carousel items -->
                     </div>
-                    <!-- Advanced search start -->
-                    <div class="widget-2 sidebar advanced-search-2">
-                        <h3 class="sidebar-title">Advanced Search</h3>
-                        <div class="s-border"></div>
-                        <div class="m-border"></div>
-                        <form method="GET">
-                            <div class="form-group">
-                                <select class="selectpicker search-fields" name="property-sdtatus">
-                                    <option>Property Status</option>
-                                    <option>For Sale</option>
-                                    <option>For Rent</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select class="selectpicker search-fields" name="property-type">
-                                    <option>Property Type</option>
-                                    <option>Apartments</option>
-                                    <option>Houses</option>
-                                    <option>Commercial</option>
-                                    <option>Garages</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select class="selectpicker search-fields" name="commercial">
-                                    <option>Commercial</option>
-                                    <option>Residential</option>
-                                    <option>Land</option>
-                                    <option>Hotels</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select class="selectpicker search-fields" name="location">
-                                    <option>location</option>
-                                    <option>New York</option>
-                                    <option>Bangladesh</option>
-                                    <option>India</option>
-                                    <option>Canada</option>
-                                </select>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <select class="selectpicker search-fields" name="bedrooms">
-                                            <option>Bedrooms</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <select class="selectpicker search-fields" name="bathroom">
-                                            <option>Bathroom</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <select class="selectpicker search-fields" name="balcony">
-                                            <option>Balcony</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <select class="selectpicker search-fields" name="garage">
-                                            <option>Garage</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="range-slider">
-                                <label>Area</label>
-                                <div data-min="0" data-max="10000" data-min-name="min_area" data-max-name="max_area" data-unit="Sq ft" class="range-slider-ui ui-slider" aria-disabled="false"></div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="range-slider">
-                                <label>Price</label>
-                                <div data-min="0" data-max="150000"  data-min-name="min_price" data-max-name="max_price" data-unit="USD" class="range-slider-ui ui-slider" aria-disabled="false"></div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="form-group mb-0">
-                                <button class="search-button">Search</button>
-                            </div>
-                        </form>
-                    </div>
+
                     <!-- Tabbing box start -->
                     <div class="tabbing tabbing-box tb-2 mb-40">
                         <ul class="nav nav-tabs" id="carTab" role="tablist">
@@ -484,49 +381,44 @@ $row = $result->fetch_assoc();
                                         <div id="contactMap" class="contact-map"></div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>4
 
                         </div>
                     </div>
 
 
-                    <!-- Contact 1 start -->
+                    <!-- Agent details 1 start -->
                     <div class="contact-1 mtb-50">
                         <h3 class="heading">Kapcsolat az ingatlan közvetítő ügynökkel</h3>
-                        <form action="#" method="GET" enctype="multipart/form-data">
+                        <div>
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <div class="form-group name">
-                                        <input type="text" name="name" class="form-control" placeholder="Name">
+                                        <div>Az ingatlan közvetítő ügynök ID-ja:</div>
+                                        <div><?php echo $row["agent_id"]; ?></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <div class="form-group email">
-                                        <input type="email" name="email" class="form-control" placeholder="Email">
+                                        <div>Az ingatlan közvetítő ügynök neve:</div>
+                                        <div><?php echo $row["agent_id"]; ?></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <div class="form-group subject">
-                                        <input type="text" name="subject" class="form-control" placeholder="Subject">
+                                        <div>Az ingatlan közvetítő ügynök E-mail címe:</div>
+                                        <div><?php echo $row["agent_id"]; ?></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <div class="form-group number">
-                                        <input type="text" name="phone" class="form-control" placeholder="Number">
+                                        <div>Az ingatlan közvetítő ügynök Telefonszáma:</div>
+                                        <div><?php echo $row["agent_id"]; ?></div>
                                     </div>
                                 </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="form-group message">
-                                        <textarea class="form-control" name="message" placeholder="Write message"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-12">
-                                    <div class="send-btn">
-                                        <button type="submit" class="btn btn-md button-theme">Send Message</button>
-                                    </div>
-                                </div>
+
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -540,26 +432,30 @@ $row = $result->fetch_assoc();
                         <h5 class="sidebar-title">Hitelkalkulátor</h5>
                         <div class="s-border"></div>
                         <div class="m-border"></div>
-                        <form action="#" method="GET" enctype="multipart/form-data">
+                        <form action="" >
                             <div class="form-group">
                                 <label class="form-label">Az ingatlan ára</label>
-                                <input type="text" class="form-control" value="<?php echo $row["price"];?>">
+                                <input type="number" class="form-control" value="<?php echo $row["price"];?>">
+                            </div>
+                            <div class="range-slider">
+                                <label>THM mértéke (%)</label>
+                                <div data-min="0" data-max="100" placeholder="12" data-min-name="min_area" data-max-name="max_area"
+                                     data-unit="%" class="range-slider-ui ui-slider" aria-disabled="false"></div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="range-slider">
+                                <label>Törlesztés ideje (hónap)</label>
+                                <div data-min="0" data-max="120" placeholder="7" data-min-name="min_area" data-max-name="max_area"
+                                     data-unit="Hónap" class="range-slider-ui ui-slider" aria-disabled="false"></div>
+                                <div class="clearfix"></div>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Interest Rate (%)</label>
-                                <input type="text" class="form-control" placeholder="12%">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Period In Months</label>
-                                <input type="text" class="form-control" placeholder="6 Months">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Down PaymenT</label>
-                                <input type="text" class="form-control" placeholder="$32,300">
+                                <label class="form-label">Előtörlesztés összege ideje (forint)</label>
+                                <input type="number" class="form-control" placeholder="100 000 Ft">
                             </div>
 
                             <div class="form-group mb-0">
-                                <button type="submit" class="btn button-theme btn-md btn-block">Cauculate</button>
+                                <button type="submit" class="btn button-theme btn-md btn-block">Kiszámol</button>
                             </div>
                         </form>
                     </div>
