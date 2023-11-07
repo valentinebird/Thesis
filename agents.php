@@ -393,57 +393,8 @@ session_start();
     </div>
 </div >
 
-<!-- Footer start -->
-<footer class="footer">
-    <div class="container footer-inner">
-        <div class="row">
-            <div class="col-xl-4 col-lg-3 col-md-6 col-sm-6">
-                <div class="footer-item">
-                    <h4>Kapcsolat</h4>
-                    <ul class="contact-info">
-                        <li>
-                            360 Harvest St, North Subract, London. United States Of Amrica.
-                        </li>
-                        <li>
-                            <a href="mailto:sales@hotelempire.com">info@madar-szakdolgozat.online</a>
-                        </li>
 
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6">
-                <div class="footer-item">
-                    <h4>Gyorlikek </h4>
-                    <ul class="links">
-                        <li>
-                            <a>Rólunk</a>
-                        </li>
-                        <li>
-                            <a>Szolgáltatások</a>
-                        </li>
-
-                        <li>
-                            <a> Adatkezelés</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</footer>
-
-<!-- Sub footer start -->
-<div class="sub-footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-12">
-                <p class="copy">© 2022  Ingatlan nyilvántartó portál, webes környezetben.</p>
-            </div>
-        </div>
-    </div>
-</div>
+<?php include 'footer.html'; ?>
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>

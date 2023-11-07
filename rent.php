@@ -929,43 +929,9 @@ $result = $conn->query($sql);
     </div>
 </div>
 
-<!-- Footer start -->
-<footer class="footer">
-    <div class="container footer-inner">
-        <div class="row">
-            <div class="col-xl-4 col-lg-3 col-md-6 col-sm-6">
-                <div class="footer-item">
-                    <h4>Kapcsolat</h4>
-                    <ul class="contact-info">
-                        <li>
-                            2092 Budakeszi Erkel Ferenc utca 57.
-                        </li>
-                        <li>
-                            <a href="mailto:info@madar-szakdolgozat.online.">info@madar-szakdolgozat.online</a>
-                        </li>
+<?php include 'footer.html'; ?>
 
-                    </ul>
-                </div>
-            </div>
 
-            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6">
-
-            </div>
-
-        </div>
-    </div>
-</footer>
-
-<!-- Sub footer start -->
-<div class="sub-footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-12">
-                <p class="copy">© 2022 Ingatlan nyilvántartó portál, webes környezetben.</p>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>

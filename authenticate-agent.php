@@ -19,7 +19,6 @@ if (!isset($_POST['username'], $_POST['password'])) {
 	// Could not get the data that should have been sent.
     echo 'A felhasználónév vagy jelszó nincs kitöltve';
     exit();
-
 }
 // Prepare our SQL, preparing the SQL statement will prevent SQL injection.
 if ($stmt = $con->prepare('SELECT username, password FROM AGENT WHERE username = ?')) {
@@ -60,3 +59,4 @@ if ($stmt = $con->prepare('SELECT username, password FROM AGENT WHERE username =
     exit();
 }
 ?>
+
