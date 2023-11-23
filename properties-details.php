@@ -19,11 +19,22 @@ $sql = "SELECT * FROM PROPERTY WHERE id = $id;";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 
-//Query for agent
-$agentID_of_thisproperty = $row["agent_id"];
-$sqlforAgent = "SELECT * FROM AGENT WHERE id = $agentID_of_thisproperty;";
-$result_ofporperty = $conn->query($sqlforAgent);
-$rowagent = $result_ofporperty->fetch_assoc();
+$propertyExists = $result->num_rows > 0;
+
+
+
+if ($propertyExists) {
+    //Query for agent
+    $agentID_of_thisproperty = $row["agent_id"];
+    $sqlforAgent = "SELECT * FROM AGENT WHERE id = $agentID_of_thisproperty;";
+    $result_ofporperty = $conn->query($sqlforAgent);
+    $rowagent = $result_ofporperty->fetch_assoc();
+    $result = $conn->query($sql);
+
+} else {
+    $row = null; // Set row to null if property does not exist
+}
+
 
 ?>
 
@@ -88,7 +99,7 @@ $rowagent = $result_ofporperty->fetch_assoc();
         </div>
     </div>
 </div>
-
+<?php if($propertyExists){ ?>
 <!-- Properties Details page start -->
 <div class="properties-details-page content-area-7">
     <div class="container">
@@ -346,6 +357,9 @@ $rowagent = $result_ofporperty->fetch_assoc();
         </div>
     </div>
 </div>
+<?php }else{
+    echo "<h1>Nincs ilyen ingatlan</h1>";
+}?>
 
 <?php include 'footer.html'; ?>
 

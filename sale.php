@@ -110,15 +110,13 @@ $result = $conn->query($sql);
                 <!-- Property box 2 start -->
                 <?php
                 if ($result->num_rows > 0) {
-
                     while ($row = $result->fetch_assoc()) { ?>
                         <div class="property-box-2">
                             <div class="row">
                                 <div class="col-lg-5 col-md-5 col-pad">
                                     <a href="properties-details.php?id=<?php echo $row['id']; ?>" class="property-img">
-                                        <img src="img/cube.gif" alt="properties" class="img-fluid">
+                                        <img src="img/property_pics/default_rent.jpeg" alt="properties" class="img-fluid">
                                         <div class="listing-badges">
-                                            <span class="featured">Kiemelt</span>
                                             <span class="listing-time">Eladó</span>
                                         </div>
                                         <div class="price-box"><?php echo $row["price"]; ?><small>/ Ft</small></div>
@@ -152,9 +150,6 @@ $result = $conn->query($sql);
                                         </ul>
                                     </div>
                                     <div class="footer clearfix">
-                                        <div class="pull-left days">
-                                            <a><i class="fa fa-user"></i> <?php echo $row["agent_id"]; ?></a>
-                                        </div>
                                         <div class="pull-right">
                                             <a><i class="flaticon-time"></i> <?php echo $row["upload_date"]; ?></a>
                                         </div>

@@ -40,7 +40,6 @@ function allapottarto($kulcs)
     }
 }
 
-
 $msg = "";
 
 // If upload button is clicked ...
@@ -49,9 +48,6 @@ if (isset($_POST['upload'])) {
     //Check the values is okay!!!
 
     //actiual
-
-
-
 
     if (checkifPOST_EXIST("property_name")) {
         $result["property_name"] = $_POST["property_name"];
@@ -77,7 +73,6 @@ if (isset($_POST['upload'])) {
 
     } else {
         $errors["price"] = "Az ár  nincs kitöltve";
-
     }
 
     if (checkifPOST_EXIST("city")) {
@@ -205,7 +200,7 @@ if (isset($_POST['upload'])) {
          echo $result["has_wifi"];
          echo $result["property_description"];*/
         $db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-        $sql = "insert into PROPERTY (property_name, is_for_sale, price, city, address, size, level_number, rooms, bath_rooms, type, property_condition, heating_type, has_garage, pool, has_wifi, property_description, photo_filename, agent_id, is_sold)
+        $sql = "insert into PROPERTY (property_name, is_for_sale, price, city, address, size, level_number, rooms, bath_rooms, type, property_condition, heating_type, has_garage, pool, has_wifi, property_description, agent_id, is_sold)
 VALUES(
     '$property_name',
     $is_for_sale,
@@ -223,7 +218,6 @@ VALUES(
     $pool,
     $has_wifi,
     '$property_description',
-    NULL,
     1,
     0);";
 

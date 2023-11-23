@@ -18,6 +18,19 @@ $result = $conn->query($sql);
 
 
 //$conn->close();
+
+function rent_picture($id) {
+    global $conn; // Ensure that $conn is accessible within the function
+    $sql = "SELECT * FROM PICTURE WHERE property_id = $id;";
+    $result = $conn->query($sql);
+    $pictureExists = $result->num_rows > 0;
+    if ($pictureExists) {
+        $row = $result->fetch_assoc();
+        return $row["filename"];
+    } else {
+        return "/img/property_pics/default_rent.jpeg";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -119,12 +132,11 @@ $result = $conn->query($sql);
                             <div class="row">
                                 <div class="col-lg-5 col-md-5 col-pad">
                                     <a href="properties-details.php?id=<?php echo $row['id']; ?>" class="property-img">
-                                        <img src="img/cube.gif" alt="properties" class="img-fluid">
+                                        <img src="<?php echo rent_picture($row['id']); ?>" alt="properties" class="img-fluid">
                                         <div class="listing-badges">
-                                            <span class="featured">Kiemelt</span>
                                             <span class="listing-time">Kiadó</span>
                                         </div>
-                                        <div class="price-box"><?php echo $row["price"]; ?><small>/ Ft</small></div>
+                                        <div class="price-box"><?php echo $row["price"]; ?><small> Ft</small></div>
                                     </a>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-pad">
@@ -835,8 +847,6 @@ $result = $conn->query($sql);
 </div>
 
 <?php include 'footer.html'; ?>
-
-
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>
