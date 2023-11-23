@@ -65,106 +65,13 @@ if ($conn->connect_error) {
 $sql = "SELECT * FROM AGENT;";
 $result = $conn->query($sql);
 
-
 ?>
 
 <!-- Top header start -->
-<header class="top-header top-header-bg none-992" id="top-header-2">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 col-md-4 col-sm-5">
-                <div class="list-inline">
-                    <?php
-                    if ($_SESSION['loggedin']) { ?>
-                        <a href="logout.php" class="sign-in"><i class="fa fa-sign-out"></i>Kijelentkezés</a>
-                        <a href="index.php" class="sign-in"><i class="fa fa-trophy"></i>Üdvözlünk <?print $_SESSION['name'] ?></a>
-
-                        <?php
-                        if($_SESSION['is_agent']){
-                            ?>
-                            <a href="submit-property.php" class="sign-in"><i class="fa fa-upload"></i>Új ingatlan feltöltése</a>
-                            <?php
-                        }
-                        ?>
-                        <?php
-
-                    }else{
-                        ?>
-                        <i class="fa fa-trophy"></i>Jelentkezz be az oldal használatához!
-                        <?php
-                    }
-                    ?>
-
-                </div>
-
-            </div>
-            <div class="col-lg-6 col-md-4 col-sm-5">
-                <ul class="top-social-media pull-right">
-                    <li>
-                        <a href="login-as-agent.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés ingatlan ügynökként!</a>
-                    </li>
-                    <li>
-                        <a href="login.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés</a>
-                    </li>
-                    <li>
-                        <a href="signup.html" class="sign-in"><i class="fa fa-user"></i> Regisztráció</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</header>
+<?php include 'header.html'; ?>
 <!-- Top header end -->
 
-<!-- Main header start -->
-<header class="main-header">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand logos" href="index.php">
-                <img src="img/logos/logo.png" alt="logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav header-ml">
-                    <li class="nav-item  active">
-                        <a class="nav-link" href="index.php" id="navbarDropdownMenuLink">
-                            Főoldal
-                        </a>
 
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ingatlanok
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="sale.php">Eladó</a></li>
-                            <li><a class="dropdown-item" href="rent.php">Kiadó</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="agents.php" id="navbarDropdownMenuLink2"   >
-                            Ügynökeink
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="contact.php" id="navbarDropdownMenuLink5">
-                            Kapcsolat
-                        </a>
-                    </li>
-                </ul>
-                </li>
-                </ul>
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
-</header>
 
 <!-- Sub banner start -->
 <div class="sub-banner">
@@ -178,32 +85,6 @@ $result = $conn->query($sql);
 <!-- Our team 3 start -->
 <div class="our-team-3 content-area">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="option-bar">
-                    <div class="float-left">
-                        <h4>
-                            <span class="heading-icon">
-                                <i class="fa fa-th-large"></i>
-                            </span>
-                            <span class="title-name">Agent Grid</span>
-                        </h4>
-                    </div>
-                    <div class="float-right cod-pad">
-                        <div class="sorting-options">
-                            <select class="sorting">
-                                <option>New To Old</option>
-                                <option>Old To New</option>
-                                <option>Properties (High To Low)</option>
-                                <option>Properties (Low To High)</option>
-                            </select>
-                            <a href="agent-list-2.html" class="change-view-btn"><i class="fa fa-th-list"></i></a>
-                            <a href="agent-grid-2.html" class="change-view-btn active-view-btn"><i class="fa fa-th-large"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="clearfix"></div>
         <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-12">

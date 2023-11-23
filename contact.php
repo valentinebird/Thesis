@@ -46,88 +46,14 @@
 <div class="page_loader"></div>
 
 <!-- Top header start -->
-<header class="top-header top-header-bg none-992" id="top-header-2">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 col-md-8 col-sm-7">
-                <div class="list-inline">
+<?php include 'header.html'; ?>
 
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-4 col-sm-5">
-                <ul class="top-social-media pull-right">
-                    <li>
-                        <a href="login.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés</a>
-                    </li>
-                    <li>
-                        <a href="signup.html" class="sign-in"><i class="fa fa-user"></i> Regisztráció</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</header>
-<!-- Top header end -->
-
-<!-- Main header start -->
-<header class="main-header">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand logos" href="index.php">
-                <img src="img/logos/logo.png" alt="logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav header-ml">
-                    <li class="nav-item  active">
-                        <a class="nav-link" href="index.php" id="navbarDropdownMenuLink">
-                            Főoldal
-                        </a>
-
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ingatlanok
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="sale.php">Eladó</a></li>
-                            <li><a class="dropdown-item" href="rent.php">Kiadó</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="agents.php" id="navbarDropdownMenuLink2"   >
-                            Ügynökeink
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="contact.php" id="navbarDropdownMenuLink5">
-                            Kapcsolat
-                        </a>
-                    </li>
-                </ul>
-                </li>
-                </ul>
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
-</header>
 
 <!-- Sub banner start -->
 <div class="sub-banner">
     <div class="container">
         <div class="page-name">
-            <h1>Contact Us</h1>
-            <ul>
-                <li><a href="index.php">Index</a></li>
-                <li><span>/</span>Contact Us</li>
-            </ul>
+            <h1>Kapcsolat</h1>
         </div>
     </div>
 </div>

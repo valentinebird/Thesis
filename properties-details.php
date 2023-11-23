@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 
 
-$id  = $_GET['id'];
+$id = $_GET['id'];
 //Query for this property
 $sql = "SELECT * FROM PROPERTY WHERE id = $id;";
 $result = $conn->query($sql);
@@ -30,7 +30,7 @@ $rowagent = $result_ofporperty->fetch_assoc();
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <title>Eladó</title>
+    <title>Az ingtalan adatai</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
 
@@ -77,106 +77,8 @@ $rowagent = $result_ofporperty->fetch_assoc();
 <div class="page_loader"></div>
 
 <!-- Top header start -->
-<header class="top-header top-header-bg none-992" id="top-header-2">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 col-md-4 col-sm-5">
-                <div class="list-inline">
-                    <?php
-                    if ($_SESSION['loggedin']) { ?>
-                        <a href="logout.php" class="sign-in"><i class="fa fa-sign-out"></i>Kijelentkezés</a>
-                        <a href="index.php" class="sign-in"><i
-                                    class="fa fa-trophy"></i>Üdvözlünk <? print $_SESSION['name'] ?></a>
+<?php include 'header.html'; ?>
 
-                        <?php
-                        if ($_SESSION['is_agent']) {
-                            ?>
-                            <a href="submit-property.php" class="sign-in"><i class="fa fa-upload"></i>Új ingatlan
-                                feltöltése</a>
-                            <?php
-                        }
-                        ?>
-                        <?php
-
-                    } else {
-                        ?>
-                        <i class="fa fa-trophy"></i>Jelentkezz be az oldal használatához!
-                        <?php
-                    }
-                    ?>
-
-                </div>
-
-            </div>
-            <div class="col-lg-6 col-md-4 col-sm-5">
-                <ul class="top-social-media pull-right">
-                    <li>
-                        <a href="login-as-agent.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés
-                            ingatlan ügynökként!</a>
-                    </li>
-                    <li>
-                        <a href="login.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés</a>
-                    </li>
-                    <li>
-                        <a href="signup.html" class="sign-in"><i class="fa fa-user"></i> Regisztráció</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</header>
-<!-- Top header end -->
-
-<!-- Main header start -->
-<header class="main-header">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand logos" href="index.php">
-                <img src="img/logos/logo.png" alt="logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav header-ml">
-                    <li class="nav-item  active">
-                        <a class="nav-link" href="index.php" id="navbarDropdownMenuLink">
-                            Főoldal
-                        </a>
-
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink3" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            Ingatlanok
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="sale.php">Eladó</a></li>
-                            <li><a class="dropdown-item" href="rent.php">Kiadó</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="agents.php" id="navbarDropdownMenuLink2">
-                            Ügynökeink
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="contact.php" id="navbarDropdownMenuLink5">
-                            Kapcsolat
-                        </a>
-                    </li>
-                </ul>
-
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
-</header>
 <!-- Sub banner start -->
 <div class="sub-banner">
     <div class="container">
@@ -199,11 +101,13 @@ $rowagent = $result_ofporperty->fetch_assoc();
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="pull-left">
-                                        <h3><?php echo  $row["property_name"]; ?></h3>
-                                        <p><i class="fa fa-map-marker"></i> <?php echo  $row["address"]; ?> <?php echo  $row["city"]; ?></p>
+                                        <h3><?php echo $row["property_name"]; ?></h3>
+                                        <p>
+                                            <i class="fa fa-map-marker"></i> <?php echo $row["address"]; ?> <?php echo $row["city"]; ?>
+                                        </p>
                                     </div>
                                     <div class="pull-right">
-                                        <h3><span class="text-right"> <?php echo  $row["price"]; ?> Forint</span></h3>
+                                        <h3><span class="text-right"> <?php echo $row["price"]; ?> Forint</span></h3>
                                     </div>
                                 </div>
                             </div>
@@ -262,15 +166,18 @@ $rowagent = $result_ofporperty->fetch_assoc();
                     <div class="tabbing tabbing-box tb-2 mb-40">
                         <ul class="nav nav-tabs" id="carTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active show" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="one" aria-selected="false">Leírás</a>
+                                <a class="nav-link active show" id="one-tab" data-toggle="tab" href="#one" role="tab"
+                                   aria-controls="one" aria-selected="false">Leírás</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" id="three-tab" data-toggle="tab" href="#three" role="tab" aria-controls="three" aria-selected="true">Részletek</a>
+                                <a class="nav-link" id="three-tab" data-toggle="tab" href="#three" role="tab"
+                                   aria-controls="three" aria-selected="true">Részletek</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" id="5-tab" data-toggle="tab" href="#5" role="tab" aria-controls="5" aria-selected="true">Helyszín</a>
+                                <a class="nav-link" id="5-tab" data-toggle="tab" href="#5" role="tab" aria-controls="5"
+                                   aria-selected="true">Helyszín</a>
                             </li>
 
                         </ul>
@@ -281,8 +188,8 @@ $rowagent = $result_ofporperty->fetch_assoc();
                                         Leírás
 
                                     </h3>
-                                    <?php echo $row["property_description"];?>
-                                    </div>
+                                    <?php echo $row["property_description"]; ?>
+                                </div>
                             </div>
 
                             <div class="tab-pane fade " id="three" role="tabpanel" aria-labelledby="three-tab">
@@ -292,25 +199,26 @@ $rowagent = $result_ofporperty->fetch_assoc();
                                         <div class="col-md-4 col-sm-6">
                                             <ul>
                                                 <li>
-                                                    <strong>Az ingatlan Id:</strong><?php echo $row["id"];?>
+                                                    <strong>Az ingatlan Id:</strong><?php echo $row["id"]; ?>
                                                 </li>
                                                 <li>
-                                                    <strong>Ár:</strong><?php echo $row["price"];?> Ft
+                                                    <strong>Ár:</strong><?php echo $row["price"]; ?> Ft
                                                 </li>
                                                 <li>
-                                                    <strong>Típus:</strong><?php echo $row["type"];?>
+                                                    <strong>Típus:</strong><?php echo $row["type"]; ?>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="col-md-4 col-sm-6">
                                             <ul>
                                                 <li>
-                                                    <strong>Méret:</strong><?php echo $row["size"];?>m&#178;
+                                                    <strong>Méret:</strong><?php echo $row["size"]; ?>m&#178;
                                                 </li>
 
 
                                                 <li>
-                                                    <strong>Meghirdetési időpont</strong><?php echo $row["upload_date"];?>
+                                                    <strong>Meghirdetési
+                                                        időpont</strong><?php echo $row["upload_date"]; ?>
                                                 </li>
 
                                             </ul>
@@ -318,13 +226,17 @@ $rowagent = $result_ofporperty->fetch_assoc();
                                         <div class="col-md-4 col-sm-6">
                                             <ul>
                                                 <li>
-                                                    <strong>Eladva</strong><?php if ($row["is_sold"] ==0){echo "Még nincs eladva";}else{echo "Eladva";}?>
+                                                    <strong>Eladva</strong><?php if ($row["is_sold"] == 0) {
+                                                        echo "Még nincs eladva";
+                                                    } else {
+                                                        echo "Eladva";
+                                                    } ?>
                                                 </li>
                                                 <li>
-                                                    <strong>Város:</strong><?php echo $row["city"];?>
+                                                    <strong>Város:</strong><?php echo $row["city"]; ?>
                                                 </li>
                                                 <li>
-                                                    <strong>Cím: </strong><?php echo $row["address"];?>
+                                                    <strong>Cím: </strong><?php echo $row["address"]; ?>
                                                 </li>
                                             </ul>
                                         </div>
@@ -339,10 +251,12 @@ $rowagent = $result_ofporperty->fetch_assoc();
                                         <div class="col-md-4 col-sm-4 col-xs-12">
                                             <ul class="condition">
                                                 <li>
-                                                    <i class="flaticon-furniture"></i><?php echo $row["rooms"];?> Bedroom
+                                                    <i class="flaticon-furniture"></i><?php echo $row["rooms"]; ?>
+                                                    Bedroom
                                                 </li>
                                                 <li>
-                                                    <i class="flaticon-holidays"></i><?php echo $row["bath_rooms"];?> Bathroom
+                                                    <i class="flaticon-holidays"></i><?php echo $row["bath_rooms"]; ?>
+                                                    Bathroom
                                                 </li>
                                             </ul>
                                         </div>
@@ -355,20 +269,20 @@ $rowagent = $result_ofporperty->fetch_assoc();
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                             <ul class="amenities">
-                                                <?php if($row["has_wifi"]==1){ ?>
-                                                <li>
-                                                    <i class="flaticon-connection"></i>Wifi
-                                                </li>
+                                                <?php if ($row["has_wifi"] == 1) { ?>
+                                                    <li>
+                                                        <i class="flaticon-connection"></i>Wifi
+                                                    </li>
                                                 <?php } ?>
-                                                <?php if($row["has_garage"]==1){ ?>
-                                                <li>
-                                                    <i class="flaticon-vehicle"></i>Garázs
-                                                </li>
+                                                <?php if ($row["has_garage"] == 1) { ?>
+                                                    <li>
+                                                        <i class="flaticon-vehicle"></i>Garázs
+                                                    </li>
                                                 <?php } ?>
-                                                <?php if($row["pool"]==1){ ?>
-                                                <li>
-                                                    <i class="flaticon-beach"></i>Medence
-                                                </li>
+                                                <?php if ($row["pool"] == 1) { ?>
+                                                    <li>
+                                                        <i class="flaticon-beach"></i>Medence
+                                                    </li>
                                                 <?php } ?>
 
                                             </ul>
@@ -412,7 +326,9 @@ $rowagent = $result_ofporperty->fetch_assoc();
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <div class="form-group subject">
                                         <div>Az ingatlan közvetítő ügynök E-mail címe:</div>
-                                        <div><a href = "mailto: <?php echo $rowagent['email']; ?>"><?php echo $rowagent["email"]; ?></a></div>
+                                        <div>
+                                            <a href="mailto: <?php echo $rowagent['email']; ?>"><?php echo $rowagent["email"]; ?></a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -427,154 +343,11 @@ $rowagent = $result_ofporperty->fetch_assoc();
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-12">
-                <div class="sidebar-right">
-
-
-
-                    <!-- Financing calculator start -->
-                    <div class="contact-1 financing-calculator widget">
-                        <h5 class="sidebar-title">Hitelkalkulátor</h5>
-                        <div class="s-border"></div>
-                        <div class="m-border"></div>
-                        <form action="" >
-                            <div class="form-group">
-                                <label class="form-label">Az ingatlan ára</label>
-                                <input type="number" class="form-control" value="<?php echo $row["price"];?>">
-                            </div>
-                            <div class="range-slider">
-                                <label>THM mértéke (%)</label>
-                                <div data-min="0" data-max="100"  data-max-name="max_area"
-                                     data-unit="%" class="range-slider-ui ui-slider" aria-disabled="false"></div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="range-slider">
-                                <label>Törlesztés ideje (hónap)</label>
-                                <div data-min="0" data-max="50"  data-max-name="max_area"
-                                     data-unit="Hónap" class="range-slider-ui ui-slider" aria-disabled="false"></div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Előtörlesztés összege ideje (forint)</label>
-                                <input type="number" class="form-control" placeholder="100 000 Ft">
-                            </div>
-
-                            <div class="form-group mb-0">
-                                <button type="submit" class="btn button-theme btn-md btn-block">Kiszámol</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
 
-<!-- Footer start -->
-<footer class="footer">
-    <div class="container footer-inner">
-        <div class="row">
-            <div class="col-xl-4 col-lg-3 col-md-6 col-sm-6">
-                <div class="footer-item">
-                    <h4>Contact Us</h4>
-                    <ul class="contact-info">
-                        <li>
-                            360 Harvest St, North Subract, London. United States Of Amrica.
-                        </li>
-                        <li>
-                            <a href="mailto:sales@hotelempire.com">info@themevessel.com</a>
-                        </li>
-                        <li>
-                            <a href="tel:+55-417-634-7071">+1 347-465-0659</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6">
-                <div class="footer-item">
-                    <h4>Properties Types</h4>
-                    <ul class="links">
-                        <li>
-                            <a>Apartment</a>
-                        </li>
-                        <li>
-                            <a>Restaurant</a>
-                        </li>
-                        <li>
-                            <a>My Houses</a>
-                        </li>
-                        <li>
-                            <a>Villa & Condo</a>
-                        </li>
-                        <li>
-                            <a>Family House</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6">
-                <div class="footer-item">
-                    <h4>Quick Links</h4>
-                    <ul class="links">
-                        <li>
-                            <a>About Us</a>
-                        </li>
-                        <li>
-                            <a>Services</a>
-                        </li>
-                        <li>
-                            <a>Properties Details</a>
-                        </li>
-                        <li>
-                            <a>My Account</a>
-                        </li>
-                        <li>
-                            <a> Privacy Policy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-xl-4 col-lg-3 col-md-6 col-sm-6">
-                <div class="footer-item clearfix">
-                    <h4>Subscribe</h4>
-                    <div class="subscribe-box-2">
-                        <form class="form-inline" action="#" method="GET">
-                            <input type="text" class="form-control mb-sm-0" id="inlineFormInputName4" placeholder="Your Email">
-                            <button type="submit" class="btn"><i class="fa fa-paper-plane"></i></button>
-                        </form>
-                    </div>
-                    <ul class="social-list clearfix">
-                        <li><a href="#" class="facebook-bg"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#" class="twitter-bg"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#" class="google-bg"><i class="fa fa-google-plus"></i></a></li>
-                        <li><a href="#" class="rss-bg"><i class="fa fa-rss"></i></a></li>
-                        <li><a href="#" class="linkedin-bg"><i class="fa fa-linkedin"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
-
-<!-- Sub footer start -->
-<div class="sub-footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-12">
-                <p class="copy">© 2020 <a href="#">Theme Vessel.</a> Trademarks and brands are the property of their respective owners.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Full Page Search -->
-<div id="full-page-search">
-    <button type="button" class="close">×</button>
-    <form action="index.php#">
-        <input type="search" value="" placeholder="type keyword(s) here" />
-        <button type="submit" class="btn btn-sm button-theme">Search</button>
-    </form>
-</div>
+<?php include 'footer.html'; ?>
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>
