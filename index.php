@@ -5,7 +5,7 @@ session_start();
 require "dbconfig.php";
 
 $conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$conn->set_charset("utf8");
+$conn->set_charset("utf8mb4");
 
 // Check connection
 if ($conn->connect_error) {

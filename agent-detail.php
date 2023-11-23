@@ -1,7 +1,43 @@
+<?php
+/*
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+*/
+session_start();
+require "dbconfig.php";
+
+$conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$conn->set_charset("utf8mb4");
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+$agent_id = isset($_GET['id']) ? $_GET['id'] : die('Agent ID not specified.');
+$agent_id = (int)$agent_id; // Casting to int is a good practice for IDs
+
+$stmt = $conn->prepare("SELECT * FROM AGENT WHERE id = ?");
+$stmt->bind_param("i", $agent_id);
+$stmt->execute();
+
+// Instead of get_result, use bind_result to fetch the data
+$meta = $stmt->result_metadata();
+$parameters = [];
+while ($field = $meta->fetch_field()) {
+    $parameters[] = &$row[$field->name];
+}
+
+call_user_func_array([$stmt, 'bind_result'], $parameters);
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
-    <title>Housy - Real Estate HTML5 Template</title>
+    <title>Ingatlanügynökeink</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
 
@@ -15,25 +51,27 @@
     <link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="fonts/flaticon/font/flaticon.css">
     <link rel="stylesheet" type="text/css" href="fonts/linearicons/style.css">
-    <link rel="stylesheet" type="text/css"  href="css/jquery.mCustomScrollbar.css">
-    <link rel="stylesheet" type="text/css"  href="css/dropzone.css">
-    <link rel="stylesheet" type="text/css"  href="css/slick.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" type="text/css" href="css/dropzone.css">
+    <link rel="stylesheet" type="text/css" href="css/slick.css">
 
     <!-- Custom stylesheet -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" id="style_sheet" href="css/skins/default.css">
 
     <!-- Favicon icon -->
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" >
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 
     <!-- Google fonts -->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CRoboto:300,400,500,700&display=swap">
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CRoboto:300,400,500,700&display=swap">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link rel="stylesheet" type="text/css" href="css/ie10-viewport-bug-workaround.css">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!--[if lt IE 9]>
+    <script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="js/ie-emulation-modes-warning.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -54,18 +92,20 @@
                     <?php
                     if ($_SESSION['loggedin']) { ?>
                         <a href="logout.php" class="sign-in"><i class="fa fa-sign-out"></i>Kijelentkezés</a>
-                        <a href="profile.php" class="sign-in"><i class="fa fa-trophy"></i>Profilom: <?print $_SESSION['name'] ?></a>
+                        <a href="profile.php" class="sign-in"><i
+                                    class="fa fa-trophy"></i>Profilom: <? print $_SESSION['name'] ?></a>
 
                         <?php
-                        if($_SESSION['is_agent']){
+                        if ($_SESSION['is_agent']) {
                             ?>
-                            <a href="submit-property.php" class="sign-in"><i class="fa fa-upload"></i>Új ingatlan feltöltése</a>
+                            <a href="submit-property.php" class="sign-in"><i class="fa fa-upload"></i>Új ingatlan
+                                feltöltése</a>
                             <?php
                         }
                         ?>
                         <?php
 
-                    }else{
+                    } else {
                         ?>
                         <i class="fa fa-trophy"></i>Jelentkezz be az oldal használatához!
                         <?php
@@ -77,9 +117,10 @@
             </div>
             <div class="col-lg-6 col-md-4 col-sm-5">
                 <ul class="top-social-media pull-right">
-                    <?php  if (!$_SESSION['loggedin']) { ?>
+                    <?php if (!$_SESSION['loggedin']) { ?>
                         <li>
-                            <a href="login-as-agent.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés ingatlan ügynökként!</a>
+                            <a href="login-as-agent.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés
+                                ingatlan ügynökként!</a>
                         </li>
                         <li>
                             <a href="login.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés</a>
@@ -148,11 +189,7 @@
 <div class="sub-banner">
     <div class="container">
         <div class="page-name">
-            <h1>Agent Detail</h1>
-            <ul>
-                <li><a href="index.php">Index</a></li>
-                <li><span>/</span>Agent Detail</li>
-            </ul>
+            <h1>Ingatlanügynök adatlap</h1>
         </div>
     </div>
 </div>
@@ -161,7 +198,9 @@
 <div class="agent-page content-area">
     <div class="container">
         <!-- Heading -->
-        <h1 class="heading-2">Agent Details</h1>
+        <?php
+        if ($stmt->fetch()) {
+        ?>
         <div class="row">
             <div class="col-lg-8">
                 <div class="row team-4 team-6">
@@ -172,254 +211,48 @@
                     </div>
                     <div class="col-xl-7 col-lg-7 col-md-7 col-pad align-self-center">
                         <div class="detail">
-                            <h5>Creative Director</h5>
-                            <h4>
-                                <a href="#">John Pitarshon</a>
-                            </h4>
-
+                            <h4><?php echo $row["real_name"]; ?></h4>
+                            <h5><?php echo $row["work_title"]; ?></h5>
                             <div class="contact">
                                 <ul>
                                     <li>
-                                        <span>Address:</span><a href="#"> 44 New Design Street,</a>
+                                        <span>Email:</span><a
+                                                href="mailto:<?php echo $row['email']; ?>"> <?php echo $row["email"]; ?></a>
                                     </li>
                                     <li>
-                                        <span>Email:</span><a href="mailto:info@themevessel.com"> info@themevessel.com</a>
-                                    </li>
-                                    <li>
-                                        <span>Mobile:</span><a href="tel:+554XX-634-7071"> +55 4XX-634-7071</a>
-                                    </li>
-                                    <li>
-                                        <span>Fax:</span><a href="#"> +0477 85X6 552</a>
-                                    </li>
-                                    <li>
-                                        <span>Website:</span><a href="#"> www.themevesselcom</a>
+                                        <span>Mobile:</span><a
+                                                href="tel:<?php echo $row["phone"]; ?>"> <?php echo $row["phone"]; ?></a>
                                     </li>
                                 </ul>
                             </div>
-
-                            <ul class="social-list clearfix">
-                                <li><a href="#" class="facebook-bg"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#" class="twitter-bg"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#" class="google-bg"><i class="fa fa-google-plus"></i></a></li>
-                                <li><a href="#" class="linkedin-bg"><i class="fa fa-linkedin"></i></a></li>
-                            </ul>
                         </div>
                     </div>
                 </div>
                 <div class="agent-biography">
-                    <h3 class="heading-2">Biography</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla. Nulla posuere sapien vitae lectus suscipit, et pulvinar nisi tincidunt. Aliquam erat volutpat. Curabitur convallis fringilla diam sed aliquam. Sed tempor iaculis massa faucibus feugiat. In fermentum facilisis massa, a consequat purus viverra a.</p>
-                    <p>Ut euismod ultricies sollicitudin. Curabitur sed dapibus nulla. Nulla eget iaculis lectus. Mauris ac maximus neque. Nam in mauris quis libero sodales eleifend. Morbi varius, nulla sit amet rutrum elementum</p>
-                    <p>Vestibulum vel mauris et odio lobortis laoreet eget eu magna. Proin mauris erat, luctus at nulla ut, lobortis mattis magna. Morbi a arcu lacus. Maecenas tristique velit vitae nisi consectetur, in mattis diam sodales. Mauris sagittis sem mattis justo bibendum, a eleifend dolor facilisis. Mauris nec pharetra tortor, ac aliquam felis. Nunc pretium erat sed quam consectetur fringilla. Aliquam ultricies nunc porta metus interdum mollis.</p>
+                    <h3 class="heading-2">Bemutatkozás</h3>
+                    <p><?php echo $row["description"]; ?></p>
                     <br>
-                    <h3 class="heading-2">Recently Properties</h3>
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6">
-                            <div class="property-box">
-                                <div class="property-thumbnail">
-                                    <a href="properties-details.php" class="property-img">
-                                        <div class="listing-badges">
-                                            <span class="featured">Featured</span>
-                                            <span class="listing-time">For Sale</span>
-                                        </div>
-                                        <div class="price-box">$24,000<small>/mo</small></div>
-                                        <img class="d-block w-100" src="http://placehold.it/350x233" alt="properties">
-                                    </a>
-                                </div>
-                                <div class="detail">
-                                    <h1 class="title">
-                                        <a href="properties-details.php">Modern Family Home</a>
-                                    </h1>
-                                    <div class="location">
-                                        <a href="properties-details.php">
-                                            <i class="fa fa-map-marker"></i>123 Kathal St. Tampa City
-                                        </a>
-                                    </div>
-                                    <ul class="facilities-list clearfix">
-                                        <li>
-                                            <i class="flaticon-square"></i> 4800 sq ft
-                                        </li>
-                                        <li>
-                                            <i class="flaticon-furniture"></i> 3 Beds
-                                        </li>
-                                        <li>
-                                            <i class="flaticon-holidays"></i> 2 Baths
-                                        </li>
-                                        <li>
-                                            <i class="flaticon-vehicle"></i> 1 Garage
-                                        </li>
-                                        <li>
-                                            <i class="flaticon-window"></i> 3 Balcony
-                                        </li>
-                                        <li>
-                                            <i class="flaticon-monitor"></i> TV
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="footer clearfix">
-                                    <div class="pull-left days">
-                                        <a><i class="fa fa-user"></i> Jhon Doe</a>
-                                    </div>
-                                    <div class="pull-right">
-                                        <a><i class="flaticon-time"></i> 5 Days ago</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6">
-                            <div class="property-box">
-                                <div class="property-thumbnail">
-                                    <a href="properties-details.php" class="property-img">
-                                        <div class="listing-badges">
-                                            <span class="featured">Featured</span>
-                                            <span class="listing-time">For Sale</span>
-                                        </div>
-                                        <div class="price-box">$24,000<small>/mo</small></div>
-                                        <img class="d-block w-100" src="http://placehold.it/350x233" alt="properties">
-                                    </a>
-                                </div>
-                                <div class="detail">
-                                    <h1 class="title">
-                                        <a href="properties-details.php">Relaxing Apartment</a>
-                                    </h1>
-                                    <div class="location">
-                                        <a href="properties-details.php">
-                                            <i class="fa fa-map-marker"></i>123 Kathal St. Tampa City
-                                        </a>
-                                    </div>
-                                    <ul class="facilities-list clearfix">
-                                        <li>
-                                            <i class="flaticon-square"></i> 4800 sq ft
-                                        </li>
-                                        <li>
-                                            <i class="flaticon-furniture"></i> 3 Beds
-                                        </li>
-                                        <li>
-                                            <i class="flaticon-holidays"></i> 2 Baths
-                                        </li>
-                                        <li>
-                                            <i class="flaticon-vehicle"></i> 1 Garage
-                                        </li>
-                                        <li>
-                                            <i class="flaticon-window"></i> 3 Balcony
-                                        </li>
-                                        <li>
-                                            <i class="flaticon-monitor"></i> TV
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="footer clearfix">
-                                    <div class="pull-left days">
-                                        <a><i class="fa fa-user"></i> Jhon Doe</a>
-                                    </div>
-                                    <div class="pull-right">
-                                        <a><i class="flaticon-time"></i> 5 Days ago</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php
+                            }
+                    else {
+                        if ($stmt->errno) {
+                            die("Fetch failed: " . $stmt->error);
+                        } else {
+                            echo "<h1>Nincs ilyen ingatlanügynök!</h1>";
+                        }
+                    }
+                    $stmt->close();
+                    $conn->close();
+                    ?>
+
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="sidebar-right">
-                    <!-- Contact 1 start -->
-                    <div class="contact-2 widget reviews">
-                        <h3 class="sidebar-title">Reviews</h3>
-                        <div class="s-border"></div>
-                        <div class="m-border"></div>
-                        <form action="#" method="GET" enctype="multipart/form-data">
-                            <div class="rowo">
-                                <div class="form-group name">
-                                    <input type="text" name="name" class="form-control" placeholder="Name">
-                                </div>
-                                <div class="form-group email">
-                                    <input type="email" name="email" class="form-control" placeholder="Email">
-                                </div>
-                                <div class="form-group number">
-                                    <input type="text" name="phone" class="form-control" placeholder="Phone">
-                                </div>
-                                <div class="form-group message">
-                                    <textarea class="form-control" name="message" placeholder="Write message"></textarea>
-                                </div>
-                                <div class="send-btn">
-                                    <button type="submit" class="btn btn-md button-theme btn-block">Send Message</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- Latest reviews Start -->
-                    <div class="widget latest-reviews">
-                        <h3 class="sidebar-title">Reviews</h3>
-                        <div class="s-border"></div>
-                        <div class="m-border"></div>
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="#">
-                                    <img class="media-object" src="http://placehold.it/50x50" alt="avatar-1">
-                                </a>
-                            </div>
-                            <div class="media-body">
-                                <h3 class="media-heading"><a href="#">Emma Connor</a></h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiamrisus tortor, accumsan</p>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="#">
-                                    <img class="media-object" src="http://placehold.it/50x50" alt="avatar-2">
-                                </a>
-                            </div>
-                            <div class="media-body">
-                                <h3 class="media-heading"><a href="#">Martin Smith</a></h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiamrisus tortor, accumsan</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </div>
 
-<!-- Footer start -->
-<footer class="footer">
-    <div class="container footer-inner">
-        <div class="row">
-            <div class="col-xl-4 col-lg-3 col-md-6 col-sm-6">
-                <div class="footer-item">
-                    <h4>Kapcsolat</h4>
-                    <ul class="contact-info">
-                        <li>
-                            2092 Budakeszi Erkel Ferenc utca 57.
-                        </li>
-                        <li>
-                            <a href="mailto:info@madar-szakdolgozat.online.">info@madar-szakdolgozat.online</a>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6">
-
-            </div>
-
-        </div>
-    </div>
-</footer>
-
-<!-- Sub footer start -->
-<div class="sub-footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-12">
-                <p class="copy">© 2022 Ingatlan nyilvántartó portál, webes környezetben.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
+<?php include 'footer.html'; ?>
 
 
 <script src="js/jquery-2.2.0.min.js"></script>
@@ -444,8 +277,6 @@
 <script src="js/maps.js"></script>
 <script src="js/app.js"></script>
 
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="js/ie10-viewport-bug-workaround.js"></script>
 
 </body>
 </html>

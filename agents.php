@@ -1,6 +1,17 @@
 <?php
 
 session_start();
+session_start();
+require "dbconfig.php";
+
+$conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$conn->set_charset("utf8mb4");
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -47,7 +58,15 @@ session_start();
     <![endif]-->
 </head>
 <body>
+
 <div class="page_loader"></div>
+<?php
+
+$sql = "SELECT * FROM AGENT;";
+$result = $conn->query($sql);
+
+
+?>
 
 <!-- Top header start -->
 <header class="top-header top-header-bg none-992" id="top-header-2">
@@ -151,11 +170,7 @@ session_start();
 <div class="sub-banner">
     <div class="container">
         <div class="page-name">
-            <h1>Agent Grid</h1>
-            <ul>
-                <li><a href="index.php">Index</a></li>
-                <li><span>/</span>Agent Grid</li>
-            </ul>
+            <h1>Inhgatlanügynökeink</h1>
         </div>
     </div>
 </div>
@@ -192,203 +207,33 @@ session_start();
         <div class="clearfix"></div>
         <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-12">
+                <?php
+                if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) { ?>
                 <div class="team-2">
                     <div class="team-photo">
                         <img src="img/cube.gif" alt="agent-2" class="img-fluid">
                     </div>
                     <div class="team-details">
-                        <h6>Office Manager</h6>
-                        <h5><a href="agent-detail.php">Maria Blank</a></h5>
+                        <h6><?php echo $row["work_title"]; ?></h6>
+                        <h5><a href="agent-detail.php?id=<?php echo $row["id"]; ?>"><?php echo $row["real_name"]; ?></a></h5>
+
                         <div class="contact">
                             <p>
-                                <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
+                                <a href="mailto:<?php echo $row["email"]; ?>"><i class="fa fa-envelope-o"></i><?php echo $row["email"]; ?></a>
                             </p>
                             <p>
-                                <a href="tel:+554XX-634-7071"> <i class="fa fa-phone"></i>+55 4XX-634-7071</a>
-                            </p>
-                            <p>
-                                <a href="#"><i class="fa fa-skype"></i>sales.carshop</a>
+                                <a href="<?php echo $row["phone"]; ?>"> <i class="fa fa-phone"></i><?php echo $row["phone"]; ?></a>
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="team-2">
-                    <div class="team-photo">
-                        <img src="img/cube.gif" alt="agent-2" class="img-fluid">
-                    </div>
-                    <div class="team-details">
-                        <h6>Creative Director</h6>
-                        <h5><a href="agent-detail.php">John Pitarshon</a></h5>
-                        <div class="contact">
-                            <p>
-                                <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
-                            </p>
-                            <p>
-                                <a href="tel:+554XX-634-7071"> <i class="fa fa-phone"></i>+55 4XX-634-7071</a>
-                            </p>
-                            <p>
-                                <a href="#"><i class="fa fa-skype"></i>sales.carshop</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="team-2">
-                    <div class="team-photo">
-                        <img src="img/cube.gif" alt="agent-2" class="img-fluid">
-                    </div>
-                    <div class="team-details">
-                        <h6>Support Manager</h6>
-                        <h5><a href="agent-detail.php">Karen Paran</a></h5>
-                        <div class="contact">
-                            <p>
-                                <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
-                            </p>
-                            <p>
-                                <a href="tel:+554XX-634-7071"> <i class="fa fa-phone"></i>+55 4XX-634-7071</a>
-                            </p>
-                            <p>
-                                <a href="#"><i class="fa fa-skype"></i>sales.carshop</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="team-2">
-                    <div class="team-photo">
-                        <img src="img/cube.gif" alt="agent-2" class="img-fluid">
-                    </div>
-                    <div class="team-details">
-                        <h6>Support Manager</h6>
-                        <h5><a href="agent-detail.php">Karen Paran</a></h5>
-                        <div class="contact">
-                            <p>
-                                <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
-                            </p>
-                            <p>
-                                <a href="tel:+554XX-634-7071"> <i class="fa fa-phone"></i>+55 4XX-634-7071</a>
-                            </p>
-                            <p>
-                                <a href="#"><i class="fa fa-skype"></i>sales.carshop</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="team-2">
-                    <div class="team-photo">
-                        <img src="img/cube.gif" alt="agent-2" class="img-fluid">
-                    </div>
-                    <div class="team-details">
-                        <h6>Office Manager</h6>
-                        <h5><a href="agent-detail.php">Maria Blank</a></h5>
-                        <div class="contact">
-                            <p>
-                                <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
-                            </p>
-                            <p>
-                                <a href="tel:+554XX-634-7071"> <i class="fa fa-phone"></i>+55 4XX-634-7071</a>
-                            </p>
-                            <p>
-                                <a href="#"><i class="fa fa-skype"></i>sales.carshop</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="team-2">
-                    <div class="team-photo">
-                        <img src="img/cube.gif" alt="agent-2" class="img-fluid">
-                    </div>
-                    <div class="team-details">
-                        <h6>Creative Director</h6>
-                        <h5><a href="agent-detail.php">John Pitarshon</a></h5>
-                        <div class="contact">
-                            <p>
-                                <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
-                            </p>
-                            <p>
-                                <a href="tel:+554XX-634-7071"> <i class="fa fa-phone"></i>+55 4XX-634-7071</a>
-                            </p>
-                            <p>
-                                <a href="#"><i class="fa fa-skype"></i>sales.carshop</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="team-2">
-                    <div class="team-photo">
-                        <img src="img/cube.gif" alt="agent-2" class="img-fluid">
-                    </div>
-                    <div class="team-details">
-                        <h6>Creative Director</h6>
-                        <h5><a href="agent-detail.php">John Pitarshon</a></h5>
-                        <div class="contact">
-                            <p>
-                                <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
-                            </p>
-                            <p>
-                                <a href="tel:+554XX-634-7071"> <i class="fa fa-phone"></i>+55 4XX-634-7071</a>
-                            </p>
-                            <p>
-                                <a href="#"><i class="fa fa-skype"></i>sales.carshop</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="team-2">
-                    <div class="team-photo">
-                        <img src="img/cube.gif" alt="agent-2" class="img-fluid">
-                    </div>
-                    <div class="team-details">
-                        <h6>Support Manager</h6>
-                        <h5><a href="agent-detail.php">Karen Paran</a></h5>
-                        <div class="contact">
-                            <p>
-                                <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
-                            </p>
-                            <p>
-                                <a href="tel:+554XX-634-7071"> <i class="fa fa-phone"></i>+55 4XX-634-7071</a>
-                            </p>
-                            <p>
-                                <a href="#"><i class="fa fa-skype"></i>sales.carshop</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="team-2">
-                    <div class="team-photo">
-                        <img src="img/cube.gif" alt="agent-2" class="img-fluid">
-                    </div>
-                    <div class="team-details">
-                        <h6>Office Manager</h6>
-                        <h5><a href="agent-detail.php">Maria Blank</a></h5>
-                        <div class="contact">
-                            <p>
-                                <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>info@themevessel.com</a>
-                            </p>
-                            <p>
-                                <a href="tel:+554XX-634-7071"> <i class="fa fa-phone"></i>+55 4XX-634-7071</a>
-                            </p>
-                            <p>
-                                <a href="#"><i class="fa fa-skype"></i>sales.carshop</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php }
+            } else {
+                echo "<h1>Nincs Ingatlanugznok</h1>";
+            } ?>
+
         </div>
     </div>
 </div >
@@ -418,8 +263,6 @@ session_start();
 <script src="js/maps.js"></script>
 <script src="js/app.js"></script>
 
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="js/ie10-viewport-bug-workaround.js"></script>
 
 </body>
 </html>
