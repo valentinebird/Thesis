@@ -225,6 +225,50 @@ VALUES(
         $result = mysqli_query($db, $sql);
         $info_message = "Sikeres feltöltés" . mysqli_error($db);
 
+        // After successfully inserting property details
+        if ($result) {
+            $property_id = mysqli_insert_id($db); // Get the last inserted ID
+
+            // Handle file upload
+            $file = $_FILES['uploadfile'];
+
+            $fileName = $_FILES['uploadfile']['name'];
+            $fileTmpName = $_FILES['uploadfile']['tmp_name'];
+            $fileSize = $_FILES['uploadfile']['size'];
+            $fileError = $_FILES['uploadfile']['error'];
+            $fileType = $_FILES['uploadfile']['type'];
+
+            $fileExt = explode('.', $fileName);
+            $fileActualExt = strtolower(end($fileExt));
+
+            $allowed = array('jpg', 'jpeg', 'png', 'pdf');
+
+            if (in_array($fileActualExt, $allowed)) {
+                if ($fileError === 0) {
+                    if ($fileSize < 1000000) { // Adjust size as needed
+                        $fileNameNew = uniqid('', true).".".$fileActualExt;
+                        $fileDestination = '/home/thebwvas/madar-szakdolgozat.online/property_pics/'.$fileNameNew;
+                        move_uploaded_file($fileTmpName, $fileDestination);
+                        $property_id = mysqli_insert_id($db); // Get the last inserted ID
+
+                        // Insert into database
+                        $sql = "INSERT INTO PICTURE (property_id, filename, description) VALUES ('$property_id', '$fileDestination', '$property_name')";
+                        // Execute query
+                        // mysqli_query($conn, $sql);
+
+                        // Redirect or message
+                        echo "Upload successful";
+                    } else {
+                        echo "Your file is too big!";
+                    }
+                } else {
+                    echo "There was an error uploading your file!";
+                }
+            } else {
+                echo "You cannot upload files of this type!";
+            }
+        }
+
 
     } else {
         $info_message = "Kérlek ellenőrizd hogy minden mező helyesen ki van töltve." ;
@@ -399,7 +443,7 @@ VALUES(
             </div>
             <div class="col-md-12">
                 <div class="submit-address">
-                    <form method="POST" action="submit-property.php">
+                    <form method="POST" action="submit-property.php" enctype="multipart/form-data">
                         <h3 class="heading-2">Alap információk</h3>
                         <div class="search-contents-sidebar mb-30">
                             <div class="row">
@@ -566,7 +610,7 @@ VALUES(
                         </div>
 
 
-                        <h3 class="heading-2">Detailed Information</h3>
+
                         <div class="row mb-50">
                             <div class="col-md-12">
                                 <div class="form-group mb-0">
@@ -579,7 +623,7 @@ VALUES(
                             </div>
                         </div>
 
-                        <h3 class="heading-2">Property Gallery</h3>
+                        <h3 class="heading-2">Képek feltöltése</h3>
                         <div id="myDropZone" class="dropzone dropzone-design mb-50">
                             <input type="file" name="uploadfile" class="dz-default dz-message"><span>Itt tudsz képeket feltölteni</span></input>
                         </div>
@@ -614,44 +658,7 @@ VALUES(
     </div>
 </div>
 
-<!-- Footer start -->
-<footer class="footer">
-    <div class="container footer-inner">
-        <div class="row">
-            <div class="col-xl-4 col-lg-3 col-md-6 col-sm-6">
-                <div class="footer-item">
-                    <h4>Kapcsolat</h4>
-                    <ul class="contact-info">
-                        <li>
-                            360 Harvest St, North Subract, London. United States Of Amrica.
-                        </li>
-                        <li>
-                            <a href="mailto:sales@hotelempire.com">info@madar-szakdolgozat.online</a>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6">
-
-            </div>
-
-        </div>
-    </div>
-</footer>
-
-<!-- Sub footer start -->
-<div class="sub-footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-12">
-                <p class="copy">© 2022 Ingatlan nyilvántartó portál, webes környezetben.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
+<?php include 'footer.html'; ?>
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>

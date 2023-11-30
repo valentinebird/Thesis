@@ -115,7 +115,7 @@ $result = $conn->query($sql);
                             <div class="row">
                                 <div class="col-lg-5 col-md-5 col-pad">
                                     <a href="properties-details.php?id=<?php echo $row['id']; ?>" class="property-img">
-                                        <img src="img/property_pics/default_rent.jpeg" alt="properties" class="img-fluid">
+                                        <img src="property_pics/default_rent.jpeg" alt="properties" class="img-fluid">
                                         <div class="listing-badges">
                                             <span class="listing-time">Eladó</span>
                                         </div>
@@ -159,7 +159,7 @@ $result = $conn->query($sql);
                         </div>
                     <?php }
                 } else { ?>
-                    <h1>No results in DB </h1>
+                    <h1>Jelenleg nincsen eladó ingatlanunk! </h1>
                 <?php } ?>
 
 

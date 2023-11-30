@@ -28,7 +28,7 @@ function rent_picture($id) {
         $row = $result->fetch_assoc();
         return $row["filename"];
     } else {
-        return "/img/property_pics/default_rent.jpeg";
+        return "property_pics/default_rent.jpeg";
     }
 }
 ?>
@@ -179,7 +179,7 @@ function rent_picture($id) {
                         </div>
                     <?php }
                 } else { ?>
-                    <h1>No results in DB </h1>
+                    <h1>Jelenleg nincs kiadó ingatlanunk!</h1>
                 <?php } ?>
 
 
