@@ -64,7 +64,7 @@ if (isset($_FILES['fileToUpload']['name'][0])) {
             if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"][$key], $target_file)) {
                 echo "The file " . htmlspecialchars($name) . " has been uploaded.";
                 //$fullFilePath = $target_dir . $newFileName;
-                $fullFilePath = "http://madar-szakdolgozat.online/property_pics/" . $newFileName;
+                $fullFilePath = "https://madar-szakdolgozat.online/property_pics/" . $newFileName;
                 $sql = "INSERT INTO PICTURE (property_id, filename, description) VALUES ('$property_id', '$fullFilePath', '$property_name')";
                 $result = mysqli_query($db, $sql);
                 if (!$result) {

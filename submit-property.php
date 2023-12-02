@@ -5,10 +5,8 @@ function checkifPOST_EXIST($key)
 {
     return !empty($_POST[$key]);
 }
-
 require "dbconfig.php";
 $db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-
 mysqli_query($db, "SET NAMES utf8;");
 if ($db->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -17,6 +15,7 @@ if ($db->connect_error) {
 $errors = [];
 $result = [];
 $numbers = [1, 2, 3, 4, 5];
+$info_message = "";
 
 function hibasE($kulcs)
 {
@@ -48,6 +47,12 @@ $msg = "";
 
 function upload_picture_and_insert_it_to_db()
 {
+    require "dbconfig.php";
+    $db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+    mysqli_query($db, "SET NAMES utf8;");
+    if ($db->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
     $sql = "SELECT id, property_name FROM PROPERTY ORDER BY upload_date DESC LIMIT 1;";
     $result = mysqli_query($db, $sql);
     $row = mysqli_fetch_assoc($result);
@@ -56,7 +61,8 @@ function upload_picture_and_insert_it_to_db()
         $property_id = $row["id"];
         $property_name = $row["property_name"];
     } else {
-        echo "No results found.";
+        $info_message .= "Nincs meg az utolsó feltöltött ingatlan!\n";
+        echo "Nincs meg az utolsó feltöltött ingatlan!\n";
     }
     $target_dir = "/home/thebwvas/madar-szakdolgozat.online/property_pics/";
     if (isset($_FILES['fileToUpload']['name'][0])) {
@@ -71,49 +77,61 @@ function upload_picture_and_insert_it_to_db()
             $uploadOk = 1;
 
             // Check if image file is an actual image or fake image
+            /*
             $check = getimagesize($_FILES["fileToUpload"]["tmp_name"][$key]);
             if ($check !== false) {
-                echo "File is an image - " . $check["mime"] . ".";
+                $info_message .= "A fálj kép - " . $check["mime"] . ".\n";
+                echo  "A fálj kép - " . $check["mime"] . ".\n";
                 $uploadOk = 1;
             } else {
-                echo "File is not an image.";
+                $info_message .= "A fálj nem kép - ". $check["mime"] . "\n";
+                echo "A fálj nem kép - ". $check["mime"] . "\n";
                 $uploadOk = 0;
             }
-
+            */
             // Check file size
             if ($_FILES["fileToUpload"]["size"][$key] > 500000) {
-                echo "Sorry, your file is too large.";
+                $info_message .=  "A kép túl nagy méretű.";
+                echo   "A kép túl nagy méretű.";
                 $uploadOk = 0;
             }
 
             // Allow certain file formats
+            /*
             if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
                 && $imageFileType != "gif") {
-                echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                $info_message .= "Csak JPG, JPEG, PNG & GIF fálj engedélyezett.";
+                echo "Csak JPG, JPEG, PNG & GIF fálj engedélyezett. : tipus" . $imageFileType . " -ez \n";
                 $uploadOk = 0;
             }
-
+            */
             // Check if $uploadOk is set to 0 by an error
             if ($uploadOk == 0) {
-                echo "Sorry, your file was not uploaded.";
+                $info_message .= "A kép nincs feltöltve.";
+                echo  "A kép nincs feltöltve. uploadok";
             } else {
                 if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"][$key], $target_file)) {
-                    echo "The file " . htmlspecialchars($name) . " has been uploaded.";
+                    $info_message .= "A fálj " . htmlspecialchars($name) . " sikeresen fel lett töltve.";
+                    echo "A fálj " . htmlspecialchars($name) . " sikeresen fel lett töltve.";
                     //$fullFilePath = $target_dir . $newFileName;
-                    $fullFilePath = "http://madar-szakdolgozat.online/property_pics/" . $newFileName;
+                    $fullFilePath = "https://madar-szakdolgozat.online/property_pics/" . $newFileName;
                     $sql = "INSERT INTO PICTURE (property_id, filename, description) VALUES ('$property_id', '$fullFilePath', '$property_name')";
                     $result = mysqli_query($db, $sql);
                     if (!$result) {
-                        echo "Error: " . mysqli_error($db);
+                        $info_message .= "HIBA: " . mysqli_error($db);
+                        echo  "SQL picture HIBA: " . mysqli_error($db);
                     }
                 } else {
-                    echo "Sorry, there was an error uploading your file.";
+                    $info_message .= "A kép feltöltése nem sikerült";
+                    echo "A kép feltöltése nem sikerült move not okaz";
+                    echo  "Fontos_ " . $_FILES['fileToUpload']['name'][0];
                 }
             }
 
         }
     } else {
-        echo "No files were uploaded.";
+        $info_message .= "Nem lett kép feltöltve.";
+        echo  "Nem lett kép feltöltve. Nincs kép a dobozba";
     }
 
 }
@@ -284,11 +302,11 @@ VALUES(
     0);";
 
         $result = mysqli_query($db, $sql);
-        $info_message = "Sikeres feltöltés" . mysqli_error($db);
+        $info_message .= "Sikeres feltöltés" . mysqli_error($db);
         // After successfully inserting property details upload the picture
         upload_picture_and_insert_it_to_db();
     } else {
-        $info_message = "Kérlek ellenőrizd hogy minden mező helyesen ki van töltve.";
+        $info_message .= "Kérlek ellenőrizd hogy minden mező helyesen ki van töltve.";
     }
 
 
@@ -345,97 +363,7 @@ VALUES(
 <div class="page_loader"></div>
 
 <!-- Top header start -->
-<!-- Top header start -->
-<header class="top-header top-header-bg none-992" id="top-header-2">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 col-md-4 col-sm-5">
-                <div class="list-inline">
-                    <?php
-                    if ($_SESSION['loggedin']) { ?>
-                        <a href="logout.php" class="sign-in"><i class="fa fa-sign-out"></i>Kijelentkezés</a>
-                        <a href="index.php" class="sign-in"><i
-                                    class="fa fa-trophy"></i>Üdvözlünk <? print $_SESSION['name'] ?></a>
-
-                        <?php
-                        if ($_SESSION['is_agent']) {
-                            ?>
-                            <a href="submit-property.php" class="sign-in"><i class="fa fa-upload"></i>Új ingatlan
-                                feltöltése</a>
-                            <?php
-                        }
-                        ?>
-                        <?php
-
-                    } else {
-                        ?>
-                        <i class="fa fa-trophy"></i>Jelentkezz be az oldal használatához!
-                        <?php
-                    }
-                    ?>
-
-                </div>
-
-            </div>
-            <div class="col-lg-6 col-md-4 col-sm-5">
-                <ul class="top-social-media pull-right">
-                    <li>
-                        <a href="login-as-agent.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés
-                            ingatlan ügynökként!</a>
-                    </li>
-                    <li>
-                        <a href="login.html" class="sign-in"><i class="fa fa-sign-in"></i> Bejelentkezés</a>
-                    </li>
-                    <li>
-                        <a href="signup.html" class="sign-in"><i class="fa fa-user"></i> Regisztráció</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</header>
-<!-- Top header end -->
-
-<!-- Main header start -->
-<header class="main-header">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light">
-
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav header-ml">
-                    <li class="nav-item  active">
-                        <a class="nav-link" href="index.php" id="navbarDropdownMenuLink">
-                            Főoldal
-                        </a>
-
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink3" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            Ingatlanok
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item">Eladó</a></li>
-                            <li><a class="dropdown-item">Kiadó</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="agents.php" id="navbarDropdownMenuLink2">
-                            Ügynökeink
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="contact.php" id="navbarDropdownMenuLink5">
-                            Kapcsolat
-                        </a>
-                    </li>
-                </ul>
-
-            </div>
-        </nav>
-    </div>
-</header>
+<?php include 'header.html'; ?>
 
 <!-- Submit Property start -->
 <div class="submit-property content-area">
@@ -449,7 +377,7 @@ VALUES(
             </div>
             <div class="col-md-12">
                 <div class="submit-address">
-                    <form method="POST" action="submit-property.php" enctype="multipart/form-data">
+                        <form method="POST" action="submit-property.php" enctype="multipart/form-data">
                         <h3 class="heading-2">Alap információk</h3>
                         <div class="search-contents-sidebar mb-30">
                             <div class="row">
@@ -636,7 +564,7 @@ VALUES(
 
                         <h3 class="heading-2">Képek feltöltése</h3>
                         <div id="myDropZone" class="dropzone dropzone-design mb-50">
-                            <input type="file" name="fileToUpload[]" id="fileToUpload" class="dz-default dz-message"><span>Itt tudsz képeket feltölteni</span></input>
+                            <input type="file" name="fileToUpload[]" id="fileToUpload" multiple>
                         </div>
 
                         <h3 class="heading-2">A te adataid:</h3>
@@ -694,33 +622,9 @@ VALUES(
 <script src="js/app.js"></script>
 
 <script type="javascript">
-    /*  let elem = document.getElementById("price");
 
-      elem.addEventListener("keydown",function(event){
-          var key = event.which;
-          if((key<48 || key>57) && key != 8) event.preventDefault();
-      });
-
-      elem.addEventListener("keyup",function(event){
-          var value = this.value.replace(/,/g,"");
-          this.dataset.currentValue=parseInt(value);
-          var caret = value.length-1;
-          while((caret-3)>-1)
-          {
-              caret -= 3;
-              value = value.split('');
-              value.splice(caret+1,0,",");
-              value = value.join('');
-          }
-          this.value = value;
-      });
-
-
-          console.log(document.getElementById("price").dataset.currentValue);
-  */
 </script>
 
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 
 <script src="js/ie10-viewport-bug-workaround.js"></script>
 </html>

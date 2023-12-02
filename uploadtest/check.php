@@ -16,7 +16,8 @@ $result = mysqli_query($db, $sql);
 $row = mysqli_fetch_assoc($result);
 
 if ($row) {
-
+    $property_id = $row["id"];
+    $property_name = $row["property_name"];
 } else {
     echo "No results found.";
 }
