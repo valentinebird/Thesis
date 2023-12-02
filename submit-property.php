@@ -4,11 +4,15 @@ session_start();
 function checkifPOST_EXIST($key)
 {
     return !empty($_POST[$key]);
-
 }
 
-
 require "dbconfig.php";
+$db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+
+mysqli_query($db, "SET NAMES utf8;");
+if ($db->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
 $errors = [];
 $result = [];
@@ -33,21 +37,91 @@ function allapottarto($kulcs)
     global $errors;
     global $result;
     //return count($errors) > 0 || hibasE($kulcs) ? $result[$kulcs] : $result[$kulcs];
-    if(count($errors)>0){
+    if (count($errors) > 0) {
         return $result[$kulcs];
-    }else{
+    } else {
         return "";
     }
 }
 
 $msg = "";
 
+function upload_picture_and_insert_it_to_db()
+{
+    $sql = "SELECT id, property_name FROM PROPERTY ORDER BY upload_date DESC LIMIT 1;";
+    $result = mysqli_query($db, $sql);
+    $row = mysqli_fetch_assoc($result);
+
+    if ($row) {
+        $property_id = $row["id"];
+        $property_name = $row["property_name"];
+    } else {
+        echo "No results found.";
+    }
+    $target_dir = "/home/thebwvas/madar-szakdolgozat.online/property_pics/";
+    if (isset($_FILES['fileToUpload']['name'][0])) {
+
+        // Loop through each file
+        foreach ($_FILES["fileToUpload"]["name"] as $key => $name) {
+            $sanitized_property_name = preg_replace("/[^a-zA-Z0-9_-]/", "", $property_name);
+            $imageFileType = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+            $newFileName = $sanitized_property_name . "_" . time() . "_" . $key . "." . $imageFileType;
+            $target_file = $target_dir . $newFileName;
+
+            $uploadOk = 1;
+
+            // Check if image file is an actual image or fake image
+            $check = getimagesize($_FILES["fileToUpload"]["tmp_name"][$key]);
+            if ($check !== false) {
+                echo "File is an image - " . $check["mime"] . ".";
+                $uploadOk = 1;
+            } else {
+                echo "File is not an image.";
+                $uploadOk = 0;
+            }
+
+            // Check file size
+            if ($_FILES["fileToUpload"]["size"][$key] > 500000) {
+                echo "Sorry, your file is too large.";
+                $uploadOk = 0;
+            }
+
+            // Allow certain file formats
+            if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+                && $imageFileType != "gif") {
+                echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                $uploadOk = 0;
+            }
+
+            // Check if $uploadOk is set to 0 by an error
+            if ($uploadOk == 0) {
+                echo "Sorry, your file was not uploaded.";
+            } else {
+                if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"][$key], $target_file)) {
+                    echo "The file " . htmlspecialchars($name) . " has been uploaded.";
+                    //$fullFilePath = $target_dir . $newFileName;
+                    $fullFilePath = "http://madar-szakdolgozat.online/property_pics/" . $newFileName;
+                    $sql = "INSERT INTO PICTURE (property_id, filename, description) VALUES ('$property_id', '$fullFilePath', '$property_name')";
+                    $result = mysqli_query($db, $sql);
+                    if (!$result) {
+                        echo "Error: " . mysqli_error($db);
+                    }
+                } else {
+                    echo "Sorry, there was an error uploading your file.";
+                }
+            }
+
+        }
+    } else {
+        echo "No files were uploaded.";
+    }
+
+}
+
 // If upload button is clicked ...
 
 if (isset($_POST['upload'])) {
     //Check the values is okay!!!
-
-    //actiual
 
     if (checkifPOST_EXIST("property_name")) {
         $result["property_name"] = $_POST["property_name"];
@@ -186,20 +260,8 @@ if (isset($_POST['upload'])) {
     }
 
     if (!$errors) {
-        /* echo "\n\n\nSIKERES!";
-         echo $result["property_name"];
-         echo $result["is_for_sale"];
-         echo $result["price"];
-         echo $result["address"];
-         echo $result["level_number"];
-         echo $result["rooms"];
-         echo $result["bath_rooms"];
-         echo $result["property_condition"];
-         echo $result["heating_type"];
-         echo $result["has_garage"];
-         echo $result["has_wifi"];
-         echo $result["property_description"];*/
-        $db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+
+
         $sql = "insert into PROPERTY (property_name, is_for_sale, price, city, address, size, level_number, rooms, bath_rooms, type, property_condition, heating_type, has_garage, pool, has_wifi, property_description, agent_id, is_sold)
 VALUES(
     '$property_name',
@@ -221,72 +283,16 @@ VALUES(
     1,
     0);";
 
-        mysqli_query($db, "SET NAMES utf8;");
         $result = mysqli_query($db, $sql);
         $info_message = "Sikeres feltöltés" . mysqli_error($db);
-
-        // After successfully inserting property details
-        if ($result) {
-            $property_id = mysqli_insert_id($db); // Get the last inserted ID
-
-            // Handle file upload
-            $file = $_FILES['uploadfile'];
-
-            $fileName = $_FILES['uploadfile']['name'];
-            $fileTmpName = $_FILES['uploadfile']['tmp_name'];
-            $fileSize = $_FILES['uploadfile']['size'];
-            $fileError = $_FILES['uploadfile']['error'];
-            $fileType = $_FILES['uploadfile']['type'];
-
-            $fileExt = explode('.', $fileName);
-            $fileActualExt = strtolower(end($fileExt));
-
-            $allowed = array('jpg', 'jpeg', 'png', 'pdf');
-
-            if (in_array($fileActualExt, $allowed)) {
-                if ($fileError === 0) {
-                    if ($fileSize < 1000000) { // Adjust size as needed
-                        $fileNameNew = uniqid('', true).".".$fileActualExt;
-                        $fileDestination = '/home/thebwvas/madar-szakdolgozat.online/property_pics/'.$fileNameNew;
-                        move_uploaded_file($fileTmpName, $fileDestination);
-                        $property_id = mysqli_insert_id($db); // Get the last inserted ID
-
-                        // Insert into database
-                        $sql = "INSERT INTO PICTURE (property_id, filename, description) VALUES ('$property_id', '$fileDestination', '$property_name')";
-                        // Execute query
-                        // mysqli_query($conn, $sql);
-
-                        // Redirect or message
-                        echo "Upload successful";
-                    } else {
-                        echo "Your file is too big!";
-                    }
-                } else {
-                    echo "There was an error uploading your file!";
-                }
-            } else {
-                echo "You cannot upload files of this type!";
-            }
-        }
-
-
+        // After successfully inserting property details upload the picture
+        upload_picture_and_insert_it_to_db();
     } else {
-        $info_message = "Kérlek ellenőrizd hogy minden mező helyesen ki van töltve." ;
+        $info_message = "Kérlek ellenőrizd hogy minden mező helyesen ki van töltve.";
     }
 
 
 }
-
-
-//$db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-
-// Get all the submitted data from the form
-
-// $sql = "INSERT INTO PROPERTY () VALUES ('TEST',1,100,'London','Oxford Street 3',100,2,3,4,'Rent','Új','Gáz',0,0,1,'Szép ház Londonban','$filename',1,0);";
-
-// Execute query
-//mysqli_query($db, $sql);
-
 
 ?>
 <!DOCTYPE html>
@@ -506,7 +512,9 @@ VALUES(
                                         <label>Szintek száma</label>
                                         <select class="selectpicker search-fields" name="level_number"
                                                 id="level_number">
-                                            <?php for ($i = 0; $i < count($numbers); $i++): ?>
+                                            <?php for ($i = 0;
+                                                       $i < count($numbers);
+                                                       $i++): ?>
                                                 <option value="<?= $numbers[$i] ?>"> <?= $numbers[$i] ?> </option>
                                             <?php endfor ?>
                                         </select>
@@ -516,7 +524,9 @@ VALUES(
                                     <div class="form-group">
                                         <label>Szobák száma</label>
                                         <select class="selectpicker search-fields" name="rooms" id="rooms">
-                                            <?php for ($i = 0; $i < count($numbers); $i++): ?>
+                                            <?php for ($i = 0;
+                                                       $i < count($numbers);
+                                                       $i++): ?>
                                                 <option value="<?= $numbers[$i] ?>"> <?= $numbers[$i] ?> </option>
                                             <?php endfor ?>
                                         </select>
@@ -526,7 +536,9 @@ VALUES(
                                     <div class="form-group">
                                         <label>Fürdőszobák száma</label>
                                         <select class="selectpicker search-fields" name="bath_rooms" id="bath_rooms">
-                                            <?php for ($i = 0; $i < count($numbers); $i++): ?>
+                                            <?php for ($i = 0;
+                                                       $i < count($numbers);
+                                                       $i++): ?>
                                                 <option value="<?= $numbers[$i] ?>"> <?= $numbers[$i] ?> </option>
                                             <?php endfor ?>
                                         </select>
@@ -610,7 +622,6 @@ VALUES(
                         </div>
 
 
-
                         <div class="row mb-50">
                             <div class="col-md-12">
                                 <div class="form-group mb-0">
@@ -625,7 +636,7 @@ VALUES(
 
                         <h3 class="heading-2">Képek feltöltése</h3>
                         <div id="myDropZone" class="dropzone dropzone-design mb-50">
-                            <input type="file" name="uploadfile" class="dz-default dz-message"><span>Itt tudsz képeket feltölteni</span></input>
+                            <input type="file" name="fileToUpload[]" id="fileToUpload" class="dz-default dz-message"><span>Itt tudsz képeket feltölteni</span></input>
                         </div>
 
                         <h3 class="heading-2">A te adataid:</h3>
@@ -683,31 +694,31 @@ VALUES(
 <script src="js/app.js"></script>
 
 <script type="javascript">
-  /*  let elem = document.getElementById("price");
+    /*  let elem = document.getElementById("price");
 
-    elem.addEventListener("keydown",function(event){
-        var key = event.which;
-        if((key<48 || key>57) && key != 8) event.preventDefault();
-    });
+      elem.addEventListener("keydown",function(event){
+          var key = event.which;
+          if((key<48 || key>57) && key != 8) event.preventDefault();
+      });
 
-    elem.addEventListener("keyup",function(event){
-        var value = this.value.replace(/,/g,"");
-        this.dataset.currentValue=parseInt(value);
-        var caret = value.length-1;
-        while((caret-3)>-1)
-        {
-            caret -= 3;
-            value = value.split('');
-            value.splice(caret+1,0,",");
-            value = value.join('');
-        }
-        this.value = value;
-    });
+      elem.addEventListener("keyup",function(event){
+          var value = this.value.replace(/,/g,"");
+          this.dataset.currentValue=parseInt(value);
+          var caret = value.length-1;
+          while((caret-3)>-1)
+          {
+              caret -= 3;
+              value = value.split('');
+              value.splice(caret+1,0,",");
+              value = value.join('');
+          }
+          this.value = value;
+      });
 
 
-        console.log(document.getElementById("price").dataset.currentValue);
-*/
-    </script>
+          console.log(document.getElementById("price").dataset.currentValue);
+  */
+</script>
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 

@@ -11,6 +11,7 @@ if ($db->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+
 $sql = "SELECT id, property_name FROM PROPERTY ORDER BY upload_date DESC LIMIT 1;";
 $result = mysqli_query($db, $sql);
 $row = mysqli_fetch_assoc($result);
@@ -21,7 +22,6 @@ if ($row) {
 } else {
     echo "No results found.";
 }
-
 $target_dir = "/home/thebwvas/madar-szakdolgozat.online/property_pics/";
 if (isset($_FILES['fileToUpload']['name'][0])) {
 
@@ -63,8 +63,9 @@ if (isset($_FILES['fileToUpload']['name'][0])) {
         } else {
             if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"][$key], $target_file)) {
                 echo "The file " . htmlspecialchars($name) . " has been uploaded.";
-
-                $sql = "INSERT INTO PICTURE (property_id, filename, description) VALUES ('$property_id', '$newFileName', '$property_name')";
+                //$fullFilePath = $target_dir . $newFileName;
+                $fullFilePath = "http://madar-szakdolgozat.online/property_pics/" . $newFileName;
+                $sql = "INSERT INTO PICTURE (property_id, filename, description) VALUES ('$property_id', '$fullFilePath', '$property_name')";
                 $result = mysqli_query($db, $sql);
                 if (!$result) {
                     echo "Error: " . mysqli_error($db);
