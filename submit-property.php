@@ -15,7 +15,7 @@ if ($db->connect_error) {
 $errors = [];
 $result = [];
 $numbers = [1, 2, 3, 4, 5];
-$info_message = "";
+
 
 function hibasE($kulcs)
 {
@@ -47,6 +47,7 @@ $msg = "";
 
 function upload_picture_and_insert_it_to_db()
 {
+    global $info_message;
     require "dbconfig.php";
     $db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
     mysqli_query($db, "SET NAMES utf8;");
@@ -61,8 +62,7 @@ function upload_picture_and_insert_it_to_db()
         $property_id = $row["id"];
         $property_name = $row["property_name"];
     } else {
-        $info_message .= "Nincs meg az utolsó feltöltött ingatlan!\n";
-        echo "Nincs meg az utolsó feltöltött ingatlan!\n";
+        $info_message .= "Nincs meg az utolsó feltöltött ingatlan! A kép nem tölthető fel\n";
     }
     $target_dir = "/home/thebwvas/madar-szakdolgozat.online/property_pics/";
     if (isset($_FILES['fileToUpload']['name'][0])) {
@@ -77,22 +77,18 @@ function upload_picture_and_insert_it_to_db()
             $uploadOk = 1;
 
             // Check if image file is an actual image or fake image
-            /*
+
             $check = getimagesize($_FILES["fileToUpload"]["tmp_name"][$key]);
             if ($check !== false) {
-                $info_message .= "A fálj kép - " . $check["mime"] . ".\n";
-                echo  "A fálj kép - " . $check["mime"] . ".\n";
                 $uploadOk = 1;
             } else {
                 $info_message .= "A fálj nem kép - ". $check["mime"] . "\n";
-                echo "A fálj nem kép - ". $check["mime"] . "\n";
                 $uploadOk = 0;
             }
-            */
+
             // Check file size
-            if ($_FILES["fileToUpload"]["size"][$key] > 500000) {
-                $info_message .=  "A kép túl nagy méretű.";
-                echo   "A kép túl nagy méretű.";
+            if ($_FILES["fileToUpload"]["size"][$key] > 50000000) {
+                $info_message .=  "A kép túl nagy méretű. ". $_FILES["fileToUpload"]["tmp_name"][$key] .  "\n";
                 $uploadOk = 0;
             }
 
@@ -108,30 +104,24 @@ function upload_picture_and_insert_it_to_db()
             // Check if $uploadOk is set to 0 by an error
             if ($uploadOk == 0) {
                 $info_message .= "A kép nincs feltöltve.";
-                echo  "A kép nincs feltöltve. uploadok";
             } else {
                 if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"][$key], $target_file)) {
-                    $info_message .= "A fálj " . htmlspecialchars($name) . " sikeresen fel lett töltve.";
-                    echo "A fálj " . htmlspecialchars($name) . " sikeresen fel lett töltve.";
+                    $info_message .= "\n A fálj " . htmlspecialchars($name) . " sikeresen fel lett töltve.";
                     //$fullFilePath = $target_dir . $newFileName;
                     $fullFilePath = "https://madar-szakdolgozat.online/property_pics/" . $newFileName;
                     $sql = "INSERT INTO PICTURE (property_id, filename, description) VALUES ('$property_id', '$fullFilePath', '$property_name')";
                     $result = mysqli_query($db, $sql);
                     if (!$result) {
-                        $info_message .= "HIBA: " . mysqli_error($db);
-                        echo  "SQL picture HIBA: " . mysqli_error($db);
+                        $info_message .= "\n SQL hiba a kép feltöltése közben : " . mysqli_error($db) . "\n";
                     }
                 } else {
-                    $info_message .= "A kép feltöltése nem sikerült";
-                    echo "A kép feltöltése nem sikerült move not okaz";
-                    echo  "Fontos_ " . $_FILES['fileToUpload']['name'][0];
+                    $info_message .= "\n A kép feltöltése nem sikerült, hiba a szerverre való feltöltéskor " . $_FILES["fileToUpload"]["tmp_name"][$key] . "\n";
                 }
             }
 
         }
     } else {
-        $info_message .= "Nem lett kép feltöltve.";
-        echo  "Nem lett kép feltöltve. Nincs kép a dobozba";
+        $info_message .= "\n A ".  $_FILES["fileToUpload"]["tmp_name"][$key] . " nem lett kép feltöltve. Nincs bettallózva. \n";
     }
 
 }
@@ -302,11 +292,11 @@ VALUES(
     0);";
 
         $result = mysqli_query($db, $sql);
-        $info_message .= "Sikeres feltöltés" . mysqli_error($db);
+        $info_message .= "\n Az ingatlan sikeresen fel lett töltve" . mysqli_error($db) . "\n";
         // After successfully inserting property details upload the picture
         upload_picture_and_insert_it_to_db();
     } else {
-        $info_message .= "Kérlek ellenőrizd hogy minden mező helyesen ki van töltve.";
+        $info_message .= "\n Kérlek ellenőrizd hogy minden mező helyesen ki van töltve." . "\n";
     }
 
 
@@ -563,10 +553,7 @@ VALUES(
                         </div>
 
                         <h3 class="heading-2">Képek feltöltése</h3>
-                        <div id="myDropZone" class="dropzone dropzone-design mb-50">
                             <input type="file" name="fileToUpload[]" id="fileToUpload" multiple>
-                        </div>
-
                         <h3 class="heading-2">A te adataid:</h3>
                         <div class="row">
                             <div class="col-md-4">
