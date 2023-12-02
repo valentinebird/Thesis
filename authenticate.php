@@ -1,8 +1,7 @@
 <?php
 session_start();
-// Change this to your connection info.
-require "dbconfig.php";
 
+require "dbconfig.php";
 
 // Try and connect using the info above.
 $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
@@ -43,6 +42,7 @@ if ($stmt = $con->prepare('SELECT username, password FROM USER WHERE username = 
             $_SESSION['loggedin'] = TRUE;
             $_SESSION['name'] = $_POST['username'];
             $_SESSION['id'] = $id;
+            $_SESSION['is_agent'] = FALSE;
             echo $_SESSION['loggedin'];
             exit;
         } else {
