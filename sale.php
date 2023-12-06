@@ -9,8 +9,28 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+$sortOrder = 'upload_date DESC'; // Assuming 'id DESC' as default (newest first)
+
+// Check if a sort option is set and update sortOrder accordingly
+if (isset($_GET['sort']) && !empty($_GET['sort'])) {
+    switch ($_GET['sort']) {
+        case 'newest':
+            $sortOrder = 'upload_date DESC';
+            break;
+        case 'oldest':
+            $sortOrder = 'upload_date ASC';
+            break;
+        case 'highest_price':
+            $sortOrder = 'price DESC';
+            break;
+        case 'lowest_price':
+            $sortOrder = 'price ASC';
+            break;
+    }
+}
+
 //$sql = "SELECT id,username, email, reg_date FROM USER;";
-$sql = "SELECT * FROM PROPERTY WHERE is_for_sale = 1;";
+$sql = "SELECT * FROM PROPERTY WHERE is_for_sale = 1 ORDER BY $sortOrder;";
 $result = $conn->query($sql);
 
 function display_first_sale_picture($id){
@@ -29,6 +49,12 @@ function display_first_sale_picture($id){
 //$conn->close();
 ?>
 
+<script>
+    function sortProperties(sortBy) {
+        // Redirect to the same page with the new sort parameter
+        window.location.href = '?sort=' + sortBy;
+    }
+</script>
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -108,11 +134,11 @@ function display_first_sale_picture($id){
                     </div>
                     <div class="float-right cod-pad">
                         <div class="sorting-options">
-                            <select class="sorting">
-                                <option>Legújabb elöl</option>
-                                <option>Legrégebbi elöl</option>
-                                <option>Ár (Legdrágább elöl)</option>
-                                <option>Ár (Legolcsóbb elöl)</option>
+                            <select class="sorting" onchange="sortProperties(this.value)">
+                                <option value="newest" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'newest') ? 'selected' : ''; ?>>Legújabb elöl</option>
+                                <option value="oldest" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'oldest') ? 'selected' : ''; ?>>Legrégebbi elöl</option>
+                                <option value="highest_price" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'highest_price') ? 'selected' : ''; ?>>Ár (Legdrágább elöl)</option>
+                                <option value="lowest_price" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'lowest_price') ? 'selected' : ''; ?>>Ár (Legolcsóbb elöl)</option>
                             </select>
 
                         </div>
