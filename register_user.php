@@ -44,7 +44,7 @@ if ($stmt = $con->prepare('SELECT id, password FROM USER WHERE username = ?')) {
     // Store the result so we can check if the account exists in the database.
     if ($stmt->num_rows > 0) {
         // Username already exists
-        echo 'A felhasználónév már létezik használj másikat!';
+        echo 'A felhasználó név már létezik használj másikat!';
     } else {
         // Username doesnt exists, insert new account
         if ($stmt = $con->prepare('INSERT INTO USER (username,  email, password) VALUES (?, ?, ?)')) {

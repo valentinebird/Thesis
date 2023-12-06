@@ -2,17 +2,21 @@
 session_start();
 require "dbconfig.php";
 require "profiledata.php";
-
+error_reporting(E_ALL);
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <title>Profilom</title>
+    <title>Jelszó változatás</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
 
     <!-- External CSS libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/animate.min.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-submenu.css">
@@ -61,83 +65,55 @@ require "profiledata.php";
 <div class="sub-banner">
     <div class="container">
         <div class="page-name">
-            <h1>Profilom</h1>
+            <h1>Jelszó változatás</h1>
         </div>
     </div>
 </div>
 
-<!-- My profile start -->
-<div class="my-profile content-area">
+<!-- Change password start -->
+<div class="change-password content-area-7">
     <div class="container">
         <div class="row">
-
-            <div class="col-lg-4 col-md-12 col-sm-12">
+            <div class="col-lg-4 col-md-12">
+                <!-- Avatar start -->
                 <?php include 'profilemenu.php'; ?>
+                <!-- My account box end -->
             </div>
-            <?php if ($_SESSION['is_agent']) { ?>
-                <div class="col-lg-8 col-md-12 col-sm-12">
-                    <!-- My address start-->
-                    <div class="my-address">
-                        <h3 class="heading-2">A fiókom</h3>
+            <div class="col-lg-8 col-md-12">
+                <!-- My address start -->
+                <div class="my-address">
+                    <h3 class="heading-2">Jelszó változtatás</h3>
+                    <br>
+                    <p id="message" name="message"></p>
+                    <br>
+                    <form id="changePasswordForm" method="POST">
+                        <div class="form-group">
+                            <label>Jelenlegi jelszó</label>
+                            <input type="password" class="input-text" id="current_password" name="current_password"
+                                   placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label>Új jelszó</label>
+                            <input type="password" class="input-text" id="new_password" name="new_password"
+                                   placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label>Új jelszó ismét</label>
+                            <input type="password" class="input-text" id="confirm_new_password" name="confirm_new_password" placeholder="">
 
-                        <form action="index.php" method="GET">
-                            <div class="form-group">
-                                <label>Felhasználó név: (Nem változtatható)</label>
-                                <input type="text" class="input-text" id="user_name" name="user_name" placeholder="<?php echo $username; ?>">
-                            </div>
-                            <div class="form-group">
-                                <label>Név: </label>
-                                <input type="text" class="input-text" id="real_name" name="real_name" placeholder="<?php echo $real_name; ?>">
-                            </div>
-                            <div class="form-group">
-                                <label>Email:</label>
-                                <input type="text" class="input-text" id="email" name="email" placeholder="<?php echo $email; ?>">
-                            </div>
-                            <div class="form-group">
-                                <label>Telefon</label>
-                                <input type="text" class="input-text" id="phone" name="phone" placeholder="<?php echo $phone; ?>">
-                            </div>
-                            <div class="form-group">
-                                <label>Munkakör</label>
-                                <input type="text" class="input-text" id="work_title" name="work_title" placeholder="<?php echo $work_title; ?>">
-                            </div>
-                            <div class="form-group">
-                                <label>Leírásom:</label>
-                                <textarea class="input-text" id="description" name="description" placeholder="<?php echo $description; ?>"></textarea>
-                            </div>
-                            <a href="#" class="btn btn-md button-theme">Új adatok mentése</a>
-                        </form>
-                    </div>
-                    <!-- My address end -->
+                        </div>
+                        <button type="submit" id="changePasswordButton" class="btn btn-md button-theme">Jelszó
+                            változtatás!
+                        </button>
+                    </form>
                 </div>
-            <?php } else { ?>
-                <div class="col-lg-8 col-md-12 col-sm-12">
-                    <!-- My address start-->
-                    <div class="my-address">
-                        <h3 class="heading-2">A fiókom</h3>
-
-                        <form action="index.php" method="GET">
-                            <div class="form-group">
-                                <label>Felhasználó név (Nem változtatható): </label>
-                                <input type="text" class="input-text" name="your name" placeholder="<?php echo $username; ?>">
-                            </div>
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" class="input-text" name="email" placeholder="<?php echo $email; ?>">
-                            </div>
-                            <a href="#" class="btn btn-md button-theme">Új adatok mentése</a>
-                        </form>
-                    </div>
-                    <!-- My address end -->
-                </div>
-            <?php } ?>
+            </div>
         </div>
     </div>
 </div>
 
-
+<!-- Footer start -->
 <?php include 'footer.html'; ?>
-
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>
@@ -163,6 +139,41 @@ require "profiledata.php";
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="js/ie10-viewport-bug-workaround.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $("#changePasswordButton").click(function(){
+            event.preventDefault();
+
+            let current_password = $("#current_password").val() == undefined ? '' : $("#current_password").val().trim();
+            let new_password = $("#new_password").val() == undefined ? '' : $("#new_password").val().trim();
+            let confirm_new_password = $("#confirm_new_password").val() == undefined ? '' : $("#confirm_new_password").val().trim();
+
+            console.log(current_password);
+            console.log(new_password);
+            console.log(confirm_new_password);
+
+            $.ajax({
+                url: 'passwordchanger.php',
+                type: 'post',
+                data: {current_password: current_password, new_password: new_password, confirm_new_password: confirm_new_password},
+                success: function (response) {
+                    if (response === '1') {
+                        console.log('Response:', response);
+                        $("#message").html("Sikeres jelszó változtatás!");
+                    } else {
+                        console.log('Response:', response);
+                        $("#message").html(response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX Error:", status, error, xhr.responseText);
+                }
+
+            });
+        });
+    });
+</script>
 
 </body>
 </html>

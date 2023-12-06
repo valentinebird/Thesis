@@ -3,12 +3,25 @@ session_start();
 require "dbconfig.php";
 require "profiledata.php";
 
+$conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+$conn->set_charset("utf8mb4");
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+//$sql = "SELECT id,username, email, reg_date FROM USER;";
+$sql = "SELECT * FROM PROPERTY WHERE agent_id = '$id';";
+$result = $conn->query($sql);
+
+
 ?>
 
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <title>Profilom</title>
+    <title>Meghirdetett ingatlanjaim</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
 
@@ -61,83 +74,69 @@ require "profiledata.php";
 <div class="sub-banner">
     <div class="container">
         <div class="page-name">
-            <h1>Profilom</h1>
+            <h1>Meghirdetett ingatlanjaim</h1>
         </div>
     </div>
 </div>
 
-<!-- My profile start -->
-<div class="my-profile content-area">
+<!-- My properties start -->
+<div class="my-properties content-area">
     <div class="container">
         <div class="row">
-
             <div class="col-lg-4 col-md-12 col-sm-12">
                 <?php include 'profilemenu.php'; ?>
             </div>
-            <?php if ($_SESSION['is_agent']) { ?>
-                <div class="col-lg-8 col-md-12 col-sm-12">
-                    <!-- My address start-->
-                    <div class="my-address">
-                        <h3 class="heading-2">A fiókom</h3>
+            <div class="col-lg-8 col-md-12 col-sm-12">
+                <!-- Heading -->
+                <div class="my-properties">
+                    <table class="table brd-none">
+                        <thead>
 
-                        <form action="index.php" method="GET">
-                            <div class="form-group">
-                                <label>Felhasználó név: (Nem változtatható)</label>
-                                <input type="text" class="input-text" id="user_name" name="user_name" placeholder="<?php echo $username; ?>">
-                            </div>
-                            <div class="form-group">
-                                <label>Név: </label>
-                                <input type="text" class="input-text" id="real_name" name="real_name" placeholder="<?php echo $real_name; ?>">
-                            </div>
-                            <div class="form-group">
-                                <label>Email:</label>
-                                <input type="text" class="input-text" id="email" name="email" placeholder="<?php echo $email; ?>">
-                            </div>
-                            <div class="form-group">
-                                <label>Telefon</label>
-                                <input type="text" class="input-text" id="phone" name="phone" placeholder="<?php echo $phone; ?>">
-                            </div>
-                            <div class="form-group">
-                                <label>Munkakör</label>
-                                <input type="text" class="input-text" id="work_title" name="work_title" placeholder="<?php echo $work_title; ?>">
-                            </div>
-                            <div class="form-group">
-                                <label>Leírásom:</label>
-                                <textarea class="input-text" id="description" name="description" placeholder="<?php echo $description; ?>"></textarea>
-                            </div>
-                            <a href="#" class="btn btn-md button-theme">Új adatok mentése</a>
-                        </form>
-                    </div>
-                    <!-- My address end -->
-                </div>
-            <?php } else { ?>
-                <div class="col-lg-8 col-md-12 col-sm-12">
-                    <!-- My address start-->
-                    <div class="my-address">
-                        <h3 class="heading-2">A fiókom</h3>
 
-                        <form action="index.php" method="GET">
-                            <div class="form-group">
-                                <label>Felhasználó név (Nem változtatható): </label>
-                                <input type="text" class="input-text" name="your name" placeholder="<?php echo $username; ?>">
-                            </div>
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" class="input-text" name="email" placeholder="<?php echo $email; ?>">
-                            </div>
-                            <a href="#" class="btn btn-md button-theme">Új adatok mentése</a>
-                        </form>
-                    </div>
-                    <!-- My address end -->
+                        <?php
+                        if ($result->num_rows > 0) {
+
+                        while ($row = $result->fetch_assoc()) { ?>
+                        <tr>
+                            <th>Ingatlan neve</th>
+
+                            <th class="hedin-div">Dátum</th>
+                            <th><span class="hedin-div">Ingatlan azonosító</span></th>
+                            <th>Műveletek (Szerkesztés, Törlés)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+
+                            <td>
+                                <div class="inner">
+                                    <h5><a href="properties-details.php?id=<?php echo $row['id']; ?>"><?php echo $row["property_name"]; ?></a> </php></a></h5>
+                                    <figure class="hedin-div"><i class="fa fa-map-marker"></i> <?php echo $row["city"]; ?>, <?php echo $row["address"]; ?>
+                                    </figure>
+                                    <div class="price-month"><?php echo $row["price"]; ?></div>
+                                </div>
+                            </td>
+                            <td class="hedin-div"><?php echo $row["upload_date"]; ?></td>
+                            <td><span class="hedin-div"><?php echo $row["id"]; ?></span></td>
+                            <td class="actions">
+                                <a href="#" class="edit"><i class="fa fa-pencil"></i>Szerkesztés</a>
+                                <a href="#"><i class="delete fa fa-trash-o"></i>Törlés</a>
+                            </td>
+                        </tr>
+                        <?php }} else {
+                        echo "<h1>Nincs meghirdetett ingatlanod!</h1>";
+                        }?>
+                        </tbody>
+                        </tbody>
+                    </table>
                 </div>
-            <?php } ?>
+            </div>
         </div>
     </div>
 </div>
 
-
+<!-- Footer start -->
 <?php include 'footer.html'; ?>
-
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>

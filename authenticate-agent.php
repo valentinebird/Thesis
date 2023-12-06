@@ -4,8 +4,6 @@ session_start();
 
 require "dbconfig.php";
 
-
-
 // Try and connect using the info above.
 $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if (mysqli_connect_errno()) {
@@ -27,7 +25,7 @@ if ($stmt = $con->prepare('SELECT username, password FROM AGENT WHERE username =
 	$stmt->execute();
 	// Store the result so we can check if the account exists in the database.
 	$stmt->store_result();
-	// If the username exiusts
+	// If the username exists
 	if ($stmt->num_rows > 0) {
 
 		$stmt->bind_result($id, $password);
