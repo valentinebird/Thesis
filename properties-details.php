@@ -3,7 +3,6 @@
 session_start();
 require "dbconfig.php";
 
-//$db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 $conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 $conn->set_charset("utf8mb4");
 
@@ -22,7 +21,6 @@ $row = $result->fetch_assoc();
 $propertyExists = $result->num_rows > 0;
 
 
-
 if ($propertyExists) {
     //Query for agent
     $agentID_of_thisproperty = $row["agent_id"];
@@ -30,6 +28,12 @@ if ($propertyExists) {
     $result_ofporperty = $conn->query($sqlforAgent);
     $rowagent = $result_ofporperty->fetch_assoc();
     $result = $conn->query($sql);
+
+    //Query for picture
+    $sqlforPictures = "SELECT * FROM PICTURE WHERE property_id = $id;";
+    $result_ofPicture = $conn->query($sqlforPictures);
+
+    //$result = $conn->query($sql);
 
 } else {
     $row = null; // Set row to null if property does not exist
@@ -99,77 +103,72 @@ if ($propertyExists) {
         </div>
     </div>
 </div>
-<?php if($propertyExists){ ?>
-<!-- Properties Details page start -->
-<div class="properties-details-page content-area-7">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-md-12 col-xs-12">
-                <div class="properties-details-section">
-                    <div id="propertiesDetailsSlider" class="carousel properties-details-sliders slide mb-40">
-                        <!-- Heading properties start -->
-                        <div class="heading-properties-2">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="pull-left">
-                                        <h3><?php echo $row["property_name"]; ?></h3>
-                                        <p>
-                                            <i class="fa fa-map-marker"></i> <?php echo $row["address"]; ?> <?php echo $row["city"]; ?>
-                                        </p>
-                                    </div>
-                                    <div class="pull-right">
-                                        <h3><span class="text-right"> <?php echo $row["price"]; ?> Forint</span></h3>
+<?php if ($propertyExists) { ?>
+    <!-- Properties Details page start -->
+    <div class="properties-details-page content-area-7">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-12 col-xs-12">
+                    <div class="properties-details-section">
+                        <div id="propertiesDetailsSlider" class="carousel properties-details-sliders slide mb-40">
+                            <!-- Heading properties start -->
+                            <div class="heading-properties-2">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="pull-left">
+                                            <h3><?php echo $row["property_name"]; ?></h3>
+                                            <p>
+                                                <i class="fa fa-map-marker"></i> <?php echo $row["address"]; ?> <?php echo $row["city"]; ?>
+                                            </p>
+                                        </div>
+                                        <div class="pull-right">
+                                            <h3><span class="text-right"> <?php echo $row["price"]; ?> Forint</span>
+                                            </h3>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- main slider carousel items
-                        <div class="carousel-inner">
-                            <div class="active item carousel-item" data-slide-number="0">
-                                <img src="http://placehold.it/760x486" class="img-fluid" alt="slider-properties">
-                            </div>
-                            <div class="item carousel-item" data-slide-number="1">
-                                <img src="http://placehold.it/760x486" class="img-fluid" alt="slider-properties">
-                            </div>
-                            <div class="item carousel-item" data-slide-number="2">
-                                <img src="http://placehold.it/760x486" class="img-fluid" alt="slider-properties">
-                            </div>
-                            <div class="item carousel-item" data-slide-number="4">
-                                <img src="http://placehold.it/760x486" class="img-fluid" alt="slider-properties">
-                            </div>
-                            <div class="item carousel-item" data-slide-number="5">
-                                <img src="http://placehold.it/760x486" class="img-fluid" alt="slider-properties">
-                            </div>
-                        </div>
 
-                        <ul class="carousel-indicators smail-properties list-inline nav nav-justified">
-                            <li class="list-inline-item active">
-                                <a id="carousel-selector-0" class="selected" data-slide-to="0" data-target="#propertiesDetailsSlider">
-                                    <img src="http://placehold.it/146x97" class="img-fluid" alt="properties-small">
-                                </a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a id="carousel-selector-1" data-slide-to="1" data-target="#propertiesDetailsSlider">
-                                    <img src="http://placehold.it/146x97" class="img-fluid" alt="properties-small">
-                                </a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a id="carousel-selector-2" data-slide-to="2" data-target="#propertiesDetailsSlider">
-                                    <img src="http://placehold.it/146x97" class="img-fluid" alt="properties-small">
-                                </a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a id="carousel-selector-3" data-slide-to="3" data-target="#propertiesDetailsSlider">
-                                    <img src="http://placehold.it/146x97" class="img-fluid" alt="properties-small">
-                                </a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a id="carousel-selector-4" data-slide-to="4" data-target="#propertiesDetailsSlider">
-                                    <img src="http://placehold.it/146x97" class="img-fluid" alt="properties-small">
-                                </a>
-                            </li>
-                        </ul>
-                        -->
+                            <!-- main slider carousel items -->
+                            <div class="carousel-inner">
+                                <?php
+                                $pictureFilenames = []; // Initialize an array to store filenames
+
+                                if ($result_ofPicture && $result_ofPicture->num_rows > 0) {
+                                    $counter = 0; // Initialize counter
+
+                                    while ($rowPicture = $result_ofPicture->fetch_assoc()) {
+                                        $pictureFilenames[] = $rowPicture['filename']; // Store filename in array
+
+                                        $activeClass = ($counter === 0) ? 'active' : '';
+                                        ?>
+                                        <div class="item carousel-item <?php echo $activeClass; ?>" data-slide-number="<?php echo $counter; ?>">
+                                            <img src="<?php echo htmlspecialchars($rowPicture['filename']); ?>" class="img-fluid" alt="<?php echo htmlspecialchars($rowPicture['description']); ?>">
+                                        </div>
+                                        <?php
+                                        $counter++; // Increment counter
+                                    }
+                                } else {
+                                    echo "<h1>Nincs kép a kiválasztott ingatlanhoz</h1>";
+                                }
+                                ?>
+                            </div>
+
+                            <!-- Carousel indicators -->
+                            <ul class="carousel-indicators smail-properties list-inline nav nav-justified">
+                                <?php
+                                foreach ($pictureFilenames as $i => $filename) {
+                                    $activeClass = ($i === 0) ? 'active' : '';
+                                    ?>
+                                    <li class="list-inline-item <?php echo $activeClass; ?>">
+                                        <a id="carousel-selector-<?php echo $i; ?>" data-slide-to="<?php echo $i; ?>" data-target="#propertiesDetailsSlider">
+                                            <img src="<?php echo htmlspecialchars($filename); ?>" class="img-fluid" alt="properties-small">
+                                        </a>
+                                    </li>
+                                    <?php
+                                }
+                                ?>
+                            </ul>
                         <!-- main slider carousel items -->
                     </div>
 
@@ -177,7 +176,8 @@ if ($propertyExists) {
                     <div class="tabbing tabbing-box tb-2 mb-40">
                         <ul class="nav nav-tabs" id="carTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active show" id="one-tab" data-toggle="tab" href="#one" role="tab"
+                                <a class="nav-link active show" id="one-tab" data-toggle="tab" href="#one"
+                                   role="tab"
                                    aria-controls="one" aria-selected="false">Leírás</a>
                             </li>
 
@@ -187,19 +187,49 @@ if ($propertyExists) {
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" id="5-tab" data-toggle="tab" href="#5" role="tab" aria-controls="5"
+                                <a class="nav-link" id="5-tab" data-toggle="tab" href="#5" role="tab"
+                                   aria-controls="5"
                                    aria-selected="true">Helyszín</a>
                             </li>
 
                         </ul>
                         <div class="tab-content" id="carTabContent">
-                            <div class="tab-pane fade active show" id="one" role="tabpanel" aria-labelledby="one-tab">
+                            <div class="tab-pane fade active show" id="one" role="tabpanel"
+                                 aria-labelledby="one-tab">
                                 <div class="properties-description mb-50">
                                     <h3 class="heading-2">
                                         Leírás
-
                                     </h3>
                                     <?php echo $row["property_description"]; ?>
+
+
+                                    <?php
+                                    /* if ($result_ofPicture) {
+                                         // Check if there's at least one row
+                                         if ($rowPicture = $result_ofPicture->fetch_assoc()) {
+                                             // The row is not null, you can work with it
+                                             echo '<div class="picture">';
+                                             echo '<img src="' . htmlspecialchars($rowPicture['filename']) . '" alt="' . htmlspecialchars($rowPicture['description']) . '" style="width: 100%; height: auto;">'; // Image width set to 100% of its container
+
+                                             if ($result_ofPicture) {
+                                                 // Check if there's at least one row
+                                                 if ($rowPicture = $result_ofPicture->fetch_assoc()) {
+                                                     // The row is not null, you can work with it
+                                                     echo '<div class="picture">';
+                                                     echo '<img src="' . htmlspecialchars($rowPicture['filename']) . '" alt="' . htmlspecialchars($rowPicture['description']) . '" style="width: 100%; height: auto;">'; // Image width set to 100% of its container
+
+                                                     echo '</div>';
+                                                 } else {
+                                                     echo "Nincs kép a kiválasztott ingatlanhoz";
+                                                 }
+                                             }
+
+                                             echo '</div>';
+                                         } else {
+                                             echo "Nincs kép a kiválasztott ingatlanhoz";
+                                         }
+                                     }*/
+                                    ?>
                                 </div>
                             </div>
 
@@ -244,7 +274,7 @@ if ($propertyExists) {
                                                     } ?>
                                                 </li>
                                                 <li>
-                                                    <strong>Város:</strong><?php echo $row["city"]; ?>
+                                                    <strong><?php echo $row["city"]; ?> </strong>
                                                 </li>
                                                 <li>
                                                     <strong>Cím: </strong><?php echo $row["address"]; ?>
@@ -263,11 +293,11 @@ if ($propertyExists) {
                                             <ul class="condition">
                                                 <li>
                                                     <i class="flaticon-furniture"></i><?php echo $row["rooms"]; ?>
-                                                    Bedroom
+                                                    Hálószobák száma
                                                 </li>
                                                 <li>
                                                     <i class="flaticon-holidays"></i><?php echo $row["bath_rooms"]; ?>
-                                                    Bathroom
+                                                    Fürdőszobák száma
                                                 </li>
                                             </ul>
                                         </div>
@@ -276,7 +306,9 @@ if ($propertyExists) {
                                 </div>
                                 <!-- Properties amenities start -->
                                 <div class="properties-amenities mb-40">
-
+                                    <h3 class="heading-2">
+                                        Extrák
+                                    </h3>
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                             <ul class="amenities">
@@ -308,7 +340,7 @@ if ($propertyExists) {
                                 <div class="location mb-50">
                                     <div class="map">
                                         <h3 class="heading-2">Az ingatlan helye: </h3>
-                                        <div id="contactMap" class="contact-map"></div>
+                                        <div id="propertymap" class="contact-map"></div>
                                     </div>
                                 </div>
                             </div>
@@ -356,10 +388,10 @@ if ($propertyExists) {
             </div>
         </div>
     </div>
-</div>
-<?php }else{
+    </div>
+<?php } else {
     echo "<h1>Nincs ilyen ingatlan</h1>";
-}?>
+} ?>
 
 <?php include 'footer.html'; ?>
 
@@ -382,10 +414,88 @@ if ($propertyExists) {
 <script src="js/jquery.filterizr.js"></script>
 <script src="js/jquery.magnific-popup.min.js"></script>
 <script src="js/jquery.countdown.js"></script>
-<script src="js/maps.js"></script>
 <script src="js/app.js"></script>
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug
 <script src="js/ie10-viewport-bug-workaround.js"></script>
+
+<script src="js/maps.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBL8kr92JsqkBl9Px8s8mfVtgs5wIMV_MM"></script>
+
+!-->
+
+<script>
+    /*
+        function initMap() {
+
+            //let address = <?php echo json_encode($row['address'] . ', ' . $row['city']); ?>;
+        let address = "Washington D.C., DC, USA";
+        console.log(address);
+        let geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({'address': address}, function(results, status) {
+            if (status === 'OK') {
+                let map = new google.maps.Map(document.getElementById('contactMap'), {
+                    zoom: 15,
+                    center: results[0].geometry.location
+                });
+
+                let marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+            } else {
+                // Handle the error case
+                console.error('Geocode was not successful for the following reason: ' + status);
+                // Optionally, you can inform the user
+                //alert('Unable to locate the address on the map.');
+                document.getElementById('contactMap').innerHTML = '<p>A helyszín nem található a térképen.</p>';
+            }
+        });
+    }
+*/
+
+
+    function initMap() {
+        //let address = '1600 Amphitheatre Parkway, Mountain View, CA'; // Static address for testing
+        let address = <?php echo json_encode($row['address'] . ', ' . $row['city']); ?>;
+        console.log("Address for geocoding:", address);
+        let geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({'address': address}, function (results, status) {
+            console.log("Geocoder response status:", status);
+
+            if (status === 'OK') {
+                console.log("Geocoder results:", results);
+
+                let map = new google.maps.Map(document.getElementById('propertymap'), {
+                    zoom: 15,
+                    center: results[0].geometry.location
+                });
+
+
+                let marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+
+
+            } else {
+                console.error('Geocode was not successful for the following reason:', status);
+                document.getElementById('propertymap').innerHTML = '<p>A helyszín nem található a térképen.</p>';
+            }
+        });
+    }
+
+</script>
+
+<!-- Replace YOUR_API_KEY with your actual Google Maps API key -->
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWOyts9O5KO0g_OO69ulWKtfL7g-ymjuw&callback=initMap"></script>
+
+
+</script>
+
+
 </body>
 </html>

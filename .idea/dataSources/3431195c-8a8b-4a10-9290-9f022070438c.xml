@@ -1036,8 +1036,8 @@ thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|UPDATE|G</Grants>
     </schema>
     <schema id="325" parent="1" name="thebwvas_THESIS">
       <Current>1</Current>
-      <IntrospectionTimestamp>2023-12-06.10:28:45</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2023-12-06.14:28:45</LocalIntrospectionTimestamp>
+      <IntrospectionTimestamp>2023-12-06.16:09:10</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2023-12-06.20:09:10</LocalIntrospectionTimestamp>
       <CollationName>utf8mb4_unicode_ci</CollationName>
     </schema>
     <user id="326" parent="1" name="thebwvas_SUPERUSER">
@@ -1131,7 +1131,7 @@ username</ColNames>
       <UnderlyingIndexName>id</UnderlyingIndexName>
     </key>
     <column id="345" parent="328" name="picture_id">
-      <AutoIncrement>32</AutoIncrement>
+      <AutoIncrement>33</AutoIncrement>
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -1169,7 +1169,7 @@ username</ColNames>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="353" parent="329" name="id">
-      <AutoIncrement>55</AutoIncrement>
+      <AutoIncrement>56</AutoIncrement>
       <DasType>int(6) unsigned|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -1248,8 +1248,7 @@ username</ColNames>
       <Position>16</Position>
     </column>
     <column id="369" parent="329" name="property_description">
-      <DasType>varchar(500)|0s</DasType>
-      <NotNull>1</NotNull>
+      <DasType>mediumtext|0s</DasType>
       <Position>17</Position>
     </column>
     <column id="370" parent="329" name="agent_id">
