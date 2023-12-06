@@ -12,6 +12,19 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+function display_first_rent_picture($id) {
+    global $conn; // Ensure that $conn is accessible within the function
+    $sql = "SELECT * FROM PICTURE WHERE property_id = $id LIMIT 1;";
+    $result = $conn->query($sql);
+    $pictureExists = $result->num_rows > 0;
+    if ($pictureExists) {
+        $row = $result->fetch_assoc();
+        return $row["filename"];
+    } else {
+        return "property_pics/default_rent.jpeg";
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -243,7 +256,8 @@ $result = $conn->query($sql);
                 while ($row = $result->fetch_assoc()) { ?>
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="property-box-4 category">
-                            <div class="category_bg_box property-photo">
+                            <div class="category_bg_box">
+                                <img src="<?php echo display_first_rent_picture($row['id']); ?>" alt="properties" class="img-fluid">
                                 <div class="category-overlay">
                                     <div class="category-content">
                                         <h3>

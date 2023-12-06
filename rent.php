@@ -19,9 +19,9 @@ $result = $conn->query($sql);
 
 //$conn->close();
 
-function rent_picture($id) {
+function display_first_rent_picture($id) {
     global $conn; // Ensure that $conn is accessible within the function
-    $sql = "SELECT * FROM PICTURE WHERE property_id = $id;";
+    $sql = "SELECT * FROM PICTURE WHERE property_id = $id LIMIT 1;";
     $result = $conn->query($sql);
     $pictureExists = $result->num_rows > 0;
     if ($pictureExists) {
@@ -132,7 +132,7 @@ function rent_picture($id) {
                             <div class="row">
                                 <div class="col-lg-5 col-md-5 col-pad">
                                     <a href="properties-details.php?id=<?php echo $row['id']; ?>" class="property-img">
-                                        <img src="<?php echo rent_picture($row['id']); ?>" alt="properties" class="img-fluid">
+                                        <img src="<?php echo display_first_rent_picture($row['id']); ?>" alt="properties" class="img-fluid">
                                         <div class="listing-badges">
                                             <span class="listing-time">Kiadó</span>
                                         </div>

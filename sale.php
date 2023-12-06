@@ -13,6 +13,18 @@ if ($conn->connect_error) {
 $sql = "SELECT * FROM PROPERTY WHERE is_for_sale = 1;";
 $result = $conn->query($sql);
 
+function display_first_sale_picture($id){
+    global $conn; // Ensure that $conn is accessible within the function
+    $sql = "SELECT * FROM PICTURE WHERE property_id = $id LIMIT 1;";
+    $result = $conn->query($sql);
+    $pictureExists = $result->num_rows > 0;
+    if ($pictureExists) {
+        $row = $result->fetch_assoc();
+        return $row["filename"];
+    } else {
+        return "property_pics/default_sale.jpeg";
+    }
+}
 
 //$conn->close();
 ?>
@@ -115,7 +127,7 @@ $result = $conn->query($sql);
                             <div class="row">
                                 <div class="col-lg-5 col-md-5 col-pad">
                                     <a href="properties-details.php?id=<?php echo $row['id']; ?>" class="property-img">
-                                        <img src="property_pics/default_rent.jpeg" alt="properties" class="img-fluid">
+                                        <img src="<?php echo display_first_sale_picture($row['id']); ?>" alt="properties" class="img-fluid">
                                         <div class="listing-badges">
                                             <span class="listing-time">Eladó</span>
                                         </div>
