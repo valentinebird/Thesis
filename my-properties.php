@@ -88,15 +88,12 @@ $result = $conn->query($sql);
             </div>
             <div class="col-lg-8 col-md-12 col-sm-12">
                 <!-- Heading -->
+                <p id="message"></p>
                 <div class="my-properties">
                     <table class="table brd-none">
                         <thead>
 
 
-                        <?php
-                        if ($result->num_rows > 0) {
-
-                        while ($row = $result->fetch_assoc()) { ?>
                         <tr>
                             <th>Ingatlan neve</th>
 
@@ -106,6 +103,10 @@ $result = $conn->query($sql);
                         </tr>
                         </thead>
                         <tbody>
+                        <?php
+                        if ($result->num_rows > 0) {
+
+                            while ($row = $result->fetch_assoc()) { ?>
                             <tr>
 
                             <td>
@@ -120,7 +121,8 @@ $result = $conn->query($sql);
                             <td><span class="hedin-div"><?php echo $row["id"]; ?></span></td>
                             <td class="actions">
                                 <a href="#" class="edit"><i class="fa fa-pencil"></i>Szerkesztés</a>
-                                <a href="#"><i class="delete fa fa-trash-o"></i>Törlés</a>
+                                <a href="#" class="delete" onclick="confirmDelete(<?php echo $row['id']; ?>)"><i class="fa fa-trash-o"></i>Törlés</a>
+
                             </td>
                         </tr>
                         <?php }} else {
@@ -137,6 +139,28 @@ $result = $conn->query($sql);
 
 <!-- Footer start -->
 <?php include 'footer.html'; ?>
+
+<script type="text/javascript">
+    function confirmDelete(propertyId) {
+        if(confirm("Biztosan törölni szeretnéd az ingatlant?")) {
+            $.ajax({
+                url: 'delete_property.php',
+                type: 'POST',
+                data: { id: propertyId },
+                success: function(response) {
+                    if (response === '1') {
+                        $("#message").html(response);
+                    } else {
+                        $("#message").html(response);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $("#message").html(response);
+                }
+            });
+        }
+    }
+</script>
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>
