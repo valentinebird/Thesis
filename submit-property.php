@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 function checkifPOST_EXIST($key)
 {
     return !empty($_POST[$key]);

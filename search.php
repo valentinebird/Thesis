@@ -1,9 +1,6 @@
 <?php
-
 session_start();
 require "dbconfig.php";
-
-//$db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 $conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 $conn->set_charset("utf8mb4");
 
@@ -12,8 +9,104 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Ensure all GET variables are set, even if they're empty
+$propertyStatus = isset($_GET['property-status']) ? $_GET['property-status'] : 'empty';
+$propertyType = isset($_GET['property-type']) ? $_GET['property-type'] : 'empty';
+$location = isset($_GET['location']) ? $_GET['location'] : 'empty';
+$bedrooms = isset($_GET['bedrooms']) ? $_GET['bedrooms'] : 'empty';
+$bathroom = isset($_GET['bathroom']) ? $_GET['bathroom'] : 'empty';
+$condition = isset($_GET['balcony']) ? $_GET['balcony'] : 'empty';
 
-$sortOrder = 'upload_date DESC'; // Assuming 'id DESC' as default (newest first)
+// Checkboxes
+$garage = isset($_GET['garage']) ? 'checked' : 'not checked';
+$pool = isset($_GET['pool']) ? 'checked' : 'not checked';
+$wifi = isset($_GET['wifi']) ? 'checked' : 'not checked';
+
+// Echo the values or indicate default/empty
+echo "Property Status: " . ($propertyStatus !== 'defaulttype' ? $propertyStatus : 'default') . "<br>";
+echo "Property Type: " . ($propertyType !== 'defaulttype' ? $propertyType : 'default') . "<br>";
+echo "Location: " . ($location !== '' ? $location : 'empty') . "<br>";
+echo "Bedrooms: " . ($bedrooms !== 'bedroom0' ? $bedrooms : 'default') . "<br>";
+echo "Bathroom: " . ($bathroom !== 'bathroom0' ? $bathroom : 'default') . "<br>";
+echo "Condition: " . ($condition !== 'defaultcondition' ? $condition : 'default') . "<br>";
+echo "Garage: " . $garage . "<br>";
+echo "Pool: " . $pool . "<br>";
+echo "Wi-Fi: " . $wifi . "<br>";
+
+
+// Assuming the database connection is already established
+
+// Initialize the SQL query
+$sql = "SELECT * FROM `PROPERTY` WHERE 1 = 1";  // '1 = 1' is used to simplify appending further conditions
+
+// Check if 'property-status' is set and not the 'rentandsale' default value
+if (!empty($_GET['property-status']) && $_GET['property-status'] !== 'rentandsale') {
+    $isForSaleValue = $_GET['property-status'] === 'sale' ? 1 : 0;
+    $sql .= " AND is_for_sale = {$isForSaleValue}";
+}
+
+// Check if 'property-type' is set and not the default value
+if (!empty($_GET['property-type']) && $_GET['property-type'] !== 'defaulttype') {
+    $propertyType = $_GET['property-type'];
+    $sql .= " AND type = '{$propertyType}'";
+}
+
+// Check if 'location' is set and not empty
+if (!empty($_GET['location'])) {
+    $location = $_GET['location'];
+    $sql .= " AND city LIKE '%{$location}%'";
+}
+
+// Check if 'bedrooms' is set and not the default value
+if (!empty($_GET['bedrooms']) && $_GET['bedrooms'] !== 'bedroom0') {
+    $bedrooms = substr($_GET['bedrooms'], -1);  // Gets the last character which is the number of bedrooms
+    $sql .= " AND rooms = '{$bedrooms}'";
+}
+
+// Check if 'bathroom' is set and not the default value
+if (!empty($_GET['bathroom']) && $_GET['bathroom'] !== 'bathroom0') {
+    $bathroom = substr($_GET['bathroom'], -1);  // Gets the last character which is the number of bathrooms
+    $sql .= " AND bath_rooms = '{$bathroom}'";
+}
+
+// Check if 'balcony' is set and not the default value
+if (!empty($_GET['balcony']) && $_GET['balcony'] !== 'defaultcondition') {
+    $balcony = $_GET['balcony'];
+    $sql .= " AND property_condition = '{$balcony}'";
+}
+
+// Checkboxes
+if (isset($_GET['garage'])) {
+    $sql .= " AND has_garage = 1";
+}
+
+if (isset($_GET['pool'])) {
+    $sql .= " AND pool = 1";
+}
+
+if (isset($_GET['wifi'])) {
+    $sql .= " AND has_wifi = 1";
+}
+
+
+if (isset($_GET['min_area']) && isset($_GET['max_area'])) {
+    $minPrice = $_GET['min_area'];
+    $maxPrice = $_GET['max_area'];
+    $sql .= " AND size BETWEEN '{$minPrice}' AND '{$maxPrice}'";
+}
+
+
+if (isset($_GET['min_price']) && isset($_GET['max_price'])) {
+    $minPrice = $_GET['min_price'];
+    $maxPrice = $_GET['max_price'];
+    $sql .= " AND price BETWEEN '{$minPrice}' AND '{$maxPrice}'";
+}
+
+
+$sql .= ";";
+
+ echo htmlspecialchars($sql);
+
 
 // Check if a sort option is set and update sortOrder accordingly
 if (isset($_GET['sort']) && !empty($_GET['sort'])) {
@@ -33,11 +126,10 @@ if (isset($_GET['sort']) && !empty($_GET['sort'])) {
     }
 }
 
-$sql = "SELECT * FROM PROPERTY WHERE is_for_sale = 0 ORDER BY $sortOrder;";
-$result = $conn->query($sql);
 
 
-//$conn->close();
+$sortOrder = 'upload_date DESC'; // Assuming 'id DESC' as default (newest first)
+
 
 function display_first_rent_picture($id)
 {
@@ -53,9 +145,6 @@ function display_first_rent_picture($id)
     }
 }
 
-
-
-
 ?>
 
 <script>
@@ -65,11 +154,10 @@ function display_first_rent_picture($id)
     }
 </script>
 
-
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <title>Kiadó ingatlanok listája</title>
+    <title>Keresés az ingatlanok között</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
 
@@ -123,7 +211,7 @@ function display_first_rent_picture($id)
 <div class="sub-banner">
     <div class="container">
         <div class="page-name">
-            <h1>Kiadó ingatlanjaink listája</h1>
+            <h1>Keresés</h1>
         </div>
     </div>
 </div>
@@ -221,7 +309,7 @@ function display_first_rent_picture($id)
                         </div>
                     <?php }
                 } else { ?>
-                    <h1>Jelenleg nincs kiadó ingatlanunk!</h1>
+                    <h1>Nincs a keresésnek megfelelő ingatlanunk!</h1>
                 <?php } ?>
 
             </div>
@@ -229,6 +317,30 @@ function display_first_rent_picture($id)
             <div class="col-lg-4 col-md-12">
                 <div class="sidebar-right">
                     <!-- Advanced search start -->
+                    <?php
+                    function select_DISTINCT_into_asoc_array($what_to_select)
+                    {
+                        $assoc_array = [];
+                        global $conn;
+                        $saq = "type";
+                        $sql_for_search = "SELECT DISTINCT  $what_to_select FROM PROPERTY WHERE is_for_sale = 1 ORDER BY $what_to_select ASC;";
+                        $result_for_search = $conn->query($sql_for_search);
+
+
+                        if ($result_for_search->num_rows > 0) {
+                            while ($row_for_search = $result_for_search->fetch_assoc()) {
+
+                                //$assoc_array +=  $row_for_search[$what_to_select];
+                                //$assoc_array[] +=  $row_for_search[$what_to_select];
+                                echo "<option>" . $row_for_search[$what_to_select];
+                                "</option>";
+                            }
+                        }
+                        return $assoc_array;
+                    }
+
+                    ?>
+
 
                     <div class="sidebar widget advanced-search">
                         <h3 class="sidebar-title">Részletes keresés</h3>

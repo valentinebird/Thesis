@@ -1,30 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="127.0.0.1">
-  <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.49">
-    <root id="1">
-      <DefaultCasing>exact</DefaultCasing>
-      <DefaultEngine>MyISAM</DefaultEngine>
-      <Grants>thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|ALTER|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|ALTER ROUTINE|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|CREATE|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|CREATE ROUTINE|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|CREATE TEMPORARY TABLES|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|CREATE VIEW|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|DELETE|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|DELETE HISTORY|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|DROP|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|EVENT|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|EXECUTE|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|INDEX|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|INSERT|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|LOCK TABLES|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|REFERENCES|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|SELECT|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|SHOW VIEW|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|TRIGGER|G
-thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|UPDATE|G</Grants>
-      <ServerVersion>10.5.20</ServerVersion>
-    </root>
+  <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.51">
+    <root id="1"/>
     <collation id="2" parent="1" name="armscii8_bin">
       <Charset>armscii8</Charset>
     </collation>
@@ -1036,8 +1013,7 @@ thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|UPDATE|G</Grants>
     </schema>
     <schema id="325" parent="1" name="thebwvas_THESIS">
       <Current>1</Current>
-      <IntrospectionTimestamp>2023-12-06.16:09:10</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2023-12-06.20:09:10</LocalIntrospectionTimestamp>
+      <LastIntrospectionLocalTimestamp>2023-12-06.20:09:10</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_unicode_ci</CollationName>
     </schema>
     <user id="326" parent="1" name="thebwvas_SUPERUSER">

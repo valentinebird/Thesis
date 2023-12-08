@@ -142,8 +142,11 @@ if ($propertyExists) {
 
                                         $activeClass = ($counter === 0) ? 'active' : '';
                                         ?>
-                                        <div class="item carousel-item <?php echo $activeClass; ?>" data-slide-number="<?php echo $counter; ?>">
-                                            <img src="<?php echo htmlspecialchars($rowPicture['filename']); ?>" class="img-fluid" alt="<?php echo htmlspecialchars($rowPicture['description']); ?>">
+                                        <div class="item carousel-item <?php echo $activeClass; ?>"
+                                             data-slide-number="<?php echo $counter; ?>">
+                                            <img src="<?php echo htmlspecialchars($rowPicture['filename']); ?>"
+                                                 class="img-fluid"
+                                                 alt="<?php echo htmlspecialchars($rowPicture['description']); ?>">
                                         </div>
                                         <?php
                                         $counter++; // Increment counter
@@ -161,233 +164,235 @@ if ($propertyExists) {
                                     $activeClass = ($i === 0) ? 'active' : '';
                                     ?>
                                     <li class="list-inline-item <?php echo $activeClass; ?>">
-                                        <a id="carousel-selector-<?php echo $i; ?>" data-slide-to="<?php echo $i; ?>" data-target="#propertiesDetailsSlider">
-                                            <img src="<?php echo htmlspecialchars($filename); ?>" class="img-fluid" alt="properties-small">
+                                        <a id="carousel-selector-<?php echo $i; ?>" data-slide-to="<?php echo $i; ?>"
+                                           data-target="#propertiesDetailsSlider">
+                                            <img src="<?php echo htmlspecialchars($filename); ?>" class="img-fluid"
+                                                 alt="properties-small">
                                         </a>
                                     </li>
                                     <?php
                                 }
                                 ?>
                             </ul>
-                        <!-- main slider carousel items -->
-                    </div>
-
-                    <!-- Tabbing box start -->
-                    <div class="tabbing tabbing-box tb-2 mb-40">
-                        <ul class="nav nav-tabs" id="carTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active show" id="one-tab" data-toggle="tab" href="#one"
-                                   role="tab"
-                                   aria-controls="one" aria-selected="false">Leírás</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" id="three-tab" data-toggle="tab" href="#three" role="tab"
-                                   aria-controls="three" aria-selected="true">Részletek</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" id="5-tab" data-toggle="tab" href="#5" role="tab"
-                                   aria-controls="5"
-                                   aria-selected="true">Helyszín</a>
-                            </li>
-
-                        </ul>
-                        <div class="tab-content" id="carTabContent">
-                            <div class="tab-pane fade active show" id="one" role="tabpanel"
-                                 aria-labelledby="one-tab">
-                                <div class="properties-description mb-50">
-                                    <h3 class="heading-2">
-                                        Leírás
-                                    </h3>
-                                    <?php echo $row["property_description"]; ?>
-
-
-                                    <?php
-                                    /* if ($result_ofPicture) {
-                                         // Check if there's at least one row
-                                         if ($rowPicture = $result_ofPicture->fetch_assoc()) {
-                                             // The row is not null, you can work with it
-                                             echo '<div class="picture">';
-                                             echo '<img src="' . htmlspecialchars($rowPicture['filename']) . '" alt="' . htmlspecialchars($rowPicture['description']) . '" style="width: 100%; height: auto;">'; // Image width set to 100% of its container
-
-                                             if ($result_ofPicture) {
-                                                 // Check if there's at least one row
-                                                 if ($rowPicture = $result_ofPicture->fetch_assoc()) {
-                                                     // The row is not null, you can work with it
-                                                     echo '<div class="picture">';
-                                                     echo '<img src="' . htmlspecialchars($rowPicture['filename']) . '" alt="' . htmlspecialchars($rowPicture['description']) . '" style="width: 100%; height: auto;">'; // Image width set to 100% of its container
-
-                                                     echo '</div>';
-                                                 } else {
-                                                     echo "Nincs kép a kiválasztott ingatlanhoz";
-                                                 }
-                                             }
-
-                                             echo '</div>';
-                                         } else {
-                                             echo "Nincs kép a kiválasztott ingatlanhoz";
-                                         }
-                                     }*/
-                                    ?>
-                                </div>
-                            </div>
-
-                            <div class="tab-pane fade " id="three" role="tabpanel" aria-labelledby="three-tab">
-                                <div class="property-details mb-40">
-                                    <h3 class="heading-2">Részletek</h3>
-                                    <div class="row">
-                                        <div class="col-md-4 col-sm-6">
-                                            <ul>
-                                                <li>
-                                                    <strong>Az ingatlan Id:</strong><?php echo $row["id"]; ?>
-                                                </li>
-                                                <li>
-                                                    <strong>Ár:</strong><?php echo $row["price"]; ?> Ft
-                                                </li>
-                                                <li>
-                                                    <strong>Típus:</strong><?php echo $row["type"]; ?>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-md-4 col-sm-6">
-                                            <ul>
-                                                <li>
-                                                    <strong>Méret:</strong><?php echo $row["size"]; ?>m&#178;
-                                                </li>
-
-
-                                                <li>
-                                                    <strong>Meghirdetési
-                                                        időpont</strong><?php echo $row["upload_date"]; ?>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-                                        <div class="col-md-4 col-sm-6">
-                                            <ul>
-                                                <li>
-                                                    <strong>Eladva</strong><?php if ($row["is_sold"] == 0) {
-                                                        echo "Még nincs eladva";
-                                                    } else {
-                                                        echo "Eladva";
-                                                    } ?>
-                                                </li>
-                                                <li>
-                                                    <strong><?php echo $row["city"]; ?> </strong>
-                                                </li>
-                                                <li>
-                                                    <strong>Cím: </strong><?php echo $row["address"]; ?>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Properties condition start -->
-                                <div class="properties-condition mb-40">
-                                    <h3 class="heading-2">
-                                        Felszereltség
-                                    </h3>
-                                    <div class="row">
-                                        <div class="col-md-4 col-sm-4 col-xs-12">
-                                            <ul class="condition">
-                                                <li>
-                                                    <i class="flaticon-furniture"></i><?php echo $row["rooms"]; ?>
-                                                    Hálószobák száma
-                                                </li>
-                                                <li>
-                                                    <i class="flaticon-holidays"></i><?php echo $row["bath_rooms"]; ?>
-                                                    Fürdőszobák száma
-                                                </li>
-                                            </ul>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <!-- Properties amenities start -->
-                                <div class="properties-amenities mb-40">
-                                    <h3 class="heading-2">
-                                        Extrák
-                                    </h3>
-                                    <div class="row">
-                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                            <ul class="amenities">
-                                                <?php if ($row["has_wifi"] == 1) { ?>
-                                                    <li>
-                                                        <i class="flaticon-connection"></i>Wifi
-                                                    </li>
-                                                <?php } ?>
-                                                <?php if ($row["has_garage"] == 1) { ?>
-                                                    <li>
-                                                        <i class="flaticon-vehicle"></i>Garázs
-                                                    </li>
-                                                <?php } ?>
-                                                <?php if ($row["pool"] == 1) { ?>
-                                                    <li>
-                                                        <i class="flaticon-beach"></i>Medence
-                                                    </li>
-                                                <?php } ?>
-
-                                            </ul>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="tab-pane fade " id="5" role="tabpanel" aria-labelledby="5-tab">
-                                <div class="location mb-50">
-                                    <div class="map">
-                                        <h3 class="heading-2">Az ingatlan helye: </h3>
-                                        <div id="propertymap" class="contact-map"></div>
-                                    </div>
-                                </div>
-                            </div>
-
+                            <!-- main slider carousel items -->
                         </div>
-                    </div>
+
+                        <!-- Tabbing box start -->
+                        <div class="tabbing tabbing-box tb-2 mb-40">
+                            <ul class="nav nav-tabs" id="carTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active show" id="one-tab" data-toggle="tab" href="#one"
+                                       role="tab"
+                                       aria-controls="one" aria-selected="false">Leírás</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="three-tab" data-toggle="tab" href="#three" role="tab"
+                                       aria-controls="three" aria-selected="true">Részletek</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="5-tab" data-toggle="tab" href="#5" role="tab"
+                                       aria-controls="5"
+                                       aria-selected="true">Helyszín</a>
+                                </li>
+
+                            </ul>
+                            <div class="tab-content" id="carTabContent">
+                                <div class="tab-pane fade active show" id="one" role="tabpanel"
+                                     aria-labelledby="one-tab">
+                                    <div class="properties-description mb-50">
+                                        <h3 class="heading-2">
+                                            Leírás
+                                        </h3>
+                                        <?php echo $row["property_description"]; ?>
 
 
-                    <!-- Agent details 1 start -->
-                    <div class="contact-1 mtb-50">
-                        <h3 class="heading">Kapcsolat az ingatlan közvetítő ügynökkel</h3>
-                        <div>
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <div class="form-group name">
-                                        <div>Az ingatlan közvetítő ügynök ID-ja:</div>
-                                        <div><?php echo $row["agent_id"]; ?></div>
+                                        <?php
+                                        /* if ($result_ofPicture) {
+                                             // Check if there's at least one row
+                                             if ($rowPicture = $result_ofPicture->fetch_assoc()) {
+                                                 // The row is not null, you can work with it
+                                                 echo '<div class="picture">';
+                                                 echo '<img src="' . htmlspecialchars($rowPicture['filename']) . '" alt="' . htmlspecialchars($rowPicture['description']) . '" style="width: 100%; height: auto;">'; // Image width set to 100% of its container
+
+                                                 if ($result_ofPicture) {
+                                                     // Check if there's at least one row
+                                                     if ($rowPicture = $result_ofPicture->fetch_assoc()) {
+                                                         // The row is not null, you can work with it
+                                                         echo '<div class="picture">';
+                                                         echo '<img src="' . htmlspecialchars($rowPicture['filename']) . '" alt="' . htmlspecialchars($rowPicture['description']) . '" style="width: 100%; height: auto;">'; // Image width set to 100% of its container
+
+                                                         echo '</div>';
+                                                     } else {
+                                                         echo "Nincs kép a kiválasztott ingatlanhoz";
+                                                     }
+                                                 }
+
+                                                 echo '</div>';
+                                             } else {
+                                                 echo "Nincs kép a kiválasztott ingatlanhoz";
+                                             }
+                                         }*/
+                                        ?>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <div class="form-group email">
-                                        <div>Az ingatlan közvetítő ügynök neve:</div>
-                                        <div><?php echo $rowagent["real_name"]; ?></div>
+
+                                <div class="tab-pane fade " id="three" role="tabpanel" aria-labelledby="three-tab">
+                                    <div class="property-details mb-40">
+                                        <h3 class="heading-2">Részletek</h3>
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-6">
+                                                <ul>
+                                                    <li>
+                                                        <strong>Az ingatlan Id:</strong><?php echo $row["id"]; ?>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Ár:</strong><?php echo $row["price"]; ?> Ft
+                                                    </li>
+                                                    <li>
+                                                        <strong>Típus:</strong><?php echo $row["type"]; ?>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-4 col-sm-6">
+                                                <ul>
+                                                    <li>
+                                                        <strong>Méret:</strong><?php echo $row["size"]; ?>m&#178;
+                                                    </li>
+
+
+                                                    <li>
+                                                        <strong>Meghirdetési
+                                                            időpont</strong><?php echo $row["upload_date"]; ?>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-4 col-sm-6">
+                                                <ul>
+                                                    <li>
+                                                        <strong>Eladva</strong><?php if ($row["is_sold"] == 0) {
+                                                            echo "Még nincs eladva";
+                                                        } else {
+                                                            echo "Eladva";
+                                                        } ?>
+                                                    </li>
+                                                    <li>
+                                                        <strong><?php echo $row["city"]; ?> </strong>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Cím: </strong><?php echo $row["address"]; ?>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <div class="form-group subject">
-                                        <div>Az ingatlan közvetítő ügynök E-mail címe:</div>
-                                        <div>
-                                            <a href="mailto: <?php echo $rowagent['email']; ?>"><?php echo $rowagent["email"]; ?></a>
+                                    <!-- Properties condition start -->
+                                    <div class="properties-condition mb-40">
+                                        <h3 class="heading-2">
+                                            Felszereltség
+                                        </h3>
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                                <ul class="condition">
+                                                    <li>
+                                                        <i class="flaticon-furniture"></i><?php echo $row["rooms"]; ?>
+                                                        Hálószobák száma
+                                                    </li>
+                                                    <li>
+                                                        <i class="flaticon-holidays"></i><?php echo $row["bath_rooms"]; ?>
+                                                        Fürdőszobák száma
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- Properties amenities start -->
+                                    <div class="properties-amenities mb-40">
+                                        <h3 class="heading-2">
+                                            Extrák
+                                        </h3>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                <ul class="amenities">
+                                                    <?php if ($row["has_wifi"] == 1) { ?>
+                                                        <li>
+                                                            <i class="flaticon-connection"></i>Wifi
+                                                        </li>
+                                                    <?php } ?>
+                                                    <?php if ($row["has_garage"] == 1) { ?>
+                                                        <li>
+                                                            <i class="flaticon-vehicle"></i>Garázs
+                                                        </li>
+                                                    <?php } ?>
+                                                    <?php if ($row["pool"] == 1) { ?>
+                                                        <li>
+                                                            <i class="flaticon-beach"></i>Medence
+                                                        </li>
+                                                    <?php } ?>
+
+                                                </ul>
+                                            </div>
+
+
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <div class="form-group number">
-                                        <div>Az ingatlan közvetítő ügynök telefonszáma:</div>
-                                        <div><?php echo $rowagent["phone"]; ?></div>
+
+                                <div class="tab-pane fade " id="5" role="tabpanel" aria-labelledby="5-tab">
+                                    <div class="location mb-50">
+                                        <div class="map">
+                                            <h3 class="heading-2">Az ingatlan helye: </h3>
+                                            <div id="propertymap" class="contact-map"></div>
+                                        </div>
                                     </div>
                                 </div>
 
+                            </div>
+                        </div>
+
+
+                        <!-- Agent details 1 start -->
+                        <div class="contact-1 mtb-50">
+                            <h3 class="heading">Kapcsolat az ingatlan közvetítő ügynökkel</h3>
+                            <div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group name">
+                                            <div>Az ingatlan közvetítő ügynök ID-ja:</div>
+                                            <div><?php echo $row["agent_id"]; ?></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group email">
+                                            <div>Az ingatlan közvetítő ügynök neve:</div>
+                                            <div><?php echo $rowagent["real_name"]; ?></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group subject">
+                                            <div>Az ingatlan közvetítő ügynök E-mail címe:</div>
+                                            <div>
+                                                <a href="mailto: <?php echo $rowagent['email']; ?>"><?php echo $rowagent["email"]; ?></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group number">
+                                            <div>Az ingatlan közvetítő ügynök telefonszáma:</div>
+                                            <div><?php echo $rowagent["phone"]; ?></div>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 <?php } else {
     echo "<h1>Nincs ilyen ingatlan</h1>";
@@ -416,46 +421,8 @@ if ($propertyExists) {
 <script src="js/jquery.countdown.js"></script>
 <script src="js/app.js"></script>
 
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug
-<script src="js/ie10-viewport-bug-workaround.js"></script>
-
-<script src="js/maps.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBL8kr92JsqkBl9Px8s8mfVtgs5wIMV_MM"></script>
-
-!-->
 
 <script>
-    /*
-        function initMap() {
-
-            //let address = <?php echo json_encode($row['address'] . ', ' . $row['city']); ?>;
-        let address = "Washington D.C., DC, USA";
-        console.log(address);
-        let geocoder = new google.maps.Geocoder();
-
-        geocoder.geocode({'address': address}, function(results, status) {
-            if (status === 'OK') {
-                let map = new google.maps.Map(document.getElementById('contactMap'), {
-                    zoom: 15,
-                    center: results[0].geometry.location
-                });
-
-                let marker = new google.maps.Marker({
-                    map: map,
-                    position: results[0].geometry.location
-                });
-            } else {
-                // Handle the error case
-                console.error('Geocode was not successful for the following reason: ' + status);
-                // Optionally, you can inform the user
-                //alert('Unable to locate the address on the map.');
-                document.getElementById('contactMap').innerHTML = '<p>A helyszín nem található a térképen.</p>';
-            }
-        });
-    }
-*/
-
-
     function initMap() {
         //let address = '1600 Amphitheatre Parkway, Mountain View, CA'; // Static address for testing
         let address = <?php echo json_encode($row['address'] . ', ' . $row['city']); ?>;
@@ -488,12 +455,9 @@ if ($propertyExists) {
     }
 
 </script>
-
-<!-- Replace YOUR_API_KEY with your actual Google Maps API key -->
+<?php $apiKey = "AIzaSyAWOyts9O5KO0g_OO69ulWKtfL7g-ymjuw"; ?>
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWOyts9O5KO0g_OO69ulWKtfL7g-ymjuw&callback=initMap"></script>
-
-
+        src="https://maps.googleapis.com/maps/api/js?key=<?php echo $apiKey; ?>&callback=initMap"></script>
 </script>
 
 
