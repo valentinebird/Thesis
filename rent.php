@@ -37,7 +37,7 @@ $sql = "SELECT * FROM PROPERTY WHERE is_for_sale = 0 ORDER BY $sortOrder;";
 $result = $conn->query($sql);
 
 
-//$conn->close();
+$conn->close();
 
 function display_first_rent_picture($id)
 {

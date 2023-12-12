@@ -3,7 +3,102 @@
 session_start();
 require "dbconfig.php";
 
+$errors = [];
+$result = [];
+
+function checkifPOST_EXIST($key)
+{
+    return !empty($_POST[$key]);
+}
+
+function hibasE($kulcs)
+{
+    global $errors;
+    return in_array($kulcs, array_keys($errors));
+}
+
+function hibaKiir($key)
+{
+    global $errors;
+    if ($errors) {
+        echo $errors[$key];
+    }
+}
+
+function allapottarto($kulcs)
+{
+    global $errors;
+    global $result;
+
+    if (count($errors) > 0) {
+        return $result[$kulcs];
+    } else {
+        return "";
+    }
+}
+
+$info_message = "";
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+
+    if (checkifPOST_EXIST("name")) {
+        $result["name"] = $_POST["name"];
+    } else {
+        $errors["name"] = "Az név nincs kitöltve!";
+    }
+
+    if (!checkifPOST_EXIST("email") || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = 'Érvényes e-mail cím megadása szükséges.';
+    } else {
+        $result["email"] = $_POST["email"];
+    }
+
+    if (checkifPOST_EXIST("subject")) {
+        $result["subject"] = $_POST["subject"];
+    } else {
+        $errors["subject"] = "A tárgy nincs kitöltve!";
+    }
+
+    if (checkifPOST_EXIST("phone")) {
+        $result["phone"] = $_POST["phone"];
+    } else {
+        $errors["phone"] = "A telefonszám nincs kitöltve!";
+    }
+
+    if (checkifPOST_EXIST("message")) {
+        $result["message"] = $_POST["message"];
+    } else {
+        $errors["message"] = "Az üzenet nincs kitöltve!";
+    }
+
+    if (!$errors) {
+        $to = 'info@madar-szakdolgozat.online';
+        $subject = '=?UTF-8?B?' . base64_encode('Új üzenet ' . $result['name']) . '?=';
+        $message = "A következő üzenetet kaptad \n\n";
+        $message .= "Név: " . $result['name'] . "\n";
+        $message .= "Email: " . $result['email'] . "\n";
+        $message .= "Telefonszám: " . $result['phone'] . "\n";
+        $message .= "Üzenet: " . $result['message'] . "\n";
+
+        $headers = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/plain; charset=UTF-8' . "\r\n";
+        $headers .= 'From: ' . $result['email'] . "\r\n";
+        $headers .= 'Reply-To: ' . $result['email'] . "\r\n";
+        $headers .= 'X-Mailer: PHP/' . phpversion();
+
+        if(mail($to, $subject, $message, $headers)){
+            $info_message .= "\n Az üzenet sikeresen elküldve!" . "\n";
+        } else{
+            $info_message .= "\n Hiba az üzenet elküldésekor!" . "\n";
+        }
+
+
+    }
+}
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="hu">
@@ -22,25 +117,27 @@ require "dbconfig.php";
     <link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="fonts/flaticon/font/flaticon.css">
     <link rel="stylesheet" type="text/css" href="fonts/linearicons/style.css">
-    <link rel="stylesheet" type="text/css"  href="css/jquery.mCustomScrollbar.css">
-    <link rel="stylesheet" type="text/css"  href="css/dropzone.css">
-    <link rel="stylesheet" type="text/css"  href="css/slick.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" type="text/css" href="css/dropzone.css">
+    <link rel="stylesheet" type="text/css" href="css/slick.css">
 
     <!-- Custom stylesheet -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" id="style_sheet" href="css/skins/default.css">
 
     <!-- Favicon icon -->
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" >
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 
     <!-- Google fonts -->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CRoboto:300,400,500,700&display=swap">
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CRoboto:300,400,500,700&display=swap">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link rel="stylesheet" type="text/css" href="css/ie10-viewport-bug-workaround.css">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!--[if lt IE 9]>
+    <script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="js/ie-emulation-modes-warning.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -71,19 +168,19 @@ require "dbconfig.php";
         <!-- Main title -->
         <div class="main-title">
             <h1 class="mb-10">Kapcsolat</h1>
-            <p>További ajánlaokat az alábbi űrlap kitöltésével lehet kérni.</p>
+            <p>További ajánlakat az alábbi űrlap kitöltésével lehet kérni</p>
         </div>
         <div class="contact-info">
             <div class="row">
                 <div class="col-md-3 col-sm-6 mrg-btn-50">
                     <i class="flaticon-location"></i>
                     <p>Az iroda címe</p>
-                    <strong>20/F Green Road, Dhaka</strong>
+                    <strong>Budapest</strong>
                 </div>
                 <div class="col-md-3 col-sm-6 mrg-btn-50">
                     <i class="flaticon-technology-1"></i>
                     <p>Telefon</p>
-                    <strong>+55 417 634 7071</strong>
+                    <strong>+36 123 456728</strong>
                 </div>
                 <div class="col-md-3 col-sm-6 mrg-btn-50">
                     <i class="flaticon-envelope"></i>
@@ -98,33 +195,39 @@ require "dbconfig.php";
             </div>
         </div>
 
-        <form action="#" method="GET" enctype="multipart/form-data">
+        <form action="#" method="POST" enctype="multipart/form-data">
+            <p style="color: green" id="info_message"><?php echo $info_message ?></p>
             <div class="row">
                 <div class="col-lg-8">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group name">
-                                <input type="text" name="name" class="form-control" placeholder="Név">
+                                <input type="text" name="name" class="form-control" value="<?= allapottarto('email') ?>" placeholder="Név">
+                                <span style="color: red"><?php echo hibaKiir('name') ?></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group email">
-                                <input type="email" name="email" class="form-control" placeholder="E-mail">
+                                <input type="email" name="email" class="form-control" value="<?= allapottarto('email') ?>" placeholder="E-mail">
+                                <span style="color: red"><?php echo hibaKiir('email') ?></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group subject">
-                                <input type="text" name="subject" class="form-control" placeholder="Tárgy">
+                                <input type="text" name="subject" class="form-control" value="<?= allapottarto('subject') ?>" placeholder="Tárgy">
+                                <span style="color: red"><?php echo hibaKiir('subject') ?></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group number">
-                                <input type="text" name="phone" class="form-control" placeholder="Telefonszám">
+                                <input type="text" name="phone" class="form-control" value="<?= allapottarto('phone') ?>" placeholder="Telefonszám">
+                                <span style="color: red"><?php echo hibaKiir('phone') ?></span>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group message">
-                                <textarea class="form-control" name="message" placeholder="Üzenet"></textarea>
+                                <textarea class="form-control" name="message" placeholder="Üzenet"><?= allapottarto('message') ?></textarea>
+                                <span style="color: red"><?php echo hibaKiir('message') ?></span>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -154,7 +257,6 @@ require "dbconfig.php";
 </div>
 
 
-
 <?php include 'footer.html'; ?>
 
 <script src="js/jquery-2.2.0.min.js"></script>
@@ -179,9 +281,9 @@ require "dbconfig.php";
 <script src="js/maps.js"></script>
 <script src="js/app.js"></script>
 
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="js/ie10-viewport-bug-workaround.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBL8kr92JsqkBl9Px8s8mfVtgs5wIMV_MM"></script>
+
+
+
 
 </body>
 </html>

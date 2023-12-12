@@ -22,19 +22,6 @@ $garage = isset($_GET['garage']) ? 'checked' : 'not checked';
 $pool = isset($_GET['pool']) ? 'checked' : 'not checked';
 $wifi = isset($_GET['wifi']) ? 'checked' : 'not checked';
 
-// Echo the values or indicate default/empty
-echo "Property Status: " . ($propertyStatus !== 'defaulttype' ? $propertyStatus : 'default') . "<br>";
-echo "Property Type: " . ($propertyType !== 'defaulttype' ? $propertyType : 'default') . "<br>";
-echo "Location: " . ($location !== '' ? $location : 'empty') . "<br>";
-echo "Bedrooms: " . ($bedrooms !== 'bedroom0' ? $bedrooms : 'default') . "<br>";
-echo "Bathroom: " . ($bathroom !== 'bathroom0' ? $bathroom : 'default') . "<br>";
-echo "Condition: " . ($condition !== 'defaultcondition' ? $condition : 'default') . "<br>";
-echo "Garage: " . $garage . "<br>";
-echo "Pool: " . $pool . "<br>";
-echo "Wi-Fi: " . $wifi . "<br>";
-
-
-// Assuming the database connection is already established
 
 // Initialize the SQL query
 $sql = "SELECT * FROM `PROPERTY` WHERE 1 = 1";  // '1 = 1' is used to simplify appending further conditions
@@ -103,11 +90,7 @@ if (isset($_GET['min_price']) && isset($_GET['max_price'])) {
 }
 
 
-$sql .= ";";
-
- echo htmlspecialchars($sql);
-
-
+$sortOrder = 'upload_date DESC'; // Assuming 'id DESC' as default (newest first)
 // Check if a sort option is set and update sortOrder accordingly
 if (isset($_GET['sort']) && !empty($_GET['sort'])) {
     switch ($_GET['sort']) {
@@ -126,9 +109,9 @@ if (isset($_GET['sort']) && !empty($_GET['sort'])) {
     }
 }
 
-
-
-$sortOrder = 'upload_date DESC'; // Assuming 'id DESC' as default (newest first)
+$sql .= " ORDER BY $sortOrder;";
+//echo htmlspecialchars($sql); the sql query
+$result = $conn->query($sql);
 
 
 function display_first_rent_picture($id)
@@ -145,13 +128,16 @@ function display_first_rent_picture($id)
     }
 }
 
+$conn->close();
 ?>
 
 <script>
     function sortProperties(sortBy) {
-        // Redirect to the same page with the new sort parameter
-        window.location.href = '?sort=' + sortBy;
+        var existingParams = new URLSearchParams(window.location.search);
+        existingParams.set('sort', sortBy);
+        window.location.href = window.location.pathname + '?' + existingParams.toString();
     }
+
 </script>
 
 <!DOCTYPE html>
@@ -234,18 +220,10 @@ function display_first_rent_picture($id)
                     <div class="float-right cod-pad">
                         <div class="sorting-options">
                             <select class="sorting" onchange="sortProperties(this.value)">
-                                <option value="newest" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'newest') ? 'selected' : ''; ?>>
-                                    Legújabb elöl
-                                </option>
-                                <option value="oldest" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'oldest') ? 'selected' : ''; ?>>
-                                    Legrégebbi elöl
-                                </option>
-                                <option value="highest_price" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'highest_price') ? 'selected' : ''; ?>>
-                                    Ár (Legdrágább elöl)
-                                </option>
-                                <option value="lowest_price" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'lowest_price') ? 'selected' : ''; ?>>
-                                    Ár (Legolcsóbb elöl)
-                                </option>
+                                <option value="newest" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'newest') ? 'selected' : ''; ?>>Legújabb elöl</option>
+                                <option value="oldest" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'oldest') ? 'selected' : ''; ?>>Legrégebbi elöl</option>
+                                <option value="highest_price" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'highest_price') ? 'selected' : ''; ?>>Ár (Legdrágább elöl)</option>
+                                <option value="lowest_price" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'lowest_price') ? 'selected' : ''; ?>>Ár (Legolcsóbb elöl)</option>
                             </select>
 
                         </div>

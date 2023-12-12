@@ -1,10 +1,11 @@
 <?php
 session_start();
+require "dbconfig.php";
 function checkifPOST_EXIST($key)
 {
     return !empty($_POST[$key]);
 }
-require "dbconfig.php";
+
 $db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 mysqli_query($db, "SET NAMES utf8;");
 if ($db->connect_error) {

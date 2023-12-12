@@ -1593,7 +1593,7 @@ input[type="checkbox"]:checked + label::before {
     background: #fff !important;
 }
 
-.search-button {
+.search-button  {
     cursor: pointer;
     padding: 13px 26px;
     letter-spacing: 1px;
@@ -5417,7 +5417,7 @@ footer {
     border: 1px solid #eee;
     background: transparent;
     outline: 0;
-    color: #f6f6f6;
+    /*color: #f6f6f6;*/
     height: 45px;
     border-radius: 3px;
 }

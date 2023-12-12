@@ -177,58 +177,7 @@ function display_first_rent_picture($id) {
                     <div class="carousel-content container">
                         <div class="text-center banner-info">
                             <h3>Segítünk megtalálni az Önnek megfelelő ingatlant</h3>
-                            <div class="search-info">
-                                <div class="inline-search-area">
-                                    <div class="row">
-                                        <div class="col-lg-2 col-sm-6 col-12 search-col">
-                                            <select class="selectpicker search-fields" name="property-status">
-                                                <option>Bérlés időtartama</option>
-                                                <option>Eladó</option>
-                                                <option>Kiadó</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-2 col-sm-6 col-12 search-col middle-col-1">
-                                            <select class="selectpicker search-fields" name="property-types">
-                                                <option>Az ingatlan típusa</option>
-                                                <option>Aparment</option>
-                                                <option>Ház</option>
-                                                <option>Irodaház</option>
-                                                <option>Lakás</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-2 col-sm-6 col-12 search-col middle-col-2">
-                                            <select class="selectpicker search-fields" name="Location">
-                                                <option>Helye</option>
-                                                <option>London</option>
-                                                <option>Los Angeles</option>
-                                                <option>New York</option>
-                                                <option>Budapest</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-2 col-sm-6 col-12 search-col middle-col-1">
-                                            <select class="selectpicker search-fields" name="Bedrooms">
-                                                <option>Hálószoák száma</option>
-                                                <option>01</option>
-                                                <option>02</option>
-                                                <option>03</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-2 col-sm-6 col-12 search-col middle-col-2">
-                                            <select class="selectpicker search-fields" name="Bathrooms">
-                                                <option>Fürdőszobák száma</option>
-                                                <option>01</option>
-                                                <option>02</option>
-                                                <option>03</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-2 col-sm-6 col-12 search-col">
-                                            <button class="btn button-theme btn-search btn-block">
-                                                <i class="fa fa-search"></i> Kersés
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
