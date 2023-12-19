@@ -14,8 +14,6 @@ if ($conn->connect_error) {
 //$sql = "SELECT id,username, email, reg_date FROM USER;";
 $sql = "SELECT * FROM PROPERTY WHERE agent_id = '$id';";
 $result = $conn->query($sql);
-
-
 ?>
 
 <!DOCTYPE html>
@@ -84,7 +82,7 @@ $result = $conn->query($sql);
     <div class="container">
         <div class="row">
             <div class="col-lg-4 col-md-12 col-sm-12">
-                <?php include 'profilemenu.php'; ?>
+                    <?php include 'profilemenu.php'; ?>
             </div>
             <div class="col-lg-8 col-md-12 col-sm-12">
                 <!-- Heading -->
@@ -107,27 +105,33 @@ $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
 
                             while ($row = $result->fetch_assoc()) { ?>
-                            <tr>
+                                <tr>
 
-                            <td>
-                                <div class="inner">
-                                    <h5><a href="properties-details.php?id=<?php echo $row['id']; ?>"><?php echo $row["property_name"]; ?></a> </php></a></h5>
-                                    <figure class="hedin-div"><i class="fa fa-map-marker"></i> <?php echo $row["city"]; ?>, <?php echo $row["address"]; ?>
-                                    </figure>
-                                    <div class="price-month"><?php echo $row["price"]; ?></div>
-                                </div>
-                            </td>
-                            <td class="hedin-div"><?php echo $row["upload_date"]; ?></td>
-                            <td><span class="hedin-div"><?php echo $row["id"]; ?></span></td>
-                            <td class="actions">
-                                <a href="#" class="edit"><i class="fa fa-pencil"></i>Szerkesztés</a>
-                                <a href="#" class="delete" onclick="confirmDelete(<?php echo $row['id']; ?>)"><i class="fa fa-trash-o"></i>Törlés</a>
+                                    <td>
+                                        <div class="inner">
+                                            <h5>
+                                                <a href="properties-details.php?id=<?php echo $row['id']; ?>"><?php echo $row["property_name"]; ?></a> </php></a>
+                                            </h5>
+                                            <figure class="hedin-div"><i
+                                                        class="fa fa-map-marker"></i> <?php echo $row["city"]; ?>
+                                                , <?php echo $row["address"]; ?>
+                                            </figure>
+                                            <div class="price-month"><?php echo $row["price"]; ?></div>
+                                        </div>
+                                    </td>
+                                    <td class="hedin-div"><?php echo $row["upload_date"]; ?></td>
+                                    <td><span class="hedin-div"><?php echo $row["id"]; ?></span></td>
+                                    <td class="actions">
+                                        <a href="#" class="edit"><i class="fa fa-pencil"></i>Szerkesztés</a>
+                                        <a href="#" class="delete" onclick="confirmDelete(<?php echo $row['id']; ?>)"><i
+                                                    class="fa fa-trash-o"></i>Törlés</a>
 
-                            </td>
-                        </tr>
-                        <?php }} else {
-                        echo "<h1>Nincs meghirdetett ingatlanod!</h1>";
-                        }?>
+                                    </td>
+                                </tr>
+                            <?php }
+                        } else {
+                            echo "<h1>Nincs meghirdetett ingatlanod!</h1>";
+                        } ?>
                         </tbody>
                         </tbody>
                     </table>
@@ -141,20 +145,20 @@ $result = $conn->query($sql);
 <?php include 'footer.html'; ?>
 
 <script type="text/javascript">
-    function confirmDelete(propertyId) {
-        if(confirm("Biztosan törölni szeretnéd az ingatlant?")) {
+    function confirmDelete(id) {
+        if (confirm("Biztosan törölni szeretnéd az ingatlant?")) {
             $.ajax({
                 url: 'delete_property.php',
                 type: 'POST',
-                data: { id: propertyId },
-                success: function(response) {
+                data: {id: id},
+                success: function (response) {
                     if (response === '1') {
                         $("#message").html(response);
                     } else {
                         $("#message").html(response);
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     $("#message").html(response);
                 }
             });

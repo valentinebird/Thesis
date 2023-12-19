@@ -2,7 +2,7 @@
 session_start();
 require "dbconfig.php";
 require "profiledata.php";
-error_reporting(E_ALL);
+
 ?>
 
 

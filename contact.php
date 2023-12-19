@@ -92,8 +92,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else{
             $info_message .= "\n Hiba az üzenet elküldésekor!" . "\n";
         }
-
-
     }
 }
 ?>
