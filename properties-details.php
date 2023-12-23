@@ -450,10 +450,10 @@ if ($propertyExists) {
                 } else {
                     document.getElementById('favoriteButton').innerText = 'Hozzáadás a kedvencekhez';
                 }
-                alert(response);
+
             },
             error: function(xhr, status, error) {
-                console.error("Error: ", error);
+                console.error("Hiba: ", error);
             }
         });
     }

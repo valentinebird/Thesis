@@ -3,6 +3,7 @@
 session_start();
 require "dbconfig.php";
 
+
 // Check if propertyId and userId are set
 if (isset($_POST['propertyId']) && isset($_SESSION['id'])) {
     $propertyId = $_POST['propertyId'];
@@ -16,7 +17,7 @@ if (isset($_POST['propertyId']) && isset($_SESSION['id'])) {
     $conn->set_charset("utf8mb4");
 
     if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+        die("Az adatbázishoz nem lehet csatlakozni: " . $conn->connect_error);
     }
 
     // Fetch current favorite properties
@@ -38,15 +39,15 @@ if (isset($_POST['propertyId']) && isset($_SESSION['id'])) {
             $updateSql = "UPDATE USER SET favorite_properties = '$updatedFavorites' WHERE username = '$userId'";
 
             if ($conn->query($updateSql) === TRUE) {
-                    echo "Kedvenc sikeresen eltávolítva.";
+                echo "A kedvenc sikeresen el lett távolítva";
             } else {
                 echo "Hiba: " . $conn->error;
             }
         } else {
-            echo "Az  ID not found in favorites";
+            echo "Nem található a kedvenc ingatlan";
         }
     } else {
-        echo "Nincs kedvenc ingatlan";
+        echo "Nincsennek kedvenc ingatlanjaid vagy a felhasználó nem található";
     }
 
     $conn->close();

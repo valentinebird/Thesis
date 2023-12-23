@@ -3,6 +3,7 @@ session_start();
 require "dbconfig.php";
 require "profiledata.php";
 
+global $DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME, $id;
 $conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 $conn->set_charset("utf8mb4");
 
@@ -10,17 +11,8 @@ $conn->set_charset("utf8mb4");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-
-
-// Assume $conn is your database connection
-
-// Replace '$id' with the actual user ID
 $sql = "SELECT favorite_properties FROM USER WHERE id = '$id'";
-
 $result = $conn->query($sql);
-
-
-// Process each property row
 
 
 ?>
@@ -97,23 +89,6 @@ $result = $conn->query($sql);
                     <!-- Heading -->
                     <p id="message"></p>
                     <div class="my-properties">
-
-                        <?php
-                        if ($result->num_rows > 0) {
-                        $row = $result->fetch_assoc();
-                        $favoriteProperties = json_decode($row["favorite_properties"], true);
-
-                        if (is_array($favoriteProperties) && count($favoriteProperties) > 0) {
-                        // Create a comma-separated list of IDs
-                        $ids = implode(',', $favoriteProperties);
-
-                        // Query the PROPERTY table with these IDs
-                        $propertyQuery = "SELECT * FROM PROPERTY WHERE id IN ($ids)";
-                        $propertyResult = $conn->query($propertyQuery);
-
-                        if ($propertyResult->num_rows > 0) {
-                        while ($propertyRow = $propertyResult->fetch_assoc()) {
-                        ?>
                         <table class="table brd-none">
                             <thead>
 
@@ -129,10 +104,27 @@ $result = $conn->query($sql);
                             <tbody>
                             <tr>
 
+                                <?php
+                                if ($result->num_rows > 0) {
+                                $row = $result->fetch_assoc();
+                                $favoriteProperties = json_decode($row["favorite_properties"], true);
+                                if (is_array($favoriteProperties) && count($favoriteProperties) > 0) {
+                                // Create a comma-separated list of IDs
+                                $ids = implode(',', $favoriteProperties);
+
+                                // Query the PROPERTY table with these IDs
+                                $propertyQuery = "SELECT * FROM PROPERTY WHERE id IN ($ids)";
+                                $propertyResult = $conn->query($propertyQuery);
+
+                                if ($propertyResult->num_rows > 0) {
+                                while ($propertyRow = $propertyResult->fetch_assoc()) {
+                                ?>
+
+
                                 <td>
                                     <div class="inner">
                                         <h5>
-                                            <a href="properties-details.php?id=<?php echo $propertyRow['id'];; ?>"><?php echo $propertyRow['property_name']; ?></a> </php></a>
+                                            <a href="properties-details.php?id=<?php echo $propertyRow['id']; ?>"><?php echo $propertyRow['property_name']; ?></a> </php></a>
                                         </h5>
                                         <figure class="hedin-div"><i
                                                     class="fa fa-map-marker"></i> <?php echo $propertyRow["city"]; ?>
@@ -151,21 +143,22 @@ $result = $conn->query($sql);
 
                                 </td>
                             </tr>
-                            <?php
-                            }
-                            } else {
-                                echo "Nincs kedvenc ingatlanod.";
-                            }
-                            } else {
-                                echo "Nincs kedvenc ingatlanod!";
-                            }
-                            } else {
-                                echo "Nincs kedvenc ingatlanod!";
-                            }
-                            ?>
                             </tbody>
                             </tbody>
                         </table>
+                        <?php
+                        }
+                        } else {
+                            echo "Nincs kedvenc ingatlanod.";
+                        }
+                        } else {
+                            echo "Nincs kedvenc ingatlanod!";
+                        }
+                        } else {
+                            echo "Nincs kedvenc ingatlanod!";
+                        }
+                        ?>
+
                     </div>
                 </div>
             </div>
