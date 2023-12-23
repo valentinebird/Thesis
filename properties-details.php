@@ -352,23 +352,37 @@ if ($propertyExists) {
 
                             </div>
                         </div>
-
+                        <?php
+                        $isFavorite = false;
+                        if ($propertyExists && isset($_SESSION['id'])) {
+                            $userId = $_SESSION['id'];
+                            $sql = "SELECT favorite_properties FROM USER WHERE id = '$userId'";
+                            $result = $conn->query($sql);
+                            if ($result->num_rows > 0) {
+                                $userRow = $result->fetch_assoc();
+                                $favoriteProperties = explode(',', $userRow["favorite_properties"]);
+                                $isFavorite = in_array($id, $favoriteProperties);
+                            }
+                        }
+                        ?>
 
                         <!-- Agent details 1 start -->
                         <div class="contact-1 mtb-50">
-                            <h3 class="heading">Kapcsolat az ingatlan közvetítő ügynökkel</h3>
+                            <h3 class="heading">Kapcsolat az ügynökkel/kedvencekhez adás</h3>
                             <div>
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <div class="form-group name">
-                                            <div>Az ingatlan közvetítő ügynök ID-ja:</div>
-                                            <div><?php echo $row["agent_id"]; ?></div>
+                                            <div>Kedvencekhez adás</div>
+                                            <div><button id="favoriteButton" onclick="handleFavorite(<?php echo $id; ?>)">
+                                                    <?php echo $isFavorite ? 'Az eltávolítás a kedvencek közül' : 'Hozzáadás a kedvencekhez'; ?>
+                                                </button></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <div class="form-group email">
                                             <div>Az ingatlan közvetítő ügynök neve:</div>
-                                            <div><?php echo $rowagent["real_name"]; ?></div>
+                                            <a href="agent-detail.php?id=<?php echo $row["agent_id"]; ?>"><?php  echo $rowagent["real_name"]; ?>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -420,6 +434,30 @@ if ($propertyExists) {
 <script src="js/jquery.magnific-popup.min.js"></script>
 <script src="js/jquery.countdown.js"></script>
 <script src="js/app.js"></script>
+
+<script>
+    function handleFavorite(propertyId) {
+        const action = document.getElementById('favoriteButton').innerText.includes('eltávolítás') ? 'remove' : 'add';
+
+        $.ajax({
+            url: 'handle_favorite.php', // PHP script to add/remove favorite
+            type: 'POST',
+            data: { propertyId: propertyId, action: action },
+            success: function(response) {
+                // Update button text based on current action
+                if (action === 'add') {
+                    document.getElementById('favoriteButton').innerText = 'Az eltávolítás a kedvencek közül';
+                } else {
+                    document.getElementById('favoriteButton').innerText = 'Hozzáadás a kedvencekhez';
+                }
+                alert(response);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error: ", error);
+            }
+        });
+    }
+</script>
 
 
 <script>
