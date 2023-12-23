@@ -40,6 +40,22 @@ if ($propertyExists) {
 }
 
 
+
+
+$isFavorite = false;
+if ($propertyExists && isset($_SESSION['id'])) {
+    $userId = $_SESSION['id'];
+    $sql = "SELECT favorite_properties FROM USER WHERE username = '$userId'";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        $userRow = $result->fetch_assoc();
+        $favoriteProperties = json_decode($userRow["favorite_properties"], true);
+        $isFavorite = in_array($id, $favoriteProperties);
+    }
+}
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -206,35 +222,6 @@ if ($propertyExists) {
                                             Leírás
                                         </h3>
                                         <?php echo $row["property_description"]; ?>
-
-
-                                        <?php
-                                        /* if ($result_ofPicture) {
-                                             // Check if there's at least one row
-                                             if ($rowPicture = $result_ofPicture->fetch_assoc()) {
-                                                 // The row is not null, you can work with it
-                                                 echo '<div class="picture">';
-                                                 echo '<img src="' . htmlspecialchars($rowPicture['filename']) . '" alt="' . htmlspecialchars($rowPicture['description']) . '" style="width: 100%; height: auto;">'; // Image width set to 100% of its container
-
-                                                 if ($result_ofPicture) {
-                                                     // Check if there's at least one row
-                                                     if ($rowPicture = $result_ofPicture->fetch_assoc()) {
-                                                         // The row is not null, you can work with it
-                                                         echo '<div class="picture">';
-                                                         echo '<img src="' . htmlspecialchars($rowPicture['filename']) . '" alt="' . htmlspecialchars($rowPicture['description']) . '" style="width: 100%; height: auto;">'; // Image width set to 100% of its container
-
-                                                         echo '</div>';
-                                                     } else {
-                                                         echo "Nincs kép a kiválasztott ingatlanhoz";
-                                                     }
-                                                 }
-
-                                                 echo '</div>';
-                                             } else {
-                                                 echo "Nincs kép a kiválasztott ingatlanhoz";
-                                             }
-                                         }*/
-                                        ?>
                                     </div>
                                 </div>
 
@@ -352,20 +339,6 @@ if ($propertyExists) {
 
                             </div>
                         </div>
-                        <?php
-                        $isFavorite = false;
-                        if ($propertyExists && isset($_SESSION['id'])) {
-                            $userId = $_SESSION['id'];
-                            $sql = "SELECT favorite_properties FROM USER WHERE id = '$userId'";
-                            $result = $conn->query($sql);
-                            if ($result->num_rows > 0) {
-                                $userRow = $result->fetch_assoc();
-                                $favoriteProperties = explode(',', $userRow["favorite_properties"]);
-                                $isFavorite = in_array($id, $favoriteProperties);
-                            }
-                        }
-                        ?>
-
                         <!-- Agent details 1 start -->
                         <div class="contact-1 mtb-50">
                             <h3 class="heading">Kapcsolat az ügynökkel/kedvencekhez adás</h3>
@@ -374,15 +347,21 @@ if ($propertyExists) {
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <div class="form-group name">
                                             <div>Kedvencekhez adás</div>
-                                            <div><button id="favoriteButton" onclick="handleFavorite(<?php echo $id; ?>)">
+                                            <?php if (!$_SESSION['is_agent'] and $_SESSION['loggedin']) { ?>
+                                            <div>
+                                                <button  class="search-button" id="favoriteButton" onclick="handleFavorite(<?php echo $id; ?>)">
                                                     <?php echo $isFavorite ? 'Az eltávolítás a kedvencek közül' : 'Hozzáadás a kedvencekhez'; ?>
-                                                </button></div>
+                                                </button>
+                                            </div>
+                                            <?php }else { ?>
+                                                <div> A kedvencekhez adás csak bejelentkezett felhasználók számára elérhető. </div>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <div class="form-group email">
                                             <div>Az ingatlan közvetítő ügynök neve:</div>
-                                            <a href="agent-detail.php?id=<?php echo $row["agent_id"]; ?>"><?php  echo $rowagent["real_name"]; ?>
+                                            <a href="agent-detail.php?id=<?php echo $row["agent_id"]; ?>"><?php echo $rowagent["real_name"]; ?>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -442,8 +421,8 @@ if ($propertyExists) {
         $.ajax({
             url: 'handle_favorite.php', // PHP script to add/remove favorite
             type: 'POST',
-            data: { propertyId: propertyId, action: action },
-            success: function(response) {
+            data: {propertyId: propertyId, action: action},
+            success: function (response) {
                 // Update button text based on current action
                 if (action === 'add') {
                     document.getElementById('favoriteButton').innerText = 'Az eltávolítás a kedvencek közül';
@@ -452,7 +431,7 @@ if ($propertyExists) {
                 }
 
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error("Hiba: ", error);
             }
         });

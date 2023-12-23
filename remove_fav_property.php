@@ -9,10 +9,6 @@ if (isset($_POST['propertyId']) && isset($_SESSION['id'])) {
     $propertyId = $_POST['propertyId'];
     $userId = $_SESSION['id'];
 
-    // Echo for debugging
-    echo "Property ID: " . $propertyId . "<br>";
-    echo "User ID: " . $userId . "<br>";
-
     $conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
     $conn->set_charset("utf8mb4");
 

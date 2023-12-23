@@ -83,7 +83,8 @@ require "profiledata.php";
                         <form action="index.php" method="GET">
                             <div class="form-group">
                                 <label>Felhasználó név: (Nem változtatható)</label>
-                                <input type="text" class="input-text" id="user_name" name="user_name" placeholder="<?php echo $username; ?>">
+                                <br>
+                                <label><?php echo $username; ?></label>
                             </div>
                             <div class="form-group">
                                 <label>Név: </label>

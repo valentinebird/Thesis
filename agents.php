@@ -77,7 +77,7 @@ $result = $conn->query($sql);
 <div class="sub-banner">
     <div class="container">
         <div class="page-name">
-            <h1>Inhgatlanügynökeink</h1>
+            <h1>Ingatlanügynökeink</h1>
         </div>
     </div>
 </div>

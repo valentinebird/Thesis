@@ -89,77 +89,70 @@ $result = $conn->query($sql);
                     <!-- Heading -->
                     <p id="message"></p>
                     <div class="my-properties">
-                        <table class="table brd-none">
-                            <thead>
-
-
-                            <tr>
-                                <th>Ingatlan neve</th>
-
-                                <th class="hedin-div">Dátum</th>
-                                <th><span class="hedin-div">Ingatlan azonosító</span></th>
-                                <th>Kedvenc eltávolítása</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-
-                                <?php
-                                if ($result->num_rows > 0) {
-                                $row = $result->fetch_assoc();
-                                $favoriteProperties = json_decode($row["favorite_properties"], true);
-                                if (is_array($favoriteProperties) && count($favoriteProperties) > 0) {
-                                // Create a comma-separated list of IDs
-                                $ids = implode(',', $favoriteProperties);
-
-                                // Query the PROPERTY table with these IDs
-                                $propertyQuery = "SELECT * FROM PROPERTY WHERE id IN ($ids)";
-                                $propertyResult = $conn->query($propertyQuery);
-
-                                if ($propertyResult->num_rows > 0) {
-                                while ($propertyRow = $propertyResult->fetch_assoc()) {
-                                ?>
-
-
-                                <td>
-                                    <div class="inner">
-                                        <h5>
-                                            <a href="properties-details.php?id=<?php echo $propertyRow['id']; ?>"><?php echo $propertyRow['property_name']; ?></a> </php></a>
-                                        </h5>
-                                        <figure class="hedin-div"><i
-                                                    class="fa fa-map-marker"></i> <?php echo $propertyRow["city"]; ?>
-                                            , <?php echo $propertyRow["address"]; ?>
-                                        </figure>
-                                        <div class="price-month"><?php echo $propertyRow["price"]; ?></div>
-                                    </div>
-                                </td>
-                                <td class="hedin-div"><?php echo $propertyRow["upload_date"]; ?></td>
-                                <td><span class="hedin-div"><?php echo $propertyRow["id"]; ?></span>
-                                </td>
-                                <td class="actions">
-                                    <a href="#" class="delete"
-                                       onclick="confirmDelete(<?php echo $propertyRow['id']; ?>)"><i
-                                                class="fa fa-trash-o"></i></a>
-
-                                </td>
-                            </tr>
-                            </tbody>
-                            </tbody>
-                        </table>
                         <?php
-                        }
+                        if ($result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            $favoriteProperties = json_decode($row["favorite_properties"], true);
+                            if (is_array($favoriteProperties) && count($favoriteProperties) > 0) {
+                                ?>
+                                <table class="table brd-none">
+                                    <thead>
+                                    <tr>
+                                        <th>Ingatlan neve</th>
+                                        <th class="hedin-div">Dátum</th>
+                                        <th><span class="hedin-div">Ingatlan azonosító</span></th>
+                                        <th>Kedvenc eltávolítása</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    $ids = implode(',', $favoriteProperties);
+                                    $propertyQuery = "SELECT * FROM PROPERTY WHERE id IN ($ids)";
+                                    $propertyResult = $conn->query($propertyQuery);
+
+                                    if ($propertyResult->num_rows > 0) {
+                                        while ($propertyRow = $propertyResult->fetch_assoc()) {
+                                            ?>
+                                            <tr id="propertyRow-<?php echo $propertyRow['id']; ?>">
+                                                <td class="actions">
+                                                    <div class="inner">
+                                                        <h5>
+                                                            <a href="properties-details.php?id=<?php echo $propertyRow['id']; ?>"><?php echo $propertyRow['property_name']; ?></a>
+                                                        </h5>
+                                                        <figure class="hedin-div"><i
+                                                                    class="fa fa-map-marker"></i> <?php echo $propertyRow["city"]; ?>
+                                                            , <?php echo $propertyRow["address"]; ?></figure>
+                                                        <div class="price-month"><?php echo $propertyRow["price"]; ?></div>
+                                                    </div>
+                                                </td>
+                                                <td class="hedin-div"><?php echo $propertyRow["upload_date"]; ?></td>
+                                                <td><span class="hedin-div"><?php echo $propertyRow["id"]; ?></span>
+                                                </td>
+                                                <td class="actions">
+                                                    <a href="#" class="delete"
+                                                       onclick="confirmDelete(<?php echo $propertyRow['id']; ?>)"><i
+                                                                class="fa fa-trash-o"></i></a>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                    } else {
+                                        echo "<tr><td colspan='4'>Nincs kedvenc ingatlanod.</td></tr>";
+                                    }
+                                    ?>
+                                    </tbody>
+                                </table>
+                                <?php
+                            } else {
+                                echo "<p>Nincs kedvenc ingatlanod.</p>";
+                            }
                         } else {
-                            echo "Nincs kedvenc ingatlanod.";
-                        }
-                        } else {
-                            echo "Nincs kedvenc ingatlanod!";
-                        }
-                        } else {
-                            echo "Nincs kedvenc ingatlanod!";
+                            echo "<p>Nincs kedvenc ingatlanod.</p>";
                         }
                         ?>
-
                     </div>
+
+
                 </div>
             </div>
         </div>
@@ -176,18 +169,26 @@ $result = $conn->query($sql);
                     type: 'POST',
                     data: {propertyId: id},
                     success: function (response) {
-                        if (response === '1') {
-                            $("#message").html(response);
+                        // Check if the response indicates successful removal
+                        if (response === 'A kedvenc sikeresen el lett távolítva') {
+                            // Remove the table row for this property
+                            $('#propertyRow-' + id).remove();
+
+                            // Optionally, you can also check if there are no more favorite properties
+                            // and show a message or hide the table
                         } else {
+                            // Handle error or different response
                             $("#message").html(response);
                         }
                     },
                     error: function (xhr, status, error) {
-                        $("#message").html(response);
+                        // Handle AJAX error
+                        $("#message").html("Hiba történt: " + error);
                     }
                 });
             }
         }
+
     </script>
 
     <script src="js/jquery-2.2.0.min.js"></script>
