@@ -82,7 +82,36 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function(){
+        $("#checkValidation").click(function(){
+            //let username = $("#userEmail").val().trim();
+            let username = $("#username").val() == undefined ? '' : $("#username").val().trim();
 
+
+
+            //let password = $("#userPassword").val().trim();
+            let password = $("#password").val() == undefined ? '' : $("#password").val().trim();
+
+            $.ajax({
+                url:'authenticate-agent.php',
+                type:'post',
+                data:{username:username,password:password},
+
+                success:function(response){
+                    if(response==='1'){
+                        location.replace("index.php")
+                    }else{
+                        $("#message").html(response);
+                    }
+
+
+                }
+
+            });
+        });
+    });
+</script>
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>
