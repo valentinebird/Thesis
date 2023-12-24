@@ -5,8 +5,6 @@ require "profiledata.php";
 
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -149,10 +147,6 @@ require "profiledata.php";
             let new_password = $("#new_password").val() == undefined ? '' : $("#new_password").val().trim();
             let confirm_new_password = $("#confirm_new_password").val() == undefined ? '' : $("#confirm_new_password").val().trim();
 
-            console.log(current_password);
-            console.log(new_password);
-            console.log(confirm_new_password);
-
             $.ajax({
                 url: 'passwordchanger.php',
                 type: 'post',
@@ -160,7 +154,8 @@ require "profiledata.php";
                 success: function (response) {
                     if (response === '1') {
                         console.log('Response:', response);
-                        $("#message").html("Sikeres jelszó változtatás!");
+                        //$("#message").html("Sikeres jelszó változtatás!");
+                        $("#message").html(response);
                     } else {
                         console.log('Response:', response);
                         $("#message").html(response);

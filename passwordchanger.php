@@ -1,12 +1,15 @@
 <?php
 
 session_start();
-// Change this to your connection info.
-error_reporting(E_ALL);
-
 require "dbconfig.php";
 require "profiledata.php";
 global $username;
+
+// Check if user is logged in
+if (!isset($_SESSION['loggedin'])) {
+    echo "Please log in first.";
+    exit;
+}
 
 // Try and connect using the info above.
 $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);

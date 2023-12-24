@@ -13,6 +13,7 @@ require "profiledata.php";
     <meta charset="utf-8">
 
     <!-- External CSS libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/animate.min.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-submenu.css">
@@ -49,6 +50,8 @@ require "profiledata.php";
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <script src="js/respond.min.js"></script>
+
+
     <![endif]-->
 </head>
 <body>
@@ -79,6 +82,9 @@ require "profiledata.php";
                     <!-- My address start-->
                     <div class="my-address">
                         <h3 class="heading-2">A fiókom</h3>
+                        <br>
+                        <p id="message" name="message"></p>
+                        <br>
 
                         <form action="index.php" method="GET">
                             <div class="form-group">
@@ -106,7 +112,7 @@ require "profiledata.php";
                                 <label>Leírásom:</label>
                                 <textarea class="input-text" id="description" name="description" placeholder="<?php echo $description; ?>"></textarea>
                             </div>
-                            <a href="#" class="btn btn-md button-theme">Új adatok mentése</a>
+                            <a type="submit" id="saveProfileButton" class="btn btn-md button-theme">Új adatok mentése</a>
                         </form>
                     </div>
                     <!-- My address end -->
@@ -120,13 +126,14 @@ require "profiledata.php";
                         <form action="index.php" method="GET">
                             <div class="form-group">
                                 <label>Felhasználó név (Nem változtatható): </label>
-                                <input type="text" class="input-text" name="your name" placeholder="<?php echo $username; ?>">
+                                <br>
+                                <label><?php echo $username; ?> </label>
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
                                 <input type="email" class="input-text" name="email" placeholder="<?php echo $email; ?>">
                             </div>
-                            <a href="#" class="btn btn-md button-theme">Új adatok mentése</a>
+                            <a  type="submit" id="saveProfileButton"  class="btn btn-md button-theme">Új adatok mentése</a>
                         </form>
                     </div>
                     <!-- My address end -->
@@ -139,6 +146,47 @@ require "profiledata.php";
 
 <?php include 'footer.html'; ?>
 
+<script>
+
+        $(document).ready(function() {
+        // Use a class or a different ID if you have multiple save buttons
+        $("#saveProfileButton").click(function(event) {
+            event.preventDefault();
+
+            let dataToSend;
+
+            if ('<?php echo $_SESSION['is_agent']; ?>' == '1') {
+                // Agent's data
+                dataToSend = {
+                    real_name: $("#real_name").val(),
+                    email: $("#email").val(),
+                    phone: $("#phone").val(),
+                    work_title: $("#work_title").val(),
+                    description: $("#description").val()
+                };
+            } else {
+                // User's data
+                dataToSend = {
+                    email: $("#email").val()
+                };
+            }
+
+            $.ajax({
+                url: 'update_profile.php',
+                type: 'post',
+                data: dataToSend,
+                success: function(response) {
+                    $("#message").html(response);
+                },
+                error: function(xhr, status, error) {
+                    $("#message").html("Error: " + status + " " + error);
+                }
+            });
+        });
+    });
+
+
+</script>
 
 <script src="js/jquery-2.2.0.min.js"></script>
 <script src="js/popper.min.js"></script>
