@@ -1,6 +1,7 @@
 <?php
 session_start();
 require "dbconfig.php";
+global $con;
 require "profiledata.php";
 global $username;
 
@@ -8,14 +9,6 @@ if (!isset($_SESSION['loggedin'])) {
     echo "Please log in first.";
     exit;
 }
-
-$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$con->set_charset("utf8mb4");
-
-if (mysqli_connect_errno()) {
-    exit('Nem lehet a MySQL szerverhez csatlakozni: ' . mysqli_connect_error());
-}
-
 $changes = []; // Array to store changes
 
 if ($_SESSION['is_agent']) {

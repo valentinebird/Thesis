@@ -4,12 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require "dbconfig.php";
-$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$con->set_charset("utf8mb4");
-
-if (mysqli_connect_errno()) {
-    exit('MySQL Connection Error: ' . mysqli_connect_error());
-}
+global $con;
 
 // Validation
 if (empty($_POST['username']) || empty($_POST['real_name']) || empty($_POST['email']) || empty($_POST['phone']) || empty($_POST['password']) || empty($_POST['password_re']) || empty($_POST['work_title']) || empty($_POST['description'])) {

@@ -90,7 +90,7 @@ function hibasE($kulcs){
 function allapottarto($kulcs){
     global $output;
     global $eredmeny;
-    return count($output)>0 || hibasE($kulcs) ? '' : $eredmeny[$kulcs];
+    return count($output)>0 || hasError($kulcs) ? '' : $eredmeny[$kulcs];
 }
 
 
@@ -110,13 +110,13 @@ function allapottarto($kulcs){
 <h1>Performance</h1>
 <form action="index.php" method="get" novalidate>
     <br>
-    <label for="i1">Number of children:</label> <input type="text" name="num_children" id="i1" value="<?=allapottarto("num_children")?>">   <span style="color:red"> <?php echo $output_c; ?> </span>
+    <label for="i1">Number of children:</label> <input type="text" name="num_children" id="i1" value="<?=stateHolder("num_children")?>">   <span style="color:red"> <?php echo $output_c; ?> </span>
     <br>
-    <label for="i2">Children's names:</label> <input type="text" name="children_names" id="i2" value="<?=allapottarto("children_names")?>">  <span style="color:red"> <?php echo $gyerror; ?></span>
+    <label for="i2">Children's names:</label> <input type="text" name="children_names" id="i2" value="<?=stateHolder("children_names")?>">  <span style="color:red"> <?php echo $gyerror; ?></span>
     <br>
-    <label for="i3">URL of music to be played:</label> <input type="text" name="music_url" id="i3" value="<?=allapottarto("music_url")?>">  <span style="color:red"><?php echo $link_error; ?>  </span><br>
-    <label for="i4">Performance type:</label> <input type="text" name="performance_type" id="i4" value="<?=allapottarto("performance_type")?>"> <span style="color:red"> <?php echo $pterror; ?> </span> <br>
-    <input type="checkbox" name="ready" id="i5" value="<?=allapottarto("ready")?>"><label for="i5">Everyone is ready</label>  <span style="color:red"> <?php echo $readyerror; ?> </span>
+    <label for="i3">URL of music to be played:</label> <input type="text" name="music_url" id="i3" value="<?=stateHolder("music_url")?>">  <span style="color:red"><?php echo $link_error; ?>  </span><br>
+    <label for="i4">Performance type:</label> <input type="text" name="performance_type" id="i4" value="<?=stateHolder("performance_type")?>"> <span style="color:red"> <?php echo $pterror; ?> </span> <br>
+    <input type="checkbox" name="ready" id="i5" value="<?=stateHolder("ready")?>"><label for="i5">Everyone is ready</label>  <span style="color:red"> <?php echo $readyerror; ?> </span>
     <br>
     <button type="submit">Submit</button>
 </form>

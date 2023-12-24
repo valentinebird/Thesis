@@ -1,6 +1,7 @@
 <?php
 session_start();
 require "dbconfig.php";
+global $username;
 ?>
 
 <div class="clearfix">

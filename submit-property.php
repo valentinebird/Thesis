@@ -1,17 +1,11 @@
 <?php
 session_start();
 require "dbconfig.php";
+global $con;
 function checkifPOST_EXIST($key)
 {
     return !empty($_POST[$key]);
 }
-
-$db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-mysqli_query($db, "SET NAMES utf8;");
-if ($db->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
 $errors = [];
 $result = [];
 $numbers = [1, 2, 3, 4, 5];
@@ -49,13 +43,13 @@ function upload_picture_and_insert_it_to_db()
 {
     global $info_message;
     require "dbconfig.php";
-    $db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-    mysqli_query($db, "SET NAMES utf8;");
-    if ($db->connect_error) {
+    $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
+    mysqli_query($con, "SET NAMES utf8;");
+    if ($con->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
     $sql = "SELECT id, property_name FROM PROPERTY ORDER BY upload_date DESC LIMIT 1;";
-    $result = mysqli_query($db, $sql);
+    $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
 
     if ($row) {
@@ -110,9 +104,9 @@ function upload_picture_and_insert_it_to_db()
                     //$fullFilePath = $target_dir . $newFileName;
                     $fullFilePath = "https://madar-szakdolgozat.online/property_pics/" . $newFileName;
                     $sql = "INSERT INTO PICTURE (property_id, filename, description) VALUES ('$property_id', '$fullFilePath', '$property_name')";
-                    $result = mysqli_query($db, $sql);
+                    $result = mysqli_query($con, $sql);
                     if (!$result) {
-                        $info_message .= "\n SQL hiba a kép feltöltése közben : " . mysqli_error($db) . "\n";
+                        $info_message .= "\n SQL hiba a kép feltöltése közben : " . mysqli_error($con) . "\n";
                     }
                 } else {
                     $info_message .= "\n A kép feltöltése nem sikerült, hiba a szerverre való feltöltéskor " . $_FILES["fileToUpload"]["tmp_name"][$key] . "\n";
@@ -131,21 +125,21 @@ function upload_picture_and_insert_it_to_db()
 if (isset($_POST['upload'])) {
     //Check the values is okay!!!
 
-    if (checkifPOST_EXIST("property_name")) {
+    if (check_if_POST_EXIST("property_name")) {
         $result["property_name"] = $_POST["property_name"];
         $property_name = $_POST["property_name"];
     } else {
         $errors["property_name"] = "Az ingatlan neve nincs kitöltve";
 
     }
-    if (checkifPOST_EXIST("is_for_sale")) {
+    if (check_if_POST_EXIST("is_for_sale")) {
         $result["is_for_sale"] = $_POST["is_for_sale"] === 'sale' ? 1 : 0;
         $is_for_sale = $_POST["is_for_sale"] === 'sale' ? 1 : 0;
     } else {
         $errors["is_for_sale"] = "Az Kiadó vagy eladó?";
 
     }
-    if (checkifPOST_EXIST("price")) {
+    if (check_if_POST_EXIST("price")) {
         if (intval($_POST["price"]) && intval($_POST["price"]) > 0) {
             $result["price"] = $_POST["price"];
             $price = $_POST["price"];
@@ -157,7 +151,7 @@ if (isset($_POST['upload'])) {
         $errors["price"] = "Az ár  nincs kitöltve";
     }
 
-    if (checkifPOST_EXIST("city")) {
+    if (check_if_POST_EXIST("city")) {
         $result["city"] = $_POST["city"];
         $city = $_POST["city"];
     } else {
@@ -165,7 +159,7 @@ if (isset($_POST['upload'])) {
 
     }
 
-    if (checkifPOST_EXIST("address")) {
+    if (check_if_POST_EXIST("address")) {
         $result["address"] = $_POST["address"];
         $address = $_POST["address"];
     } else {
@@ -173,7 +167,7 @@ if (isset($_POST['upload'])) {
 
     }
 
-    if (checkifPOST_EXIST("size")) {
+    if (check_if_POST_EXIST("size")) {
         if (intval($_POST["size"]) && intval($_POST["size"]) > 0) {
             $result["size"] = $_POST["size"];
             $size = $_POST["size"];
@@ -185,7 +179,7 @@ if (isset($_POST['upload'])) {
 
     }
 
-    if (checkifPOST_EXIST("level_number") && in_array($_POST["level_number"], $numbers)) {
+    if (check_if_POST_EXIST("level_number") && in_array($_POST["level_number"], $numbers)) {
         $result["level_number"] = $_POST["level_number"];
         $level_number = $_POST["level_number"];
     } else {
@@ -194,7 +188,7 @@ if (isset($_POST['upload'])) {
     }
 
 
-    if (checkifPOST_EXIST("rooms") && in_array($_POST["rooms"], $numbers)) {
+    if (check_if_POST_EXIST("rooms") && in_array($_POST["rooms"], $numbers)) {
         $result["rooms"] = $_POST["rooms"];
         $rooms = $_POST["rooms"];
     } else {
@@ -203,7 +197,7 @@ if (isset($_POST['upload'])) {
     }
 
 
-    if (checkifPOST_EXIST("bath_rooms") && in_array($_POST["bath_rooms"], $numbers)) {
+    if (check_if_POST_EXIST("bath_rooms") && in_array($_POST["bath_rooms"], $numbers)) {
         $result["bath_rooms"] = $_POST["bath_rooms"];
         $bath_rooms = $_POST["bath_rooms"];
     } else {
@@ -211,7 +205,7 @@ if (isset($_POST['upload'])) {
 
     }
 
-    if (checkifPOST_EXIST("type")) {
+    if (check_if_POST_EXIST("type")) {
         $result["type"] = $_POST["type"];
         $type = $_POST["type"];
     } else {
@@ -220,14 +214,14 @@ if (isset($_POST['upload'])) {
     }
 
 
-    if (checkifPOST_EXIST("property_condition")) {
+    if (check_if_POST_EXIST("property_condition")) {
         $result["property_condition"] = $_POST["property_condition"];
         $property_condition = $_POST["property_condition"];
     } else {
         $errors["property_condition"] = "Állapot nincs kitöltve";
 
     }
-    if (checkifPOST_EXIST("heating_type")) {
+    if (check_if_POST_EXIST("heating_type")) {
         $result["heating_type"] = $_POST["heating_type"];
         $heating_type = $_POST["heating_type"];
     } else {
@@ -260,7 +254,7 @@ if (isset($_POST['upload'])) {
 
     }
 
-    if (checkifPOST_EXIST("property_description")) {
+    if (check_if_POST_EXIST("property_description")) {
         $result["property_description"] = $_POST["property_description"];
         $property_description = $_POST["property_description"];
     } else {
@@ -291,8 +285,8 @@ VALUES(
     1,
     0);";
 
-        $result = mysqli_query($db, $sql);
-        $info_message .= "\n Az ingatlan sikeresen fel lett töltve" . mysqli_error($db) . "\n";
+        $result = mysqli_query($con, $sql);
+        $info_message .= "\n Az ingatlan sikeresen fel lett töltve" . mysqli_error($con) . "\n";
         // After successfully inserting property details upload the picture
         upload_picture_and_insert_it_to_db();
     } else {
@@ -375,9 +369,9 @@ VALUES(
                                     <div class="form-group">
                                         <label>Ingatlan hirdetés neve:</label>
                                         <input type="text" class="input-text" name="property_name" id="property_name"
-                                               value="<?= allapottarto('property_name') ?>"
+                                               value="<?= stateHolder('property_name') ?>"
                                         >
-                                        <span style="color: red"><?php echo hibaKiir('property_name') ?></span>
+                                        <span style="color: red"><?php echo errorWrite('property_name') ?></span>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
@@ -393,36 +387,36 @@ VALUES(
                                     <div class="form-group">
                                         <label>Irányár:</label>
                                         <input type="number" class="input-text" name="price" id="price"
-                                               value="<?= allapottarto('price') ?>"
+                                               value="<?= stateHolder('price') ?>"
                                         >
-                                        <span style="color: red"><?php echo hibaKiir('price') ?></span>
+                                        <span style="color: red"><?php echo errorWrite('price') ?></span>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Város:</label>
                                         <input type="text" class="input-text" name="city" id="city"
-                                               value="<?= allapottarto('city') ?>"
+                                               value="<?= stateHolder('city') ?>"
                                         >
-                                        <span style="color: red"><?php echo hibaKiir('city') ?></span>
+                                        <span style="color: red"><?php echo errorWrite('city') ?></span>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Cím:</label>
                                         <input type="text" class="input-text" name="address" id="address"
-                                               value="<?= allapottarto('address') ?>"
+                                               value="<?= stateHolder('address') ?>"
                                         >
-                                        <span style="color: red"><?php echo hibaKiir('address') ?></span>
+                                        <span style="color: red"><?php echo errorWrite('address') ?></span>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Méret m&#178;:</label>
                                         <input type="number" class="input-text" name="size" id="size"
-                                               value="<?= allapottarto('size') ?>"
+                                               value="<?= stateHolder('size') ?>"
                                         >
-                                        <span style="color: red"><?php echo hibaKiir('size') ?></span>
+                                        <span style="color: red"><?php echo errorWrite('size') ?></span>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
@@ -545,9 +539,9 @@ VALUES(
                                 <div class="form-group mb-0">
                                     <label>Leírás</label>
                                     <textarea class="input-text" name="property_description" id="property_description"
-                                              value="<?= allapottarto('property_description') ?>"
+                                              value="<?= stateHolder('property_description') ?>"
                                     ></textarea>
-                                    <span style="color: red"><?php echo hibaKiir('property_description') ?></span>
+                                    <span style="color: red"><?php echo errorWrite('property_description') ?></span>
                                 </div>
                             </div>
                         </div>

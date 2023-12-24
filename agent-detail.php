@@ -6,18 +6,15 @@ error_reporting(E_ALL);
 */
 session_start();
 require "dbconfig.php";
-
-$conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$conn->set_charset("utf8mb4");
+global $con;
+global $row;
 
 // Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-$agent_id = isset($_GET['id']) ? $_GET['id'] : die('Agent ID not specified.');
+
+$agent_id = $_GET['id'] ?? die('Agent ID not specified.');
 $agent_id = (int)$agent_id; // Casting to int is a good practice for IDs
 
-$stmt = $conn->prepare("SELECT * FROM AGENT WHERE id = ?");
+$stmt = $con->prepare("SELECT * FROM AGENT WHERE id = ?");
 $stmt->bind_param("i", $agent_id);
 $stmt->execute();
 
@@ -144,7 +141,7 @@ call_user_func_array([$stmt, 'bind_result'], $parameters);
                         }
                     }
                     $stmt->close();
-                    $conn->close();
+                    $con->close();
                     ?>
 
                 </div>

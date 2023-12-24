@@ -1,23 +1,16 @@
 <?php
 
 require "dbconfig.php";
-// Try and connect using the info above.
-$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-if (mysqli_connect_errno()) {
-    // If there is an error with the connection, stop the script and display the error.
-    exit('MySQL kapcsolódási hiba: ' . mysqli_connect_error());
-}
-// Now we check if the data was submitted, isset() function will check if the data exists.
+global $con;
+
 if (!isset($_POST['username'], $_POST['password'],$_POST['password_re'], $_POST['email'])) {
-    // Could not get the data that should have been sent.
     exit('Tölts ki minden adatot!');
 }
-// Make sure the submitted registration values are not empty.
+
 if (empty($_POST['username']) || empty($_POST['password']) || empty($_POST['password_re']) || empty($_POST['email'])) {
-    // One or more values are empty.
     exit('Tölts ki minden mezőt, valamelyik mező nincs kitöltve!');
 }
-// Check to see if the email is valid.
+
 if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
     exit('E-mail cím nem megfelelő!');
 }
@@ -25,14 +18,14 @@ if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 if (preg_match('/[A-Za-z0-9]+/', $_POST['username']) == 0) {
     exit('Felahsználó név nem megfelelő');
 }
-// Password must be between 5 and 20 characters long.
+
 const minimumPasswordLength = 3;
 const maxPasswordLength = 20;
 if (strlen($_POST['password']) > maxPasswordLength || strlen($_POST['password']) < minimumPasswordLength) {
     exit('A jelszó minimum '.minimumPasswordLength . " és " . maxPasswordLength . "!");
 }
 
-if ($_POST['password'] ===_POST['password_re'] ) {
+if ($_POST['password'] === $_POST['password_re'] ) {
     exit('A két jelszó nem egyezik meg!');
 }
 // We need to check if the account with that username exists.
@@ -62,6 +55,5 @@ if ($stmt = $con->prepare('SELECT id, password FROM USER WHERE username = ?')) {
     // Something is wrong with the sql statement, check to make sure accounts table exists with all 3 fields.
     echo 'MySQL regisztrációs hiba!';
 }
-
 
 ?>

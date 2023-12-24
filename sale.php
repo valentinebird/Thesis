@@ -1,18 +1,17 @@
 <?php
 session_start();
 require "dbconfig.php";
-$conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$conn->set_charset("utf8mb4");
+global $con;
 
 // Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($con->connect_error) {
+    die("Connection failed: " . $con->connect_error);
 }
 
 $sortOrder = 'upload_date DESC'; // Assuming 'id DESC' as default (newest first)
 
 // Check if a sort option is set and update sortOrder accordingly
-if (isset($_GET['sort']) && !empty($_GET['sort'])) {
+if (!empty($_GET['sort'])) {
     switch ($_GET['sort']) {
         case 'newest':
             $sortOrder = 'upload_date DESC';
@@ -31,12 +30,12 @@ if (isset($_GET['sort']) && !empty($_GET['sort'])) {
 
 //$sql = "SELECT id,username, email, reg_date FROM USER;";
 $sql = "SELECT * FROM PROPERTY WHERE is_for_sale = 1 ORDER BY $sortOrder;";
-$result = $conn->query($sql);
+$result = $con->query($sql);
 
 function display_first_sale_picture($id){
-    global $conn; // Ensure that $conn is accessible within the function
+    global $con; // Ensure that $con is accessible within the function
     $sql = "SELECT * FROM PICTURE WHERE property_id = $id LIMIT 1;";
-    $result = $conn->query($sql);
+    $result = $con->query($sql);
     $pictureExists = $result->num_rows > 0;
     if ($pictureExists) {
         $row = $result->fetch_assoc();
@@ -46,7 +45,7 @@ function display_first_sale_picture($id){
     }
 }
 
-//$conn->close();
+//$con->close();
 
 
 ?>
@@ -220,10 +219,10 @@ function display_first_sale_picture($id){
                     function select_DISTINCT_into_asoc_array($what_to_select)
                     {
                         $assoc_array = [];
-                        global $conn;
+                        global $con;
                         $saq = "type";
                         $sql_for_search = "SELECT DISTINCT  $what_to_select FROM PROPERTY WHERE is_for_sale = 1 ORDER BY $what_to_select ASC;";
-                        $result_for_search = $conn->query($sql_for_search);
+                        $result_for_search = $con->query($sql_for_search);
 
 
                         if ($result_for_search->num_rows > 0) {

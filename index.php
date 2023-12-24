@@ -1,21 +1,14 @@
 <?php
 
 session_start();
-session_start();
 require "dbconfig.php";
+global  $con;
 
-$conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$conn->set_charset("utf8mb4");
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 function display_first_rent_picture($id) {
-    global $conn; // Ensure that $conn is accessible within the function
+    global $con; // Ensure that $con is accessible within the function
     $sql = "SELECT * FROM PICTURE WHERE property_id = $id LIMIT 1;";
-    $result = $conn->query($sql);
+    $result = $con->query($sql);
     $pictureExists = $result->num_rows > 0;
     if ($pictureExists) {
         $row = $result->fetch_assoc();
@@ -75,7 +68,7 @@ function display_first_rent_picture($id) {
                     if ($_SESSION['loggedin']) { ?>
                         <a href="logout.php" class="sign-in"><i class="fa fa-sign-out"></i>Kijelentkezés</a>
                         <a href="profile.php" class="sign-in"><i
-                                    class="fa fa-trophy"></i>Profilom: <? print $_SESSION['name'] ?></a>
+                                    class="fa fa-trophy"></i>Profilom: <?php print $_SESSION['name'] ?></a>
 
                         <?php
                         if ($_SESSION['is_agent']) {
@@ -121,7 +114,7 @@ function display_first_rent_picture($id) {
 <header class="main-header mh-3 header-transparent">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand logos" href="index.html">
+            <a class="navbar-brand logos" href="index.php">
 
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -132,7 +125,7 @@ function display_first_rent_picture($id) {
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item  active">
-                        <a class="nav-link" href="index.html" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                        <a class="nav-link" href="index.php" id="navbarDropdownMenuLink" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
                             Főoldal
                         </a>
@@ -187,7 +180,7 @@ function display_first_rent_picture($id) {
 </div>
 <?php
 $sql = "SELECT * FROM PROPERTY ORDER BY upload_date DESC LIMIT 3;";
-$result = $conn->query($sql);
+$result = $con->query($sql);
 
 
 ?>
@@ -304,11 +297,11 @@ function COUNT_city($what_to_count)
 {
 
 
-    global $conn;
+    global $con;
     // $sql_for_cnt = "SELECT count(*) FROM PROPERTY WHERE city =' ". $what_to_count. " '";
     //$sql_for_cnt = "SELECT count(*) FROM PROPERTY WHERE city = '". $what_to_count. "'";
     $sql_for_cnt = "SELECT COUNT(*) AS total FROM PROPERTY WHERE city = '" . $what_to_count . "';";
-    $result_cnt = $conn->query($sql_for_cnt);
+    $result_cnt = $con->query($sql_for_cnt);
     if ($result_cnt->num_rows > 0) {
         while ($row_for_search = $result_cnt->fetch_assoc()) {
             return $row_for_search["total"];
@@ -404,18 +397,12 @@ function COUNT_city($what_to_count)
 
 function COUNT_STH($query)
 {
+    global $con;
 
-        //"SELECT COUNT(*) AS total FROM PROPERTY WHERE city = '" . $what_to_count . "';";
-
-    global $conn;
-    // $sql_for_cnt = "SELECT count(*) FROM PROPERTY WHERE city =' ". $what_to_count. " '";
-    //$sql_for_cnt = "SELECT count(*) FROM PROPERTY WHERE city = '". $what_to_count. "'";
-    $sql_for_cnt = $query;
-    $result_cnt = $conn->query($sql_for_cnt);
-    if ($result_cnt->num_rows > 0) {
-        while ($row_for_search = $result_cnt->fetch_assoc()) {
-            return $row_for_search["total"];
-        }
+    $result_cnt = $con->query($query);
+    if ($result_cnt) {
+        $row_for_search = $result_cnt->fetch_assoc();
+        return $row_for_search["total"];
     } else {
         return 0;
     }

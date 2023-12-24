@@ -4,19 +4,11 @@ session_start();
 require "dbconfig.php";
 
 //$db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$conn->set_charset("utf8mb4");
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-
+global $con;
 $sortOrder = 'upload_date DESC'; // Assuming 'id DESC' as default (newest first)
 
 // Check if a sort option is set and update sortOrder accordingly
-if (isset($_GET['sort']) && !empty($_GET['sort'])) {
+if (!empty($_GET['sort'])) {
     switch ($_GET['sort']) {
         case 'newest':
             $sortOrder = 'upload_date DESC';
@@ -34,16 +26,16 @@ if (isset($_GET['sort']) && !empty($_GET['sort'])) {
 }
 
 $sql = "SELECT * FROM PROPERTY WHERE is_for_sale = 0 ORDER BY $sortOrder;";
-$result = $conn->query($sql);
+$result = $con->query($sql);
 
 
-$conn->close();
+$con->close();
 
 function display_first_rent_picture($id)
 {
-    global $conn; // Ensure that $conn is accessible within the function
+    global $con; // Ensure that $con is accessible within the function
     $sql = "SELECT * FROM PICTURE WHERE property_id = $id LIMIT 1;";
-    $result = $conn->query($sql);
+    $result = $con->query($sql);
     $pictureExists = $result->num_rows > 0;
     if ($pictureExists) {
         $row = $result->fetch_assoc();

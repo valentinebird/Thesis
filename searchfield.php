@@ -6,7 +6,7 @@ function allapottarto($result, $key) {
 
 // Function to check selected option
 function isSelected($result, $key, $value) {
-    return allapottarto($result, $key) === $value ? 'selected' : '';
+    return stateHolder($result, $key) === $value ? 'selected' : '';
 }
 
 // Function to check checkbox
@@ -51,7 +51,7 @@ $result = array_map('htmlspecialchars', $_GET);
 
     <!-- Location -->
     <div class="form-group">
-        <input class="form-control search-fields" name="location" id="location" placeholder="Hely" value="<?= allapottarto($result, 'location') ?>">
+        <input class="form-control search-fields" name="location" id="location" placeholder="Hely" value="<?= stateHolder($result, 'location') ?>">
     </div>
 
     <!-- Bedrooms -->

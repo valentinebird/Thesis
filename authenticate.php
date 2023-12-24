@@ -1,29 +1,18 @@
 <?php
 session_start();
 require "dbconfig.php";
-
-$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-if (mysqli_connect_errno()) {
-    // If there is an error with the connection, stop the script and display the error.
-    exit('Nem lehet a MySQL szerverhez csatlakozni: ' . mysqli_connect_error());
-}
+global $con;
 
 
-// Now we check if the data from the login form was submitted, isset() will check if the data exists.
 if (!isset($_POST['username'], $_POST['password'])) {
-    // Could not get the data that should have been sent.
     echo 'A felhasználónév vagy jelszó nincs kitöltve';
     exit();
-
 }
 // Prepare our SQL, preparing the SQL statement will prevent SQL injection.
 if ($stmt = $con->prepare('SELECT username, password FROM USER WHERE username = ?')) {
-    // Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
     $stmt->bind_param('s', $_POST['username']);
     $stmt->execute();
-    // Store the result so we can check if the account exists in the database.
     $stmt->store_result();
-    // If the username exist
     if ($stmt->num_rows > 0) {
 
         $stmt->bind_result($id, $password);

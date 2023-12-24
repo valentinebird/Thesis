@@ -1,13 +1,7 @@
 <?php
 session_start();
 require "dbconfig.php";
-$conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$conn->set_charset("utf8mb4");
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+global $con;
 
 // Ensure all GET variables are set, even if they're empty
 $propertyStatus = isset($_GET['property-status']) ? $_GET['property-status'] : 'empty';
@@ -111,14 +105,14 @@ if (isset($_GET['sort']) && !empty($_GET['sort'])) {
 
 $sql .= " ORDER BY $sortOrder;";
 //echo htmlspecialchars($sql); the sql query
-$result = $conn->query($sql);
+$result = $con->query($sql);
 
 
 function display_first_rent_picture($id)
 {
-    global $conn; // Ensure that $conn is accessible within the function
+    global $con; // Ensure that $con is accessible within the function
     $sql = "SELECT * FROM PICTURE WHERE property_id = $id LIMIT 1;";
-    $result = $conn->query($sql);
+    $result = $con->query($sql);
     $pictureExists = $result->num_rows > 0;
     if ($pictureExists) {
         $row = $result->fetch_assoc();
@@ -128,7 +122,7 @@ function display_first_rent_picture($id)
     }
 }
 
-$conn->close();
+$con->close();
 ?>
 
 <script>
@@ -299,10 +293,10 @@ $conn->close();
                     function select_DISTINCT_into_asoc_array($what_to_select)
                     {
                         $assoc_array = [];
-                        global $conn;
+                        global $con;
                         $saq = "type";
                         $sql_for_search = "SELECT DISTINCT  $what_to_select FROM PROPERTY WHERE is_for_sale = 1 ORDER BY $what_to_select ASC;";
-                        $result_for_search = $conn->query($sql_for_search);
+                        $result_for_search = $con->query($sql_for_search);
 
 
                         if ($result_for_search->num_rows > 0) {

@@ -2,20 +2,12 @@
 
 session_start();
 require "dbconfig.php";
-
-$conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$conn->set_charset("utf8mb4");
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
+global $con;
 
 $id = $_GET['id'];
 //Query for this property
 $sql = "SELECT * FROM PROPERTY WHERE id = $id;";
-$result = $conn->query($sql);
+$result = $con->query($sql);
 $row = $result->fetch_assoc();
 
 $propertyExists = $result->num_rows > 0;
@@ -25,15 +17,15 @@ if ($propertyExists) {
     //Query for agent
     $agentID_of_thisproperty = $row["agent_id"];
     $sqlforAgent = "SELECT * FROM AGENT WHERE id = $agentID_of_thisproperty;";
-    $result_ofporperty = $conn->query($sqlforAgent);
+    $result_ofporperty = $con->query($sqlforAgent);
     $rowagent = $result_ofporperty->fetch_assoc();
-    $result = $conn->query($sql);
+    $result = $con->query($sql);
 
     //Query for picture
     $sqlforPictures = "SELECT * FROM PICTURE WHERE property_id = $id;";
-    $result_ofPicture = $conn->query($sqlforPictures);
+    $result_ofPicture = $con->query($sqlforPictures);
 
-    //$result = $conn->query($sql);
+    //$result = $con->query($sql);
 
 } else {
     $row = null; // Set row to null if property does not exist
@@ -46,7 +38,7 @@ $isFavorite = false;
 if ($propertyExists && isset($_SESSION['id'])) {
     $userId = $_SESSION['id'];
     $sql = "SELECT favorite_properties FROM USER WHERE username = '$userId'";
-    $result = $conn->query($sql);
+    $result = $con->query($sql);
     if ($result->num_rows > 0) {
         $userRow = $result->fetch_assoc();
         $favoriteProperties = json_decode($userRow["favorite_properties"], true);
@@ -443,7 +435,6 @@ if ($propertyExists && isset($_SESSION['id'])) {
     function initMap() {
         //let address = '1600 Amphitheatre Parkway, Mountain View, CA'; // Static address for testing
         let address = <?php echo json_encode($row['address'] . ', ' . $row['city']); ?>;
-        console.log("Address for geocoding:", address);
         let geocoder = new google.maps.Geocoder();
 
         geocoder.geocode({'address': address}, function (results, status) {

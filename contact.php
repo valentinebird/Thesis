@@ -6,67 +6,63 @@ require "dbconfig.php";
 $errors = [];
 $result = [];
 
-function checkifPOST_EXIST($key)
+function check_if_POST_EXIST($key): bool
 {
     return !empty($_POST[$key]);
 }
 
-function hibasE($kulcs)
+function hasError($kulcs): bool
 {
     global $errors;
     return in_array($kulcs, array_keys($errors));
 }
 
-function hibaKiir($key)
-{
+function errorWrite($key) {
     global $errors;
-    if ($errors) {
+    if (array_key_exists($key, $errors)) {
         echo $errors[$key];
     }
 }
-
-function allapottarto($kulcs)
+function stateHolder($key)
 {
     global $errors;
     global $result;
 
     if (count($errors) > 0) {
-        return $result[$kulcs];
+        return $result[$key];
     } else {
         return "";
     }
 }
 
 $info_message = "";
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-
-    if (checkifPOST_EXIST("name")) {
+    if (check_if_POST_EXIST("name")) {
         $result["name"] = $_POST["name"];
     } else {
         $errors["name"] = "Az név nincs kitöltve!";
     }
 
-    if (!checkifPOST_EXIST("email") || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+    if (!check_if_POST_EXIST("email") || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = 'Érvényes e-mail cím megadása szükséges.';
     } else {
         $result["email"] = $_POST["email"];
     }
 
-    if (checkifPOST_EXIST("subject")) {
+    if (check_if_POST_EXIST("subject")) {
         $result["subject"] = $_POST["subject"];
     } else {
         $errors["subject"] = "A tárgy nincs kitöltve!";
     }
 
-    if (checkifPOST_EXIST("phone")) {
+    if (check_if_POST_EXIST("phone")) {
         $result["phone"] = $_POST["phone"];
     } else {
         $errors["phone"] = "A telefonszám nincs kitöltve!";
     }
 
-    if (checkifPOST_EXIST("message")) {
+    if (check_if_POST_EXIST("message")) {
         $result["message"] = $_POST["message"];
     } else {
         $errors["message"] = "Az üzenet nincs kitöltve!";
@@ -200,32 +196,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group name">
-                                <input type="text" name="name" class="form-control" value="<?= allapottarto('email') ?>" placeholder="Név">
-                                <span style="color: red"><?php echo hibaKiir('name') ?></span>
+                                <label for="name"></label>
+                                <input type="text" id="name" name="name" class="form-control" value="<?= stateHolder('name') ?>" placeholder="Név">
+                                <span style="color: red"><?php echo errorWrite('name') ?></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group email">
-                                <input type="email" name="email" class="form-control" value="<?= allapottarto('email') ?>" placeholder="E-mail">
-                                <span style="color: red"><?php echo hibaKiir('email') ?></span>
+                                <label for="email"></label>
+                                <input type="email" id="email" name="email" class="form-control" value="<?= stateHolder('email') ?>" placeholder="E-mail">
+                                <span style="color: red"><?php echo errorWrite('email') ?></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group subject">
-                                <input type="text" name="subject" class="form-control" value="<?= allapottarto('subject') ?>" placeholder="Tárgy">
-                                <span style="color: red"><?php echo hibaKiir('subject') ?></span>
+                                <label for="subject"></label>
+                                <input type="text" id="subject" name="subject" class="form-control" value="<?= stateHolder('subject') ?>" placeholder="Tárgy">
+                                <span style="color: red"><?php echo errorWrite('subject') ?></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group number">
-                                <input type="text" name="phone" class="form-control" value="<?= allapottarto('phone') ?>" placeholder="Telefonszám">
-                                <span style="color: red"><?php echo hibaKiir('phone') ?></span>
+                                <label for="phone"></label>
+                                <input type="text" id="phone" name="phone" class="form-control" value="<?= stateHolder('phone') ?>" placeholder="Telefonszám">
+                                <span style="color: red"><?php echo errorWrite('phone') ?></span>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group message">
-                                <textarea class="form-control" name="message" placeholder="Üzenet"><?= allapottarto('message') ?></textarea>
-                                <span style="color: red"><?php echo hibaKiir('message') ?></span>
+                                <label for="message"></label>
+                                <textarea class="form-control" id="message" name="message" placeholder="Üzenet"><?= stateHolder('message') ?></textarea>
+                                <span style="color: red"><?php echo errorWrite('message') ?></span>
                             </div>
                         </div>
                         <div class="col-md-12">

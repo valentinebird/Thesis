@@ -3,16 +3,11 @@ session_start();
 require "dbconfig.php";
 require "profiledata.php";
 
-global $DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME, $id;
-$conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$conn->set_charset("utf8mb4");
+global $con;
+global $id;
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 $sql = "SELECT favorite_properties FROM USER WHERE id = '$id'";
-$result = $conn->query($sql);
+$result = $con->query($sql);
 
 
 ?>
@@ -108,7 +103,7 @@ $result = $conn->query($sql);
                                     <?php
                                     $ids = implode(',', $favoriteProperties);
                                     $propertyQuery = "SELECT * FROM PROPERTY WHERE id IN ($ids)";
-                                    $propertyResult = $conn->query($propertyQuery);
+                                    $propertyResult = $con->query($propertyQuery);
 
                                     if ($propertyResult->num_rows > 0) {
                                         while ($propertyRow = $propertyResult->fetch_assoc()) {
@@ -220,5 +215,5 @@ $result = $conn->query($sql);
     </html>
 
 <?php
-$conn->close();
+$con->close();
 ?>

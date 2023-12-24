@@ -2,18 +2,12 @@
 session_start();
 require "dbconfig.php";
 require "profiledata.php";
+global $con;
+global $id;
 
-$conn = new mysqli($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-$conn->set_charset("utf8mb4");
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-//$sql = "SELECT id,username, email, reg_date FROM USER;";
 $sql = "SELECT * FROM PROPERTY WHERE agent_id = '$id';";
-$result = $conn->query($sql);
+$result = $con->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -24,6 +18,8 @@ $result = $conn->query($sql);
     <meta charset="utf-8">
 
     <!-- External CSS libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="js/jquery-2.2.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/animate.min.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-submenu.css">
@@ -110,11 +106,12 @@ $result = $conn->query($sql);
                                     <td>
                                         <div class="inner">
                                             <h5>
-                                                <a href="properties-details.php?id=<?php echo $row['id']; ?>"><?php echo $row["property_name"]; ?></a> </php></a>
+                                                <a href="properties-details.php?id=<?php echo $row['id']; ?>"><?php echo $row["property_name"]; ?></a>
                                             </h5>
+
                                             <figure class="hedin-div"><i
                                                         class="fa fa-map-marker"></i> <?php echo $row["city"]; ?>
-                                                , <?php echo $row["address"]; ?>
+                                                 <?php echo $row["address"]; ?>
                                             </figure>
                                             <div class="price-month"><?php echo $row["price"]; ?></div>
                                         </div>
@@ -132,7 +129,6 @@ $result = $conn->query($sql);
                         } else {
                             echo "<h1>Nincs meghirdetett ingatlanod!</h1>";
                         } ?>
-                        </tbody>
                         </tbody>
                     </table>
                 </div>
@@ -159,7 +155,7 @@ $result = $conn->query($sql);
                     }
                 },
                 error: function (xhr, status, error) {
-                    $("#message").html(response);
+                    $("#message").html(response, xhr, status, error);
                 }
             });
         }
