@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <title>Regisztráció - Ingatlan nyilvántartó portál, webes környezetben</title>
+    <title>Ingatlanügynök regisztráció</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
 
@@ -53,27 +53,45 @@
         <div class="row login-box">
             <div class="col-lg-6 align-self-center pad-0">
                 <div class="form-section clearfix">
-                    <h3>Felhasználó fiók készítése</h3>
+                    <h3>Új ingatlanügynök regisztrálása</h3>
                     <br>
                     <p id="message"></p>
                     <br>
                     <div class="clearfix"></div>
 
-                        <div class="form-group form-box">
-                            <input type="" name="username" id="username" class="input-text" placeholder="Felhasználó név">
-                        </div>
-                        <div class="form-group form-box">
-                            <input type="email" name="email" id="email" class="input-text" placeholder="E-mail cím">
-                        </div>
-                        <div class="form-group form-box clearfix">
-                            <input type="password" name="password" id="password" class="input-text" placeholder="Jelszó">
-                        </div>
-                        <div class="form-group form-box clearfix">
-                            <input type="password" name="password_re" id="password_re" class="input-text" placeholder="Jelszó újra">
-                        </div>
-                        <div class="form-group clearfix">
-                            <button type="submit" class="btn-md btn-theme float-left" id="register">Regisztráció</button>
-                        </div>
+                    <div class="form-group form-box">
+                        <input type="" name="username" id="username" class="input-text" placeholder="Felhasználó név">
+                    </div>
+                    <div class="form-group form-box">
+                        <input type="" name="real_name" id="real_name" class="input-text" placeholder="Teljes név">
+                    </div>
+                    <div class="form-group form-box">
+                        <input type="email" name="email" id="email" class="input-text" placeholder="E-mail cím">
+                    </div>
+                    <div class="form-group form-box">
+                        <input type="email" name="email" id="phone" class="input-text" placeholder="Telefonszám">
+                    </div>
+                    <div class="form-group form-box clearfix">
+                        <input type="password" name="password" id="password" class="input-text" placeholder="Jelszó">
+                    </div>
+                    <div class="form-group form-box clearfix">
+                        <input type="password" name="password_re" id="password_re" class="input-text" placeholder="Jelszó újra">
+                    </div>
+                    <div class="form-group form-box">
+                        <input type="" name="work_title" id="work_title" class="input-text" placeholder="Beosztás">
+                    </div>
+                    <div class="form-group form-box">
+                        <textarea type="" name="description" id="description" class="input-text" placeholder="Leírás"></textarea>
+                    </div>
+                    <input type="checkbox" name="is_admin" value="1"> Adminisztrátor
+                    <br>
+                    <br>
+
+
+                    <div class="form-group clearfix">
+                        <button type="submit" class="btn-md btn-theme float-left" id="register">Regisztráció</button>
+                    </div>
+
 
                     <p>Már van felhasználói fiókod? <a href="login.html">Bejelentkezés</a></p>
                 </div>
@@ -91,30 +109,47 @@
 
 <script>
     $(document).ready(function () {
-        $("#register").click(function () {
-            let username = $("#username").val() == undefined ? '' : $("#username").val().trim();
-            let email = $("#email").val() == undefined ? '' : $("#email").val().trim();
-            let password = $("#password").val() == undefined ? '' : $("#password").val().trim();
-            let password_re = $("#password_re").val() == undefined ? '' : $("#password_re").val().trim();
+        $("#register").click(function (e) {
+            e.preventDefault();
+
+            let username = $("#username").val().trim();
+            let real_name = $("#real_name").val().trim();
+            let email = $("#email").val().trim();
+            let phone = $("#phone").val().trim();
+            let password = $("#password").val().trim();
+            let password_re = $("#password_re").val().trim();
+            let work_title = $("#work_title").val().trim();
+            let description = $("#description").val().trim();
+            let is_admin = $("input[name='is_admin']").is(':checked') ? 1 : 0;
 
             $.ajax({
-                url: 'register_user.php',
+                url: 'register_agent.php',
                 type: 'post',
-                data: {username: username, email: email, password: password, password_re: password_re},
-
-
+                data: {
+                    username: username,
+                    real_name: real_name,
+                    email: email,
+                    phone: phone,
+                    password: password,
+                    password_re: password_re,
+                    work_title: work_title,
+                    description: description,
+                    is_admin: is_admin
+                },
                 success: function (response) {
+                    $("#message").html(response);
                     if (response === '1') {
-                        location.replace("index.php")
-                    } else {
-                        $("#message").html(response);
+                        location.replace("index.php");
                     }
-
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error:', textStatus, errorThrown);
+                    $("#message").html('Hiba:', textStatus, errorThrown);
                 }
-
             });
         });
     });
+
 </script>
 
 <script src="js/jquery-2.2.0.min.js"></script>

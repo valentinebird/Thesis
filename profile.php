@@ -73,7 +73,6 @@ require "profiledata.php";
 <div class="my-profile content-area">
     <div class="container">
         <div class="row">
-
             <div class="col-lg-4 col-md-12 col-sm-12">
                 <?php include 'profilemenu.php'; ?>
             </div>
@@ -82,11 +81,8 @@ require "profiledata.php";
                     <!-- My address start-->
                     <div class="my-address">
                         <h3 class="heading-2">A fiókom</h3>
-                        <br>
-                        <p id="message" name="message"></p>
-                        <br>
-
-                        <form action="index.php" method="GET">
+                        <p id="profile_change_message" name="profile_change_message"></p>
+                        <form id="changeprofiledata" method="POST">
                             <div class="form-group">
                                 <label>Felhasználó név: (Nem változtatható)</label>
                                 <br>
@@ -94,23 +90,23 @@ require "profiledata.php";
                             </div>
                             <div class="form-group">
                                 <label>Név: </label>
-                                <input type="text" class="input-text" id="real_name" name="real_name" placeholder="<?php echo $real_name; ?>">
+                                <input type="text" class="input-text" id="real_name" name="real_name" value="<?php echo $real_name; ?>">
                             </div>
                             <div class="form-group">
                                 <label>Email:</label>
-                                <input type="text" class="input-text" id="email" name="email" placeholder="<?php echo $email; ?>">
+                                <input type="text" class="input-text" id="email" name="email" value="<?php echo $email; ?>">
                             </div>
                             <div class="form-group">
                                 <label>Telefon</label>
-                                <input type="text" class="input-text" id="phone" name="phone" placeholder="<?php echo $phone; ?>">
+                                <input type="text" class="input-text" id="phone" name="phone" value="<?php echo $phone; ?>">
                             </div>
                             <div class="form-group">
                                 <label>Munkakör</label>
-                                <input type="text" class="input-text" id="work_title" name="work_title" placeholder="<?php echo $work_title; ?>">
+                                <input type="text" class="input-text" id="work_title" name="work_title" value="<?php echo $work_title; ?>">
                             </div>
                             <div class="form-group">
                                 <label>Leírásom:</label>
-                                <textarea class="input-text" id="description" name="description" placeholder="<?php echo $description; ?>"></textarea>
+                                <textarea class="input-text" id="description" name="description" ><?php echo $description; ?></textarea>
                             </div>
                             <a type="submit" id="saveProfileButton" class="btn btn-md button-theme">Új adatok mentése</a>
                         </form>
@@ -122,8 +118,8 @@ require "profiledata.php";
                     <!-- My address start-->
                     <div class="my-address">
                         <h3 class="heading-2">A fiókom</h3>
-
-                        <form action="index.php" method="GET">
+                        <p id="profile_change_message" name="profile_change_message"></p>
+                         <form id="changeprofiledata" method="POST">
                             <div class="form-group">
                                 <label>Felhasználó név (Nem változtatható): </label>
                                 <br>
@@ -131,7 +127,7 @@ require "profiledata.php";
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="email" class="input-text" name="email" placeholder="<?php echo $email; ?>">
+                                <input type="email" class="input-text" id="email" name="email" value="<?php echo $email; ?>">
                             </div>
                             <a  type="submit" id="saveProfileButton"  class="btn btn-md button-theme">Új adatok mentése</a>
                         </form>
@@ -170,16 +166,18 @@ require "profiledata.php";
                     email: $("#email").val()
                 };
             }
-
+            console.log(dataToSend);
             $.ajax({
                 url: 'update_profile.php',
                 type: 'post',
                 data: dataToSend,
                 success: function(response) {
-                    $("#message").html(response);
+                    $("#profile_change_message").html(response);
+                   console.log(response);
                 },
                 error: function(xhr, status, error) {
-                    $("#message").html("Error: " + status + " " + error);
+                    $("#profile_change_message").html("Error: " + status + " " + error);
+                    console.log("Error: " + status + " " + error);
                 }
             });
         });

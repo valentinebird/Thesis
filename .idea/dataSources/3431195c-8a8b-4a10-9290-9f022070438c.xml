@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="127.0.0.1">
   <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.51">
-    <root id="1"/>
+    <root id="1">
+      <DefaultCasing>exact</DefaultCasing>
+      <DefaultEngine>MyISAM</DefaultEngine>
+      <Grants>thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|ALTER|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|ALTER ROUTINE|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|CREATE|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|CREATE ROUTINE|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|CREATE TEMPORARY TABLES|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|CREATE VIEW|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|DELETE|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|DELETE HISTORY|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|DROP|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|EVENT|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|EXECUTE|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|INDEX|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|INSERT|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|LOCK TABLES|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|REFERENCES|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|SELECT|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|SHOW VIEW|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|TRIGGER|G
+thebwvas\\_THESIS|schema||thebwvas_SUPERUSER|localhost|UPDATE|G</Grants>
+      <ServerVersion>10.5.20</ServerVersion>
+    </root>
     <collation id="2" parent="1" name="armscii8_bin">
       <Charset>armscii8</Charset>
     </collation>
@@ -1013,7 +1036,7 @@
     </schema>
     <schema id="325" parent="1" name="thebwvas_THESIS">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2023-12-06.20:09:10</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2023-12-24.13:39:44</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_unicode_ci</CollationName>
     </schema>
     <user id="326" parent="1" name="thebwvas_SUPERUSER">
@@ -1052,8 +1075,7 @@
       <Position>3</Position>
     </column>
     <column id="334" parent="327" name="email">
-      <DasType>varchar(100)|0s</DasType>
-      <NotNull>1</NotNull>
+      <DasType>varchar(150)|0s</DasType>
       <Position>4</Position>
     </column>
     <column id="335" parent="327" name="phone">
@@ -1107,7 +1129,7 @@ username</ColNames>
       <UnderlyingIndexName>id</UnderlyingIndexName>
     </key>
     <column id="345" parent="328" name="picture_id">
-      <AutoIncrement>33</AutoIncrement>
+      <AutoIncrement>34</AutoIncrement>
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -1145,7 +1167,7 @@ username</ColNames>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="353" parent="329" name="id">
-      <AutoIncrement>56</AutoIncrement>
+      <AutoIncrement>59</AutoIncrement>
       <DasType>int(6) unsigned|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -1271,7 +1293,7 @@ username</ColNames>
       <Predicate>json_valid(`favorite_properties`)</Predicate>
     </check>
     <column id="379" parent="330" name="id">
-      <AutoIncrement>5</AutoIncrement>
+      <AutoIncrement>6</AutoIncrement>
       <DasType>int(6) unsigned|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -1282,8 +1304,7 @@ username</ColNames>
       <Position>2</Position>
     </column>
     <column id="381" parent="330" name="email">
-      <DasType>varchar(30)|0s</DasType>
-      <NotNull>1</NotNull>
+      <DasType>varchar(150)|0s</DasType>
       <Position>3</Position>
     </column>
     <column id="382" parent="330" name="password">
