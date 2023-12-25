@@ -27,7 +27,6 @@ while ($field = $meta->fetch_field()) {
 
 call_user_func_array([$stmt, 'bind_result'], $parameters);
 
-
 ?>
 
 

@@ -2,7 +2,11 @@
 session_start();
 require "dbconfig.php";
 require "profiledata.php";
-
+if (!isset($_SESSION['loggedin'])) {
+    // Redirect to login page
+    header('Location: index.php');
+    exit;
+}
 ?>
 
 <!DOCTYPE html>

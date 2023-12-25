@@ -1,8 +1,14 @@
 <?php
 session_start();
 require "dbconfig.php";
+global $con;
 require "profiledata.php";
 
+if (!isset($_SESSION['loggedin'])) {
+    // Redirect to login page or show an error
+    header('Location: index.php');
+    exit;
+}
 ?>
 
 <!DOCTYPE html>

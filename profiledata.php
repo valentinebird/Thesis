@@ -3,18 +3,12 @@
 //This code is getting all the data from the database wheather you are AGENT or you are USER.
 session_start();
 require "dbconfig.php";
+global $con;
 
-$db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-mysqli_query($db, "SET NAMES utf8;");
-if ($db->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-
-$username = $_SESSION['name'];
+$username = $_SESSION['username'];
 if ($_SESSION['is_agent']) {
     $sql = "SELECT * FROM AGENT WHERE username = '$username ';";
-    $result = mysqli_query($db, $sql);
+    $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
 
     if ($row) {
@@ -34,7 +28,7 @@ if ($_SESSION['is_agent']) {
     }
 } else {
     $sql = "SELECT * FROM USER WHERE username = '$username ';";
-    $result = mysqli_query($db, $sql);
+    $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
 
     if ($row) {
@@ -46,7 +40,7 @@ if ($_SESSION['is_agent']) {
         $reg_date = $row["reg_date"];
 
     } else {
-        echo "Adatbázis hiba hiba";
+        echo "Adatbázis hiba";
     }
 
 }

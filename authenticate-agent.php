@@ -29,6 +29,7 @@ if ($stmt = $con->prepare('SELECT username, password FROM AGENT WHERE username =
             session_regenerate_id();
 			$_SESSION['loggedin'] = TRUE;
 			$_SESSION['name'] = $_POST['username'];
+			$_SESSION['username'] = $_POST['username'];
 			$_SESSION['id'] = $id;
 			$_SESSION['is_agent'] = TRUE;
             echo $_SESSION['loggedin'];

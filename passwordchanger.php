@@ -7,7 +7,8 @@ global $username;
 
 // Check if user is logged in
 if (!isset($_SESSION['loggedin'])) {
-    echo "Please log in first.";
+    // Redirect to login page or show an error
+    header('Location: index.php');
     exit;
 }
 
