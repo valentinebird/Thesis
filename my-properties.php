@@ -160,7 +160,7 @@ $result = $con->query($sql);
                     }
                 },
                 error: function (xhr, status, error) {
-                    $("#message").html(response, xhr, status, error);
+                    $("#message").html("Hiba: " + error);
                 }
             });
         }

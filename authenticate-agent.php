@@ -4,8 +4,6 @@ session_start();
 require "dbconfig.php";
 global $con;
 
-
-
 if (!isset($_POST['username'], $_POST['password'])) {
     echo 'A felhasználónév vagy jelszó nincs kitöltve';
     exit();
