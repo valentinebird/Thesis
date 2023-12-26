@@ -35,13 +35,11 @@ function display_first_rent_picture($id)
 {
 
     global $con; // Ensure that $con is accessible within the function
-    //echo $id;
     $sql = "SELECT * FROM PICTURE WHERE property_id = $id LIMIT 1;";
     $result = $con->query($sql);
     $pictureExists = $result->num_rows > 0;
     if ($pictureExists) {
         $row = $result->fetch_assoc();
-        //echo $row["filename"];
         return $row["filename"];
     } else {
         return "property_pics/default_rent.jpeg";
