@@ -8,6 +8,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['is_agent'] !== TRUE) {
 }
 require "dbconfig.php";
 require "propertydropdown.php";
+require "profiledata.php";
+global $agent_id, $username;
 
 global $con;
 function checkifPOST_EXIST($key)
@@ -304,7 +306,7 @@ VALUES(
     $pool,
     $has_wifi,
     '$property_description',
-    1,
+    $agent_id,
     0);";
 
         $result = mysqli_query($con, $sql);
@@ -565,13 +567,13 @@ VALUES(
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Az ingatlanközvetítő ügynök neve</label>
-                                    <div><?php echo $_SESSION['name'] ?> </div>
+                                    <div><?php echo $username ?> </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Az ügynök ID-ja </label>
-                                    <div><?php echo $_SESSION['id'] ?> </div>
+                                    <div><?php echo $agent_id ?> </div>
                                 </div>
                             </div>
 

@@ -251,10 +251,10 @@ if ($propertyExists && isset($_SESSION['id'])) {
                                             <div class="col-md-4 col-sm-6">
                                                 <ul>
                                                     <li>
-                                                        <strong>Eladva</strong><?php if ($row["is_sold"] == 0) {
-                                                            echo "Még nincs eladva";
+                                                        <strong>Elérhető még az ingatlan: </strong><?php if ($row["is_sold"] == 0) {
+                                                            echo "Elérhető";
                                                         } else {
-                                                            echo "Eladva";
+                                                            echo "Már nem elérhető";
                                                         } ?>
                                                     </li>
                                                     <li>

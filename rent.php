@@ -2,9 +2,9 @@
 
 session_start();
 require "dbconfig.php";
-
-//$db = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 global $con;
+
+
 $sortOrder = 'upload_date DESC'; // Assuming 'id DESC' as default (newest first)
 
 // Check if a sort option is set and update sortOrder accordingly
@@ -29,25 +29,24 @@ $sql = "SELECT * FROM PROPERTY WHERE is_for_sale = 0 ORDER BY $sortOrder;";
 $result = $con->query($sql);
 
 
-$con->close();
+
 
 function display_first_rent_picture($id)
 {
+
     global $con; // Ensure that $con is accessible within the function
+    //echo $id;
     $sql = "SELECT * FROM PICTURE WHERE property_id = $id LIMIT 1;";
     $result = $con->query($sql);
     $pictureExists = $result->num_rows > 0;
     if ($pictureExists) {
         $row = $result->fetch_assoc();
+        //echo $row["filename"];
         return $row["filename"];
     } else {
         return "property_pics/default_rent.jpeg";
     }
 }
-
-
-
-
 ?>
 
 <script>
@@ -165,8 +164,7 @@ function display_first_rent_picture($id)
                             <div class="row">
                                 <div class="col-lg-5 col-md-5 col-pad">
                                     <a href="properties-details.php?id=<?php echo $row['id']; ?>" class="property-img">
-                                        <img src="<?php echo display_first_rent_picture($row['id']); ?>"
-                                             alt="properties" class="img-fluid">
+                                        <img src="<?php echo display_first_rent_picture($row['id']); ?>" alt="properties" class="img-fluid">
                                         <div class="listing-badges">
                                             <span class="listing-time">Kiadó</span>
                                         </div>
@@ -264,3 +262,5 @@ function display_first_rent_picture($id)
 
 </body>
 </html>
+
+<?php $con->close(); ?>

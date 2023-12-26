@@ -3,11 +3,6 @@ session_start();
 require "dbconfig.php";
 global $con;
 
-// Check connection
-if ($con->connect_error) {
-    die("Connection failed: " . $con->connect_error);
-}
-
 $sortOrder = 'upload_date DESC'; // Assuming 'id DESC' as default (newest first)
 
 // Check if a sort option is set and update sortOrder accordingly
@@ -44,9 +39,6 @@ function display_first_sale_picture($id){
         return "property_pics/default_sale.jpeg";
     }
 }
-
-//$con->close();
-
 
 ?>
 
@@ -280,3 +272,5 @@ function display_first_sale_picture($id){
 
 </body>
 </html>
+
+<?php $con->close(); ?>

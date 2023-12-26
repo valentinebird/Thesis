@@ -13,6 +13,7 @@ if ($_SESSION['is_agent']) {
 
     if ($row) {
         $id = $row["id"];
+        $agent_id = $row["id"]; //Just to makesure that the agent_id is the same as the id in the AGENT table.
         $username = $row["username"];
         $real_name = $row["real_name"];
         $email = $row["email"];

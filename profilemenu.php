@@ -5,7 +5,7 @@ global $username;
 ?>
 
 <div class="clearfix">
-    <!-- Avatar start -->
+    <!-- Avatar start
     <div class="edit-profile-photo">
         <img src="http://placehold.it/350x350" alt="profile-photo" class="img-fluid">
         <div class="change-photo-btn">
@@ -15,6 +15,7 @@ global $username;
             </div>
         </div>
     </div>
+     -->
     <!-- Avatar end -->
     <!-- My account box start -->
     <div class="my-account-box">
