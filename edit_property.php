@@ -1,20 +1,62 @@
 <?php
 session_start();
+require "dbconfig.php";
+require "propertydropdown.php";
+
+global $con;
+$info_message = "";
+
+
 // Check if logged in and is an agent
 if (!isset($_SESSION['loggedin']) || $_SESSION['is_agent'] !== TRUE) {
     // If not logged in or not an agent, redirect to index page or show an error
     header('Location: index.php');
     exit;
 }
-require "dbconfig.php";
-require "propertydropdown.php";
 
-global $con;
+$propertyId = $_GET['id'] ?? $_POST['propertyId'] ?? null;
+if (!$propertyId) {
+    exit('Hiba az n ID-val!');
+}
+
+
+$stmt = $con->prepare("SELECT * FROM PROPERTY WHERE id = ?");
+$stmt->bind_param("i", $propertyId);
+$stmt->execute();
+
+// Bind the result variables
+$stmt->store_result();
+$meta = $stmt->result_metadata();
+while ($field = $meta->fetch_field()) {
+    $params[] = &$row[$field->name];
+}
+
+call_user_func_array(array($stmt, 'bind_result'), $params);
+
+// Fetch the result
+if ($stmt->fetch()) {
+    foreach($row as $key => $val) {
+        $property[$key] = $val;
+    }
+    // Now $property is an associative array with the result
+} else {
+    exit('Az ingatlanügynökhöz nem tartozik ingatlan!');
+}
+
+$stmt->close();
+
+// Function to maintain form state and display existing property values
+function allapottarto($key  ) {
+    global $property;
+    return $_POST[$key] ?? htmlspecialchars($property[$key]);
+}
+
+
+
 function checkifPOST_EXIST($key)
 {
     return !empty($_POST[$key]);
 }
-
 $errors = [];
 $result = [];
 $numbers = [1, 2, 3, 4, 5];
@@ -24,28 +66,14 @@ function hibasE($kulcs)
     return in_array($kulcs, array_keys($errors));
 }
 
-function hibaKiir($key)
-{
+// Function to display errors
+function hibaKiir($key) {
     global $errors;
-    if ($errors) {
-        echo $errors[$key];
-    }
+    return isset($errors[$key]) ? $errors[$key] : '';
 }
 
-function allapottarto($kulcs)
-{
-    global $errors;
-    global $result;
-    //return count($errors) > 0 || hibasE($kulcs) ? $result[$kulcs] : $result[$kulcs];
-    if (count($errors) > 0) {
-        return $result[$kulcs];
-    } else {
-        return "";
-    }
-}
 
 $msg = "";
-
 function upload_picture_and_insert_it_to_db()
 {
     global $info_message;
@@ -83,17 +111,25 @@ function upload_picture_and_insert_it_to_db()
             if ($check !== false) {
                 $uploadOk = 1;
             } else {
-                $info_message .= "A fálj nem kép - " . $check["mime"] . "\n";
+                $info_message .= "A fálj nem kép - ". $check["mime"] . "\n";
                 $uploadOk = 0;
             }
 
             // Check file size
             if ($_FILES["fileToUpload"]["size"][$key] > 50000000) {
-                $info_message .= "A kép túl nagy méretű. " . $_FILES["fileToUpload"]["tmp_name"][$key] . "\n";
+                $info_message .=  "A kép túl nagy méretű. ". $_FILES["fileToUpload"]["tmp_name"][$key] .  "\n";
                 $uploadOk = 0;
             }
 
-
+            // Allow certain file formats
+            /*
+            if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+                && $imageFileType != "gif") {
+                $info_message .= "Csak JPG, JPEG, PNG & GIF fálj engedélyezett.";
+                echo "Csak JPG, JPEG, PNG & GIF fálj engedélyezett. : tipus" . $imageFileType . " -ez \n";
+                $uploadOk = 0;
+            }
+            */
             // Check if $uploadOk is set to 0 by an error
             if ($uploadOk == 0) {
                 $info_message .= "A kép nincs feltöltve.";
@@ -114,15 +150,27 @@ function upload_picture_and_insert_it_to_db()
 
         }
     } else {
-        $info_message .= "\n A " . $_FILES["fileToUpload"]["tmp_name"][$key] . " nem lett kép feltöltve. Nincs bettallózva. \n";
+        $info_message .= "\n A ".  $_FILES["fileToUpload"]["tmp_name"][$key] . " nem lett kép feltöltve. Nincs bettallózva. \n";
     }
 
 }
 
 // If upload button is clicked ...
 
-if (isset($_POST['upload'])) {
+if (isset($_POST['editProperty'])) {
     //Check the values is okay!!!
+    if (isset($_POST['is_sold'])) {
+        // Explicitly compare with the string value '1'
+        $is_sold = $_POST['is_sold'] === '1' ? 1 : 0;
+    } else {
+        // Fallback to the original property value if not set
+        $is_sold = $property['is_sold'];
+    }
+
+    $has_garage = isset($_POST['has_garage']) ? 1 : 0;
+    $pool = isset($_POST['pool']) ? 1 : 0;
+    $has_wifi = isset($_POST['has_wifi']) ? 1 : 0;
+
 
     if (checkifPOST_EXIST("property_name")) {
         $result["property_name"] = $_POST["property_name"];
@@ -260,69 +308,56 @@ if (isset($_POST['upload'])) {
         $errors["property_description"] = "Leírás nincs kitöltve";
     }
 
-    // Check if the selected property type is valid
-    if (checkifPOST_EXIST("type") && array_key_exists($_POST["type"], $propertyTypes)) {
-        $result["type"] = $_POST["type"];
-        $type = $_POST["type"];
-    } else {
-        $errors["type"] = "Érvénytelen ingatlan típus.";
-    }
-
-    // Check if the selected property condition is valid
-    if (checkifPOST_EXIST("property_condition") && array_key_exists($_POST["property_condition"], $propertyConditions)) {
-        $result["property_condition"] = $_POST["property_condition"];
-        $property_condition = $_POST["property_condition"];
-    } else {
-        $errors["property_condition"] = "Érvénytelen ingatlan állapota.";
-    }
-
-    // Check if the selected heating type is valid
-    if (checkifPOST_EXIST("heating_type") && array_key_exists($_POST["heating_type"], $heatingTypes)) {
-        $result["heating_type"] = $_POST["heating_type"];
-        $heating_type = $_POST["heating_type"];
-    } else {
-        $errors["heating_type"] = "Érvénytelen fűtési típus.";
-    }
-
-
     if (!$errors) {
-        $sql = "insert into PROPERTY (property_name, is_for_sale, price, city, address, size, level_number, rooms, bath_rooms, type, property_condition, heating_type, has_garage, pool, has_wifi, property_description, agent_id, is_sold)
-VALUES(
-    '$property_name',
-    $is_for_sale,
-    $price,
-    '$city',
-    '$address',
-    $size,
-    $level_number,
-    $rooms,
-    $bath_rooms,
-    '$type',
-    '$property_condition',
-    '$heating_type',
-    $has_garage,
-    $pool,
-    $has_wifi,
-    '$property_description',
-    1,
-    0);";
+        // Check if there are changes
+        $changes = [];
 
-        $result = mysqli_query($con, $sql);
-        $info_message .= "\n Az ingatlan sikeresen fel lett töltve" . mysqli_error($con) . "\n";
-        // After successfully inserting property details upload the picture
+        // Check for changes and prepare for update
+        if ($property['is_sold'] != $is_sold) {
+            $changes['is_sold'] = $is_sold;
+        }
+
+        // Check for changes
+        if ($property['is_sold'] != $is_sold) {
+            $changes['is_sold'] = $is_sold;
+        }
+
+        foreach ($result as $key => $value) {
+            if ($property[$key] != $value) {
+                $changes[$key] = $value;
+            }
+        }
+
+
+        // Only proceed if there are changes
+        if (count($changes) > 0) {
+            $updateParts = [];
+            foreach ($changes as $key => $value) {
+                $updateParts[] = "$key = '" . mysqli_real_escape_string($con, $value) . "'";
+            }
+            $updateQuery = "UPDATE PROPERTY SET " . implode(', ', $updateParts) . " WHERE id = $propertyId";
+
+            if (mysqli_query($con, $updateQuery)) {
+                $info_message .= "\nAz ingatlan adatai sikeresen frissítve.\n";
+            } else {
+                $info_message .= "\nHiba történt az adatok frissítése során: " . mysqli_error($con) . "\n";
+            }
+        } else {
+            $info_message .= "\nNem történt változtatás.\n";
+        }
+
+        // Handle picture upload and insertion
         upload_picture_and_insert_it_to_db();
     } else {
-        $info_message .= "\n Kérlek ellenőrizd hogy minden mező helyesen ki van töltve." . "\n";
+        $info_message .= "\nKérlek ellenőrizd, hogy minden mező helyesen ki van-e töltve.\n";
     }
 
-
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <title>Ingatlan nyilvántartó portál, webes környezetben</title>
+    <title>Ingatlan szerkesztés</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
 
@@ -377,13 +412,13 @@ VALUES(
         <div class="row">
             <div class="col-md-12">
                 <div class="notification-box">
-                    <h3>Ez az oldal ingatlanügynökök számára van fenntartva.</h3>
+                    <h3>Szerkesztés, az oldal ingatlanügynökök számára van fenntartva.</h3>
                     <p id="info_message"><?php echo $info_message ?></p>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="submit-address">
-                    <form method="POST" action="submit-property.php" enctype="multipart/form-data">
+                    <form method="POST" action="edit_property.php" enctype="multipart/form-data">
                         <h3 class="heading-2">Alap információk</h3>
                         <div class="search-contents-sidebar mb-30">
                             <div class="row">
@@ -400,8 +435,8 @@ VALUES(
                                     <div class="form-group">
                                         <label>Eladó vagy kiadó?</label>
                                         <select class="selectpicker search-fields" name="is_for_sale" id="is_for_sale">
-                                            <option value="sale">Eladó</option>
-                                            <option value="rent">Kiadó</option>
+                                            <option value="sale" <?php echo ($property['is_for_sale'] == 1 ? 'selected' : ''); ?>>Eladó</option>
+                                            <option value="rent" <?php echo ($property['is_for_sale'] == 0 ? 'selected' : ''); ?>>Kiadó</option>
                                         </select>
                                     </div>
                                 </div>
@@ -444,12 +479,9 @@ VALUES(
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Szintek száma</label>
-                                        <select class="selectpicker search-fields" name="level_number"
-                                                id="level_number">
-                                            <?php for ($i = 0;
-                                                       $i < count($numbers);
-                                                       $i++): ?>
-                                                <option value="<?= $numbers[$i] ?>"> <?= $numbers[$i] ?> </option>
+                                        <select class="selectpicker search-fields" name="level_number" id="level_number">
+                                            <?php for ($i = 1; $i <= 5; $i++): ?>
+                                                <option value="<?= $i ?>" <?php echo ($property['level_number'] == $i ? 'selected' : ''); ?>> <?= $i ?> </option>
                                             <?php endfor ?>
                                         </select>
                                     </div>
@@ -458,10 +490,8 @@ VALUES(
                                     <div class="form-group">
                                         <label>Szobák száma</label>
                                         <select class="selectpicker search-fields" name="rooms" id="rooms">
-                                            <?php for ($i = 0;
-                                                       $i < count($numbers);
-                                                       $i++): ?>
-                                                <option value="<?= $numbers[$i] ?>"> <?= $numbers[$i] ?> </option>
+                                            <?php for ($i = 1; $i <= 5; $i++): ?>
+                                                <option value="<?= $i ?>" <?php echo ($property['rooms'] == $i ? 'selected' : ''); ?>> <?= $i ?> </option>
                                             <?php endfor ?>
                                         </select>
                                     </div>
@@ -470,10 +500,8 @@ VALUES(
                                     <div class="form-group">
                                         <label>Fürdőszobák száma</label>
                                         <select class="selectpicker search-fields" name="bath_rooms" id="bath_rooms">
-                                            <?php for ($i = 0;
-                                                       $i < count($numbers);
-                                                       $i++): ?>
-                                                <option value="<?= $numbers[$i] ?>"> <?= $numbers[$i] ?> </option>
+                                            <?php for ($i = 1; $i <= 5; $i++): ?>
+                                                <option value="<?= $i ?>" <?php echo ($property['bath_rooms'] == $i ? 'selected' : ''); ?>> <?= $i ?> </option>
                                             <?php endfor ?>
                                         </select>
                                     </div>
@@ -483,19 +511,17 @@ VALUES(
                                         <label>Az ingatlan típusa</label>
                                         <select class="selectpicker search-fields" name="type" id="type">
                                             <?php foreach ($propertyTypes as $value => $label): ?>
-                                                <option value="<?= $value ?>" <?= allapottarto('type') == $value ? 'selected' : '' ?>><?= $label ?></option>
+                                                <option value="<?= $value ?>" <?= ($property['type'] == $value ? 'selected' : '') ?>><?= $label ?></option>
                                             <?php endforeach; ?>
-                                        </select>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Az ingatlan állapota</label>
-                                        <select class="selectpicker search-fields" name="property_condition"
-                                                id="property_condition">
+                                        <select class="selectpicker search-fields" name="property_condition" id="property_condition">
                                             <?php foreach ($propertyConditions as $value => $label): ?>
-                                                <option value="<?= $value ?>" <?= allapottarto('property_condition') == $value ? 'selected' : '' ?>><?= $label ?></option>
+                                                <option value="<?= $value ?>" <?= ($property['property_condition'] == $value ? 'selected' : '') ?>><?= $label ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -503,12 +529,21 @@ VALUES(
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
                                         <label>Az ingatlan fűtése</label>
-                                        <select class="selectpicker search-fields" name="heating_type"
-                                                id="heating_type">
+                                        <select class="selectpicker search-fields" name="heating_type" id="heating_type">
                                             <?php foreach ($heatingTypes as $value => $label): ?>
-                                                <option value="<?= $value ?>" <?= allapottarto('heating_type') == $value ? 'selected' : '' ?>><?= $label ?></option>
+                                                <option value="<?= $value ?>" <?= ($property['heating_type'] == $value ? 'selected' : '') ?>><?= $label ?></option>
                                             <?php endforeach; ?>
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="form-group">
+                                        <label>Az ingatlan elérhető-e még? Ki van adva vagy el van adva?:</label>
+                                        <select class="selectpicker search-fields" name="is_sold" id="is_sold">
+                                            <option value="0" <?= $property['is_sold'] == 0 ? 'selected' : ''; ?>>Elérhető</option>
+                                            <option value="1" <?= $property['is_sold'] == 1 ? 'selected' : ''; ?>>Nem elérhető</option>
+                                        </select>
+
                                     </div>
                                 </div>
 
@@ -521,19 +556,21 @@ VALUES(
                                 <div class="row">
                                     <div class="col-lg-4 col-md-4 col-sm-4">
                                         <div class="checkbox checkbox-theme">
-                                            <input name="has_garage" id="has_garage" type="checkbox" value="has_garage">
+                                            <input type="checkbox" name="has_garage" id="has_garage" value="has_garage" <?php echo ($property['has_garage'] == 1 ? 'checked' : ''); ?>>
+
                                             <label for="has_garage">
                                                 Garázs
                                             </label>
                                         </div>
                                         <div class="checkbox checkbox-theme checkbox-circle">
-                                            <input name="pool" id="pool" type="checkbox" value="pool">
+                                            <input type="checkbox" name="pool" id="pool" value="pool" <?php echo ($property['pool'] == 1 ? 'checked' : ''); ?>>
+
                                             <label for="pool">
                                                 Medence
                                             </label>
                                         </div>
                                         <div class="checkbox checkbox-theme checkbox-circle">
-                                            <input name="has_wifi" id="has_wifi" type="checkbox" value="has_wifi">
+                                            <input type="checkbox" name="has_wifi" id="has_wifi" value="has_wifi" <?php echo ($property['has_wifi'] == 1 ? 'checked' : ''); ?>>
                                             <label for="has_wifi">
                                                 Wi-Fi
                                             </label>
@@ -551,8 +588,10 @@ VALUES(
                             <div class="col-md-12">
                                 <div class="form-group mb-0">
                                     <label>Leírás</label>
-                                    <textarea class="input-text" name="property_description"
-                                              id="property_description"><?php echo allapottarto('property_description') ?></textarea>
+                                    <textarea class="input-text" name="property_description" id="property_description"
+                                              >
+                                        <?php echo allapottarto('property_description') ?>
+                                    </textarea>
                                     <span style="color: red"><?php echo hibaKiir('property_description') ?></span>
                                 </div>
                             </div>
@@ -568,17 +607,11 @@ VALUES(
                                     <div><?php echo $_SESSION['name'] ?> </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Az ügynök ID-ja </label>
-                                    <div><?php echo $_SESSION['id'] ?> </div>
-                                </div>
-                            </div>
+                            <input type="hidden" name="propertyId" value="<?= htmlspecialchars($propertyId) ?>">
 
                             <div class="col-md-12">
-                                <!--<a href="" class="btn btn-md button-theme mb-30">A hirdetés feladása</a>-->
-                                <button type="submit" name="upload" id="upload" class="btn btn-md button-theme mb-30">
-                                    A hirdetés feladása
+                                <button type="submit" name="editProperty" id="editProperty" class="btn btn-md button-theme mb-30">
+                                    A hirdetés szerkesztése
                                 </button>
 
                             </div>

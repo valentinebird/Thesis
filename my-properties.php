@@ -106,8 +106,7 @@ $result = $con->query($sql);
                         if ($result->num_rows > 0) {
 
                             while ($row = $result->fetch_assoc()) { ?>
-                                <tr>
-
+                                <tr id="propertyRow_<?php echo $row['id']; ?>">
                                     <td>
                                         <div class="inner">
                                             <h5>
@@ -124,7 +123,7 @@ $result = $con->query($sql);
                                     <td class="hedin-div"><?php echo $row["upload_date"]; ?></td>
                                     <td><span class="hedin-div"><?php echo $row["id"]; ?></span></td>
                                     <td class="actions">
-                                        <a href="#" class="edit"><i class="fa fa-pencil"></i>Szerkesztés</a>
+                                        <a href="#" class="edit" onclick="editProperty(<?php echo $row['id']; ?>)"><i class="fa fa-pencil"></i>Szerkesztés</a>
                                         <a href="#" class="delete" onclick="confirmDelete(<?php echo $row['id']; ?>)"><i
                                                     class="fa fa-trash-o"></i>Törlés</a>
 
@@ -146,6 +145,26 @@ $result = $con->query($sql);
 <?php include 'footer.html'; ?>
 
 <script type="text/javascript">
+    function editProperty(propertyId) {
+        // Use AJAX to redirect to the edit property page
+        $.ajax({
+            url: 'edit_property.php', // The URL of your edit property page
+            type: 'GET', // GET method
+            data: {id: propertyId}, // Send the property ID
+            success: function(response) {
+                // Redirect to the edit page with the property ID
+                window.location.href = 'edit_property.php?id=' + propertyId;
+            },
+            error: function(xhr, status, error) {
+                // Handle errors
+                console.error("Hiba: " + error);
+            }
+        });
+    }
+</script>
+
+
+<script type="text/javascript">
     function confirmDelete(id) {
         if (confirm("Biztosan törölni szeretnéd az ingatlant?")) {
             $.ajax({
@@ -154,13 +173,14 @@ $result = $con->query($sql);
                 data: {id: id},
                 success: function (response) {
                     if (response === '1') {
+                        $('#propertyRow_' + id).remove();
                         $("#message").html(response);
                     } else {
                         $("#message").html(response);
                     }
                 },
                 error: function (xhr, status, error) {
-                    $("#message").html("Hiba: " + error);
+                    $("#message").html("Hiba az ingatlan törlésekor: " + error);
                 }
             });
         }
