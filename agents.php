@@ -83,9 +83,6 @@ $result = $con->query($sql);
                 if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) { ?>
                 <div class="team-2">
-                    <div class="team-photo">
-                        <img src="img/cube.gif" alt="agent-2" class="img-fluid">
-                    </div>
                     <div class="team-details">
                         <h6><?php echo $row["work_title"]; ?></h6>
                         <h5><a href="agent-detail.php?id=<?php echo $row["id"]; ?>"><?php echo $row["real_name"]; ?></a></h5>

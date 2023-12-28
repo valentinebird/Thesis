@@ -102,11 +102,6 @@ call_user_func_array([$stmt, 'bind_result'], $parameters);
         <div class="row">
             <div class="col-lg-8">
                 <div class="row team-4 team-6">
-                    <div class="col-xl-5 col-lg-5 col-md-5 col-pad ">
-                        <div class="photo">
-                            <img src="http://placehold.it/302x362" alt="avatar-4" class="img-fluid">
-                        </div>
-                    </div>
                     <div class="col-xl-7 col-lg-7 col-md-7 col-pad align-self-center">
                         <div class="detail">
                             <h4><?php echo $row["real_name"]; ?></h4>
