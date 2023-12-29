@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TestHtmlnteraction" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" singleton="false">
+    <TestRunner class="TestHtmlnteraction" coverage_engine="PHPDBG" file="$PROJECT_DIR$/tests/ConnectionTest.php" scope="Class" />
+    <method v="2" />
+  </configuration>
+</component>
