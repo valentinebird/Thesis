@@ -1,6 +1,6 @@
 <?php
 $propertyTypes = [
-    "Apartment" => "Apartment",
+    "Apartman" => "Apartman",
     "Családi ház" => "Családi ház",
     "Lakás" => "Lakás",
     "Panel lakás" => "Panel lakás",

@@ -5,16 +5,34 @@ require "dbconfig.php";
 global  $con;
 
 
-function display_first_rent_picture($id) {
+function display_picture($id) {
     global $con; // Ensure that $con is accessible within the function
-    $sql = "SELECT * FROM PICTURE WHERE property_id = $id LIMIT 1;";
+
+    // Sanitize the $id to prevent SQL injection if not done earlier
+    $id = $con->real_escape_string($id);
+
+    $getSaleOrRent = "SELECT * FROM PROPERTY WHERE id = '$id';";
+    $propertyResult = $con->query($getSaleOrRent);
+
+    $propertyExists = $propertyResult->num_rows > 0;
+    $propertyRow = $propertyExists ? $propertyResult->fetch_assoc() : null;
+
+    $sql = "SELECT * FROM PICTURE WHERE property_id = '$id' LIMIT 1;";
     $result = $con->query($sql);
+
     $pictureExists = $result->num_rows > 0;
     if ($pictureExists) {
         $row = $result->fetch_assoc();
         return $row["filename"];
     } else {
-        return "property_pics/default_rent.jpeg";
+        if ($propertyExists) {
+            if ($propertyRow["is_for_sale"] == '1') {
+                return "property_pics/default_sale.jpeg";
+            } else {
+                return "property_pics/default_rent.jpeg";
+            }
+        }
+        return "property_pics/default_rent.jpeg"; // A default image if no property is found
     }
 }
 
@@ -199,7 +217,7 @@ $result = $con->query($sql);
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="property-box-4 category">
                             <div class="category_bg_box">
-                                <img src="<?php echo display_first_rent_picture($row['id']); ?>" alt="properties" class="img-fluid">
+                                <img src="<?php echo display_picture($row['id']); ?>" alt="properties" class="img-fluid">
                                 <div class="category-overlay">
                                     <div class="category-content">
                                         <h3>

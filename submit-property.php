@@ -418,7 +418,7 @@ VALUES(
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <div class="form-group">
-                                        <label>Város:</label>
+                                        <label>Város (Irányítószám):</label>
                                         <input type="text" class="input-text" name="city" id="city"
                                                value="<?= allapottarto('city') ?>"
                                         >

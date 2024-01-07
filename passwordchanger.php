@@ -4,6 +4,7 @@ session_start();
 require "dbconfig.php";
 require "profiledata.php";
 global $username;
+global $con;
 
 // Check if user is logged in
 if (!isset($_SESSION['loggedin'])) {
@@ -12,12 +13,6 @@ if (!isset($_SESSION['loggedin'])) {
     exit;
 }
 
-// Try and connect using the info above.
-$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-if (mysqli_connect_errno()) {
-    // If there is an error with the connection, stop the script and display the error.
-    exit('Nem lehet a MySQL szerverhez csatlakozni: ' . mysqli_connect_error());
-}
 
 // Now we check if the data from the form was submitted
 if (!isset($_POST['current_password'], $_POST['new_password'], $_POST['confirm_new_password'])) {

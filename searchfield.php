@@ -1,4 +1,6 @@
 <?php
+include 'propertydropdown.php';
+global $propertyTypes, $propertyConditions, $heatingTypes;
 // Helper function to maintain state
 function allapottarto($result, $key) {
     return $result[$key] ?? '';
@@ -6,7 +8,7 @@ function allapottarto($result, $key) {
 
 // Function to check selected option
 function isSelected($result, $key, $value) {
-    return stateHolder($result, $key) === $value ? 'selected' : '';
+    return allapottarto($result, $key) === $value ? 'selected' : '';
 }
 
 // Function to check checkbox
@@ -38,20 +40,15 @@ $result = array_map('htmlspecialchars', $_GET);
     <div class="form-group">
         <select class="selectpicker search-fields" name="property-type">
             <option value="defaulttype" <?= isSelected($result, 'property-type', 'defaulttype') ?>>Típus</option>
-            <option value="Apartment" <?= isSelected($result, 'property-type', 'apartment') ?>>Apartment</option>
-            <option value="Családi ház" <?= isSelected($result, 'property-type', 'familyhome') ?>>Családi ház</option>
-            <option value="Lakás" <?= isSelected($result, 'property-type', 'flat') ?>>Lakás</option>
-            <option value="Panel lakás" <?= isSelected($result, 'property-type', 'panel') ?>>Panel lakás</option>
-            <option value="Garázs" <?= isSelected($result, 'property-type', 'garage') ?>>Garázs</option>
-            <option value="Tanya" <?= isSelected($result, 'property-type', 'farm') ?>>Tanya</option>
-            <option value="Nyaraló" <?= isSelected($result, 'property-type', 'holiday') ?>>Nyaraló</option>
-            <option value="Iroda" <?= isSelected($result, 'property-type', 'office') ?>>Iroda</option>
+            <?php foreach ($propertyTypes as $key => $value): ?>
+                <option value="<?= $key ?>" <?= isSelected($result, 'property-type', $key) ?>><?= $value ?></option>
+            <?php endforeach; ?>
         </select>
     </div>
 
     <!-- Location -->
     <div class="form-group">
-        <input class="form-control search-fields" name="location" id="location" placeholder="Hely" value="<?= stateHolder($result, 'location') ?>">
+        <input class="form-control search-fields" name="location" id="location" placeholder="Hely" value="<?= allapottarto($result, 'location') ?>">
     </div>
 
     <!-- Bedrooms -->
@@ -78,13 +75,11 @@ $result = array_map('htmlspecialchars', $_GET);
 
     <!--   Condition -->
     <div class="form-group">
-        <select class="selectpicker search-fields" name="balcony">
-            <option value="defaultcondition" <?= isSelected($result, 'balcony', 'defaultcondition') ?>>Állapot</option>
-            <option value="Új" <?= isSelected($result, 'balcony', 'new') ?>>Új</option>
-            <option value="Újszerű" <?= isSelected($result, 'balcony', 'likenew') ?>>Újszerű</option>
-            <option value="Felújított" <?= isSelected($result, 'balcony', 'renovated') ?>>Felújított</option>
-            <option value="Használt" <?= isSelected($result, 'balcony', 'used') ?>>Használt</option>
-            <option value="Romos" <?= isSelected($result, 'balcony', 'ruined') ?>>Romos</option>
+        <select class="selectpicker search-fields" name="condition">
+            <option value="defaultcondition" <?= isSelected($result, 'condition', 'defaultcondition') ?>>Állapot</option>
+            <?php foreach ($propertyConditions as $key => $value): ?>
+                <option value="<?= $key ?>" <?= isSelected($result, 'condition', $key) ?>><?= $value ?></option>
+            <?php endforeach; ?>
         </select>
     </div>
 

@@ -32,19 +32,24 @@ if ($propertyExists) {
 }
 
 
-
-
-$isFavorite = false;
-if ($propertyExists && isset($_SESSION['id'])) {
-    $userId = $_SESSION['id'];
-    $sql = "SELECT favorite_properties FROM USER WHERE username = '$userId'";
-    $result = $con->query($sql);
-    if ($result->num_rows > 0) {
-        $userRow = $result->fetch_assoc();
-        $favoriteProperties = json_decode($userRow["favorite_properties"], true);
-        $isFavorite = in_array($id, $favoriteProperties);
+function checkFavorite($id): bool
+{
+    global $con, $propertyExists;
+    if ($propertyExists && isset($_SESSION['id'])) {
+        $userId = $_SESSION['id'];
+        $sql = "SELECT favorite_properties FROM USER WHERE username = '$userId'";
+        $result = $con->query($sql);
+        if ($result->num_rows > 0) {
+            $userRow = $result->fetch_assoc();
+            $favoriteProperties = json_decode($userRow["favorite_properties"], true);
+            return in_array($id, $favoriteProperties);
+        }
     }
+    return false; // Return false if not a favorite or if there's an error
 }
+
+
+
 
 
 
@@ -242,8 +247,11 @@ if ($propertyExists && isset($_SESSION['id'])) {
 
 
                                                     <li>
-                                                        <strong>Meghirdetési
-                                                            időpont</strong><?php echo $row["upload_date"]; ?>
+                                                        <strong>Fűtés:</strong><?php echo $row["heating_type"]; ?>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Állapota:</strong>
+                                                        <?php echo $row["property_condition"]; ?>
                                                     </li>
 
                                                 </ul>
@@ -251,17 +259,32 @@ if ($propertyExists && isset($_SESSION['id'])) {
                                             <div class="col-md-4 col-sm-6">
                                                 <ul>
                                                     <li>
-                                                        <strong>Elérhető még az ingatlan: </strong><?php if ($row["is_sold"] == 0) {
+                                                        <strong>Szintek száma:</strong>
+                                                        <?php echo $row["level_number"]; ?>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Város: </strong> <?php echo $row["city"]; ?>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Cím: </strong><?php echo $row["address"]; ?>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-4 col-sm-6">
+                                                <ul>
+                                                    <li>
+                                                        <strong>Kiadó vagy eladó:</strong>
+                                                        <?php echo ($row["is_for_sale"] == 1) ? "Eladó" : "Kiadó"; ?>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Elérhető még a hirdetés: </strong><?php if ($row["is_sold"] == 0) {
                                                             echo "Elérhető";
                                                         } else {
                                                             echo "Már nem elérhető";
                                                         } ?>
                                                     </li>
                                                     <li>
-                                                        <strong><?php echo $row["city"]; ?> </strong>
-                                                    </li>
-                                                    <li>
-                                                        <strong>Cím: </strong><?php echo $row["address"]; ?>
+                                                        <strong>Meghirdetési időpont</strong><?php echo $row["upload_date"]; ?>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -340,11 +363,11 @@ if ($propertyExists && isset($_SESSION['id'])) {
                                         <div class="form-group name">
                                             <div>Kedvencekhez adás</div>
                                             <?php if (!$_SESSION['is_agent'] and $_SESSION['loggedin']) { ?>
-                                            <div>
-                                                <button  class="search-button" id="favoriteButton" onclick="handleFavorite(<?php echo $id; ?>)">
-                                                    <?php echo $isFavorite ? 'Az eltávolítás a kedvencek közül' : 'Hozzáadás a kedvencekhez'; ?>
-                                                </button>
-                                            </div>
+                                                <div>
+                                                    <button  class="search-button" id="favoriteButton" onclick="handleFavorite(<?php echo $id; ?>)">
+                                                        <?php echo checkFavorite($id) ? 'Az eltávolítás a kedvencek közül' : 'Hozzáadás a kedvencekhez'; ?>
+                                                    </button>
+                                                </div>
                                             <?php }else { ?>
                                                 <div> A kedvencekhez adás csak bejelentkezett felhasználók számára elérhető. </div>
                                             <?php } ?>
@@ -407,34 +430,49 @@ if ($propertyExists && isset($_SESSION['id'])) {
 <script src="js/app.js"></script>
 
 <script>
+
     function handleFavorite(propertyId) {
-        const action = document.getElementById('favoriteButton').innerText.includes('eltávolítás') ? 'remove' : 'add';
+        let button = document.getElementById('favoriteButton');
+        let isFavoriteNow = <?php echo checkFavorite($id) ? 'true' : 'false'; ?>;
 
         $.ajax({
-            url: 'handle_favorite.php', // PHP script to add/remove favorite
+            url: 'handle_favorite.php',
             type: 'POST',
-            data: {propertyId: propertyId, action: action},
-            success: function (response) {
-                // Update button text based on current action
-                if (action === 'add') {
-                    document.getElementById('favoriteButton').innerText = 'Az eltávolítás a kedvencek közül';
+            data: { propertyId: propertyId, action: isFavoriteNow ? 'remove' : 'add' },
+            success: function(response) {
+                // Toggle the state based on the current state
+                if (isFavoriteNow) {
+                    console.log('Hozzadas', response);
+                    button.innerText = 'Hozzáadás a kedvencekhez';
                 } else {
-                    document.getElementById('favoriteButton').innerText = 'Hozzáadás a kedvencekhez';
+                    console.log('Eltavolitas', response);
+                    button.innerText = 'Eltávolítás a kedvencek közül';
                 }
-
+                window.location.reload();
             },
-            error: function (xhr, status, error) {
-                console.error("Hiba: ", error);
+            error: function(xhr, status, error) {
+                console.error("Error: ", error);
             }
         });
     }
+
 </script>
 
 
 <script>
     function initMap() {
-        //let address = '1600 Amphitheatre Parkway, Mountain View, CA'; // Static address for testing
-        let address = <?php echo json_encode($row['address'] . ', ' . $row['city']); ?>;
+        <?php
+        // Extract zip code using a regular expression
+        preg_match('/\b\d{4,5}\b/', $row['city'], $matches);
+        $zipCode = $matches[0] ?? '';
+
+        // Remove the zip code from the city string
+        $cityWithoutZip = trim(str_replace($zipCode, '', $row['city']));
+
+        // Format the full address
+        $fullAddress = $row['address'] . ', ' . $cityWithoutZip . ' ' . $zipCode;
+        ?>
+        let address = <?php echo json_encode($fullAddress); ?>;
         let geocoder = new google.maps.Geocoder();
 
         geocoder.geocode({'address': address}, function (results, status) {
@@ -448,20 +486,16 @@ if ($propertyExists && isset($_SESSION['id'])) {
                     center: results[0].geometry.location
                 });
 
-
                 let marker = new google.maps.Marker({
                     map: map,
                     position: results[0].geometry.location
                 });
-
-
             } else {
                 console.error('Geocode was not successful for the following reason:', status);
                 document.getElementById('propertymap').innerHTML = '<p>A helyszín nem található a térképen.</p>';
             }
         });
     }
-
 </script>
 <?php $apiKey = "AIzaSyAWOyts9O5KO0g_OO69ulWKtfL7g-ymjuw"; ?>
 <script async defer

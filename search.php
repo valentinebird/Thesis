@@ -9,7 +9,7 @@ $propertyType = isset($_GET['property-type']) ? $_GET['property-type'] : 'empty'
 $location = isset($_GET['location']) ? $_GET['location'] : 'empty';
 $bedrooms = isset($_GET['bedrooms']) ? $_GET['bedrooms'] : 'empty';
 $bathroom = isset($_GET['bathroom']) ? $_GET['bathroom'] : 'empty';
-$condition = isset($_GET['balcony']) ? $_GET['balcony'] : 'empty';
+$condition = isset($_GET['condition']) ? $_GET['condition'] : 'empty';
 
 // Checkboxes
 $garage = isset($_GET['garage']) ? 'checked' : 'not checked';
@@ -50,10 +50,10 @@ if (!empty($_GET['bathroom']) && $_GET['bathroom'] !== 'bathroom0') {
     $sql .= " AND bath_rooms = '{$bathroom}'";
 }
 
-// Check if 'balcony' is set and not the default value
-if (!empty($_GET['balcony']) && $_GET['balcony'] !== 'defaultcondition') {
-    $balcony = $_GET['balcony'];
-    $sql .= " AND property_condition = '{$balcony}'";
+// Check if 'condition' is set and not the default value
+if (!empty($_GET['condition']) && $_GET['condition'] !== 'defaultcondition') {
+    $condition = $_GET['condition'];
+    $sql .= " AND property_condition = '{$condition}'";
 }
 
 // Checkboxes
@@ -108,26 +108,45 @@ $sql .= " ORDER BY $sortOrder;";
 $result = $con->query($sql);
 
 
-function display_first_rent_picture($id)
-{
+function display_picture($id) {
     global $con; // Ensure that $con is accessible within the function
-    $sql = "SELECT * FROM PICTURE WHERE property_id = $id LIMIT 1;";
+
+    // Sanitize the $id to prevent SQL injection if not done earlier
+    $id = $con->real_escape_string($id);
+
+    $getSaleOrRent = "SELECT * FROM PROPERTY WHERE id = '$id';";
+    $propertyResult = $con->query($getSaleOrRent);
+
+    $propertyExists = $propertyResult->num_rows > 0;
+    $propertyRow = $propertyExists ? $propertyResult->fetch_assoc() : null;
+
+    $sql = "SELECT * FROM PICTURE WHERE property_id = '$id' LIMIT 1;";
     $result = $con->query($sql);
+
     $pictureExists = $result->num_rows > 0;
     if ($pictureExists) {
         $row = $result->fetch_assoc();
         return $row["filename"];
     } else {
-        return "property_pics/default_rent.jpeg";
+        if ($propertyExists) {
+            if ($propertyRow["is_for_sale"] == '1') {
+                return "property_pics/default_sale.jpeg";
+            } else {
+                return "property_pics/default_rent.jpeg";
+            }
+        }
+        return "property_pics/default_rent.jpeg"; // A default image if no property is found
     }
 }
 
-$con->close();
+
+echo $sql;
+
 ?>
 
 <script>
     function sortProperties(sortBy) {
-        var existingParams = new URLSearchParams(window.location.search);
+        let existingParams = new URLSearchParams(window.location.search);
         existingParams.set('sort', sortBy);
         window.location.href = window.location.pathname + '?' + existingParams.toString();
     }
@@ -233,10 +252,13 @@ $con->close();
                             <div class="row">
                                 <div class="col-lg-5 col-md-5 col-pad">
                                     <a href="properties-details.php?id=<?php echo $row['id']; ?>" class="property-img">
-                                        <img src="<?php echo display_first_rent_picture($row['id']); ?>"
+                                        <img src="<?php echo display_picture($row['id']); ?>"
                                              alt="properties" class="img-fluid">
                                         <div class="listing-badges">
-                                            <span class="listing-time">Kiadó</span>
+                                            <span class="listing-time">
+                                                <?php if ($row["is_for_sale"] == 1) echo "Eladó";
+                                                else echo "Kiadó"; ?>
+                                            </span>
                                         </div>
                                         <div class="price-box"><?php echo $row["price"]; ?><small> Ft</small></div>
                                     </a>
@@ -318,7 +340,7 @@ $con->close();
                         <h3 class="sidebar-title">Részletes keresés</h3>
                         <div class="s-border"></div>
                         <div class="m-border"></div>
-                        <?php include 'searchfield.php'; ?>
+                        <?php  include 'searchfield.php'; ?>
                     </div>
                 </div>
             </div>
@@ -326,7 +348,8 @@ $con->close();
     </div>
 </div>
 
-<?php include 'footer.html'; ?>
+<?php include 'footer.html';
+$con->close();?>
 
 
 <script src="js/jquery-2.2.0.min.js"></script>

@@ -78,34 +78,32 @@ $result = $con->query($sql);
     <div class="container">
         <div class="clearfix"></div>
         <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <?php
-                if ($result->num_rows > 0) {
+            <?php
+            if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) { ?>
-                <div class="team-2">
-                    <div class="team-details">
-                        <h6><?php echo $row["work_title"]; ?></h6>
-                        <h5><a href="agent-detail.php?id=<?php echo $row["id"]; ?>"><?php echo $row["real_name"]; ?></a></h5>
-
-                        <div class="contact">
-                            <p>
-                                <a href="mailto:<?php echo $row["email"]; ?>"><i class="fa fa-envelope-o"></i><?php echo $row["email"]; ?></a>
-                            </p>
-                            <p>
-                                <a href="<?php echo $row["phone"]; ?>"> <i class="fa fa-phone"></i><?php echo $row["phone"]; ?></a>
-                            </p>
+                    <div class="col-lg-4 col-md-6 col-sm-12"> <!-- Start of column div -->
+                        <div class="team-2">
+                            <div class="team-details">
+                                <h6><?php echo $row["work_title"]; ?></h6>
+                                <h5><a href="agent-detail.php?id=<?php echo $row["id"]; ?>"><?php echo $row["real_name"]; ?></a></h5>
+                                <div class="contact">
+                                    <p>
+                                        <a href="mailto:<?php echo $row["email"]; ?>"><i class="fa fa-envelope-o"></i><?php echo $row["email"]; ?></a>
+                                    </p>
+                                    <p>
+                                        <a href="<?php echo $row["phone"]; ?>"> <i class="fa fa-phone"></i><?php echo $row["phone"]; ?></a>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <?php }
+                    </div> <!-- End of column div -->
+                <?php }
             } else {
                 echo "<h1>Nincs ingatlanügynök</h1>";
             } ?>
-
         </div>
     </div>
-</div >
+</div>
 
 
 <?php include 'footer.html'; ?>
