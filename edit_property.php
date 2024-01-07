@@ -317,10 +317,6 @@ if (isset($_POST['editProperty'])) {
             $changes['is_sold'] = $is_sold;
         }
 
-        // Check for changes
-        if ($property['is_sold'] != $is_sold) {
-            $changes['is_sold'] = $is_sold;
-        }
 
         foreach ($result as $key => $value) {
             if ($property[$key] != $value) {
@@ -542,8 +538,8 @@ if (isset($_POST['editProperty'])) {
                                     <div class="form-group">
                                         <label>Az ingatlan elérhető-e még? Ki van adva vagy el van adva?:</label>
                                         <select class="selectpicker search-fields" name="is_sold" id="is_sold">
-                                            <option value="0" <?= $property['is_sold'] == 0 ? 'selected' : ''; ?>>Elérhető</option>
-                                            <option value="1" <?= $property['is_sold'] == 1 ? 'selected' : ''; ?>>Nem elérhető</option>
+                                            <option value="0" <?= allapottarto('is_sold') == 0 ? 'selected' : ''; ?>>Elérhető</option>
+                                            <option value="1" <?= allapottarto('is_sold') == 1 ? 'selected' : ''; ?>>Nem elérhető</option>
                                         </select>
 
                                     </div>
