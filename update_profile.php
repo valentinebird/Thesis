@@ -42,6 +42,7 @@ if ($_SESSION['is_agent']) {
         $stmt = $con->prepare("UPDATE AGENT SET real_name=?, email=?, phone=?, work_title=?, description=? WHERE username=?");
         $stmt->bind_param("ssssss", $realName, $email, $phone, $workTitle, $description, $username);
         $stmt->execute();
+        $con->commit();
         echo "Az alábbi adatok változtak: " . implode(", ", $changes) . ".";
         $stmt->close();
     } else {
@@ -66,6 +67,7 @@ if ($_SESSION['is_agent']) {
         $stmt = $con->prepare("UPDATE USER SET email=? WHERE username=?");
         $stmt->bind_param("ss", $email, $username);
         $stmt->execute();
+        $con->commit();
         echo "Változás: email.";
         $stmt->close();
     } else {

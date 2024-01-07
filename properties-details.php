@@ -334,6 +334,8 @@ function checkFavorite($id): bool
                                                             <i class="flaticon-beach"></i>Medence
                                                         </li>
                                                     <?php } ?>
+                                                    <?php if ($row["has_wifi"] == 0 and $row["has_garage"]  == 0  and $row["pool"] == 0 )
+                                                    {echo "Az ingatlannak nincsennek extrái";} ?>
 
                                                 </ul>
                                             </div>

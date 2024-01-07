@@ -20,6 +20,7 @@ $found = false;
 $foundAGENT = false;
 $foundUSER = false;
 
+$con->begin_transaction();
 // Check in AGENT table
 if ($stmt = $con->prepare('SELECT username FROM AGENT WHERE email = ?')) {
     $stmt->bind_param('s', $email);
@@ -64,6 +65,7 @@ if ($found) {
         $updateStmt->close();
     } else {
         echo 'Adatbázis hiba történt a jelszó frissítése közben.';
+        $con->rollback();
         exit();
     }
 
@@ -77,8 +79,10 @@ if ($found) {
     $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
     if (mail($to, $subject, $message, $headers)) {
+        $con->commit();
         echo "Az ideglenes jelszó sikeresen elküldve a megadott e-mail címre.";
     } else {
+        $con->rollback();
         echo "Hiba az email küldésekor.";
     }
 } else {

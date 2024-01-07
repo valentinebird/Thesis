@@ -37,6 +37,8 @@ if ($_POST['current_password'] == $_POST['new_password']) {
     exit();
 }
 
+// Start the transaction
+$con->begin_transaction();
 
 if ($_SESSION['is_agent']) {
     //Handle the user case
@@ -65,6 +67,7 @@ if ($_SESSION['is_agent']) {
                 echo 'A jelenlegi jelszó nem helyes!';
             }
         } else {
+            $con->rollback();
             echo 'Felhasználó nem található! Jelentkezz be újra!';
         }
         $stmt->close();
@@ -89,8 +92,10 @@ if ($_SESSION['is_agent']) {
                 $updateStmt->execute();
 
                 if ($updateStmt->affected_rows > 0) {
+                    $con->commit();
                     echo "Jelszó sikeresen le lett cserélve.";
                 } else {
+                    $con->rollback();
                     echo "Hiba a jelszócserével.";
                 }
                 $updateStmt->close();

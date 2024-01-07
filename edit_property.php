@@ -338,8 +338,10 @@ if (isset($_POST['editProperty'])) {
             $updateQuery = "UPDATE PROPERTY SET " . implode(', ', $updateParts) . " WHERE id = $propertyId";
 
             if (mysqli_query($con, $updateQuery)) {
+                $con->commit();
                 $info_message .= "\nAz ingatlan adatai sikeresen frissítve.\n";
             } else {
+                $con->rollback();
                 $info_message .= "\nHiba történt az adatok frissítése során: " . mysqli_error($con) . "\n";
             }
         } else {

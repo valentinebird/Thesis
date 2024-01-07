@@ -4,11 +4,14 @@ session_start();
 require "dbconfig.php";
 global $con;
 
-
 // Check if propertyId and userId are set
 if (isset($_POST['propertyId']) && isset($_SESSION['id'])) {
     $propertyId = $_POST['propertyId'];
     $userId = $_SESSION['id'];
+
+    // Start the transaction
+    $con->begin_transaction();
+
     $sql = "SELECT favorite_properties FROM USER WHERE username = '$userId'";
     $result = $con->query($sql);
 
@@ -24,8 +27,12 @@ if (isset($_POST['propertyId']) && isset($_SESSION['id'])) {
             $updateSql = "UPDATE USER SET favorite_properties = '$updatedFavorites' WHERE username = '$userId'";
 
             if ($con->query($updateSql) === TRUE) {
+                // Commit the transaction
+                $con->commit();
                 echo "A kedvenc sikeresen el lett távolítva";
             } else {
+                // Rollback the transaction in case of error
+                $con->rollback();
                 echo "Hiba: " . $con->error;
             }
         } else {

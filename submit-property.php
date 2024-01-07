@@ -106,6 +106,7 @@ function upload_picture_and_insert_it_to_db()
                     $fullFilePath = "https://madar-szakdolgozat.online/property_pics/" . $newFileName;
                     $sql = "INSERT INTO PICTURE (property_id, filename, description) VALUES ('$property_id', '$fullFilePath', '$property_name')";
                     $result = mysqli_query($con, $sql);
+                    $con->commit();
                     if (!$result) {
                         $info_message .= "\n SQL hiba a kép feltöltése közben : " . mysqli_error($con) . "\n";
                     }
@@ -310,6 +311,7 @@ VALUES(
     0);";
 
         $result = mysqli_query($con, $sql);
+        $con->commit();
         $info_message .= "\n Az ingatlan sikeresen fel lett töltve" . mysqli_error($con) . "\n";
         // After successfully inserting property details upload the picture
         upload_picture_and_insert_it_to_db();

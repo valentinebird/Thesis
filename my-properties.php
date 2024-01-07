@@ -106,7 +106,7 @@ $result = $con->query($sql);
                         if ($result->num_rows > 0) {
 
                             while ($row = $result->fetch_assoc()) { ?>
-                                <tr id="propertyRow_<?php echo $row['id']; ?>">
+                                <tr id="propertyrow-<?php echo $row['id']; ?>">
                                     <td>
                                         <div class="inner">
                                             <h5>
@@ -172,8 +172,8 @@ $result = $con->query($sql);
                 type: 'POST',
                 data: {id: id},
                 success: function (response) {
-                    if (response === '1') {
-                        $('#propertyRow_' + id).remove();
+                    if (response === 'Ingatlan sikeresen törölve.') {
+                        $('#propertyrow-' + id).remove();
                         $("#message").html(response);
                     } else {
                         $("#message").html(response);
