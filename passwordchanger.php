@@ -37,6 +37,8 @@ if ($_POST['current_password'] == $_POST['new_password']) {
     exit();
 }
 
+
+
 // Start the transaction
 $con->begin_transaction();
 

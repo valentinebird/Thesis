@@ -19,6 +19,19 @@ if (preg_match('/[A-Za-z0-9]+/', $_POST['username']) == 0) {
     exit('Felhasználó név nem megfelelő');
 }
 
+const maxUsernameLength = 30;
+const maxEmailLength = 150;
+
+// ... previous code ...
+
+if (strlen($_POST['username']) > maxUsernameLength) {
+    exit('A felhasználónév nem lehet hosszabb, mint ' . maxUsernameLength . ' karakter!');
+}
+
+if (strlen($_POST['email']) > maxEmailLength) {
+    exit('Az e-mail cím nem lehet hosszabb, mint ' . maxEmailLength . ' karakter!');
+}
+
 const minimumPasswordLength = 3;
 const maxPasswordLength = 20;
 if (strlen($_POST['password']) > maxPasswordLength || strlen($_POST['password']) < minimumPasswordLength) {
